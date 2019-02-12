@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const env = require('@babel/preset-env');
 const reactApp = require('babel-preset-react-app');
@@ -69,7 +70,11 @@ module.exports = {
       },
     ],
   },
-
+  plugins: [
+    new webpack.NormalModuleReplacementPlugin(
+      /\/iconv-loader$/, require.resolve('node-noop')
+    )
+  ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
