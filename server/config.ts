@@ -18,10 +18,7 @@ let appName = process.env.SITECORE_JSS_APP_NAME || 'hello-jss-typescript';
  * @type {ProxyConfig}
  */
 const config: ProxyConfig = {
-  /**
-   * Path to server.bundle.js file from your pre-built JSS app
-   */
-  //serverBundlePath,
+
   /**
    * apiHost: your Sitecore instance hostname that is the backend for JSS
    * Should be https for production. Must be https to use SSC auth service,
