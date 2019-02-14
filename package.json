@@ -116,7 +116,12 @@
     "plop": "2.2.0",
     "write-yaml": "1.0.0",
     "terminal-kit": "1.26.11",
-    "hotel": "0.8.7"
+    "hotel": "0.8.7",
+    "apollo-server-express": "2.4.0",
+    "@types/graphql": "14.0.1",
+    "graphql-tools": "4.0.4",
+    "nodemon": "1.18.4",
+    "lodash": "4.17.11"
   },
   "scripts": {
     "hotel": "hotel",
