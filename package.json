@@ -88,7 +88,10 @@
     "null-loader": "~0.1.1",
     "url-loader": "~1.1.2",
     "webpack": "4.19.1",
-    "webpack-cli": "~3.2.1"
+    "webpack-cli": "~3.2.1",
+    "plop": "2.2.0",
+    "write-yaml": "1.0.0",
+    "terminal-kit": "1.26.11"
   },
   "scripts": {
     "jss": "jss",
