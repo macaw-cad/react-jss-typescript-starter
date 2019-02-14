@@ -10,6 +10,9 @@ import { Manifest } from '@sitecore-jss/sitecore-jss-manifest';
 export default function addPlaceholdersToManifest(manifest) {
   manifest.addPlaceholder(
     { name: 'jss-main', displayName: 'Main' },
+    { name: 'page-structure-header', displayName: 'header', id: 'page-structure-header' },
+    { name: 'page-structure-content', displayName: 'content', id: 'page-structure-content' },
+    { name: 'page-structure-main', displayName: 'main', id: 'page-structure-main' },
     // you can optionally pass a GUID or unique (app-wide) string as an ID
     // this will inform the ID that is set when imported into Sitecore.
     // If the ID is not set, an ID is created based on the placeholder name.
