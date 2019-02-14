@@ -115,9 +115,11 @@
     "webpack-cli": "~3.2.1",
     "plop": "2.2.0",
     "write-yaml": "1.0.0",
-    "terminal-kit": "1.26.11"
+    "terminal-kit": "1.26.11",
+    "hotel": "0.8.7"
   },
   "scripts": {
+    "hotel": "hotel",
     "jss": "jss",
     "start": "npm-run-all --serial bootstrap:disconnected --parallel start:react start:proxy start:watch-components",
     "start:connected": "scjss-verify-setup && npm-run-all --serial bootstrap:connected start:react start:watch-components",
