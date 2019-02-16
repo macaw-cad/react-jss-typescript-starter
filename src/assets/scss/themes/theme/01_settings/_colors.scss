@@ -1,0 +1,29 @@
+// This file is site specific
+
+// Section default color
+$color-default-background: $color-contrast-primary;
+
+// Form input/select/textareas
+$h-form-field--background-color: $color-contrast-primary;
+$h-form-text-color: $color-text-brand-body;
+
+// Theme background colors
+// $theme-header-background: $color-contrast-primary;
+// $theme-body-background: $color-contrast-secondary;
+
+// Filter colors
+// $color-filter-text-primary: $color-brand-primary;
+
+// FAQ Colors
+$o-faq--accordion-title-color: $color-brand-secondary;
+$o-faq--accordion-title-color--active: $color-brand-primary;
+
+
+// Helpers borders
+$border-color: $color-shade-very-light;
+
+// Nav
+$m-navigation-dropdown-background-color: $color-contrast-primary;
+$m-navigation-dropdown-background-color-fixed: $color-contrast-primary;
+$m-navigation-color: $color-shade-very-dark;
+$m-navigation-color-fixed: $color-shade-very-dark-fixed;

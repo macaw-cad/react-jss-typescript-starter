@@ -1,0 +1,84 @@
+@mixin contained {
+  display: block;
+  width: 100%;
+  max-width: $max-site-width;
+  min-width: $min-site-width;
+  padding-left: $grid-side-spacing + $grid-spacing;
+  padding-right: $grid-side-spacing + $grid-spacing;
+  margin: 0 auto;
+
+  @include mq('M') {
+    padding-left: $grid-side-spacing--desktop + $grid-spacing;
+    padding-right: $grid-side-spacing--desktop + $grid-spacing;
+  }
+}
+
+@mixin break-out-contained {
+  margin-left: (- $grid-side-spacing);
+  margin-right: (- $grid-side-spacing);
+
+  @include mq('M') {
+    margin-left: (- $grid-side-spacing--desktop);
+    margin-right: (- $grid-side-spacing--desktop);
+  }
+}
+
+@mixin o-vehicle-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: map-get($z-index, 'vehicle-grid');
+  margin-left: - ($grid-side-spacing);
+  margin-right: - ($grid-side-spacing);
+
+  @include mq('M') {
+    justify-content: left;
+    margin-left: - ($grid-spacing);
+    margin-right: - ($grid-spacing);
+  }
+}
+
+@mixin o-vehicle-grid-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin-top: $grid-spacing;
+  margin-bottom: $grid-spacing;
+  z-index: 0;
+  background-color: $color-white;
+  border: solid 1px transparent;
+  @include fallback-with-fixed-color(border-color, $color-shade-very-light, $color-shade-very-light-fixed);
+
+  @include mq('M') {
+    width: calc(50% - (#{$grid-spacing} * 2));
+    margin-left: $grid-spacing;
+    margin-right: $grid-spacing;
+    max-width: none;
+  }
+
+  @include mq('L') {
+    width: calc(33.333% - (#{$grid-spacing} * 2));
+    max-width: none;
+  }
+}
+
+@mixin h-vertical-padding {
+  padding-top: map-get($spacings, 4);
+  padding-bottom: map-get($spacings, 4);
+
+  @include mq('M') {
+    padding-top: map-get($spacings, 5);
+    padding-bottom: map-get($spacings, 5);
+  }
+}
+
+@mixin h-vertical-top-margin {
+  margin-top: map-get($spacings, 4);
+
+  @include mq('M') {
+    margin-top: map-get($spacings, 5);
+  }
+}

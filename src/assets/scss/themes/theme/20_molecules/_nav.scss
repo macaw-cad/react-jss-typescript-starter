@@ -1,0 +1,351 @@
+$m-navigation--breakpoint: 990px;
+
+[class*='navigation-item-wrapper-level'] {
+  font-size: $small-font-size;
+}
+
+.m-navigation-menu {
+  font-family: $font-family-header;
+  font-weight: $font-family-header--font-weight;
+  color: $color-white;
+  position: relative;
+  z-index: map-get($z-index, 'navigation');
+  pointer-events: none;
+
+  @include mq('L')  {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    margin-bottom: map-get($spacings, 3);
+    margin-top: map-get($spacings, 3);
+    min-height: rem(32px);
+  }
+
+  &.h-hide-two-last-menu-items-on-desktop {
+    .m-navigation-item-wrapper-level1 {
+      &:last-of-type,
+      &:nth-last-of-type(2) {
+        @include mq('L') {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .m-navigation-menu__button {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: block;
+    width: 20px;
+    transform: translateY(-50%);
+    pointer-events: auto;
+
+    .a-icon {
+      transition: color .3s ease;
+      width: 100%;
+      height: 100%;
+      font-size: 40px;
+      margin-left: -(map-get($spacings, 2));
+      margin: auto;
+      color: $color-brand-primary;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @include mq('L')  {
+      display: none;
+    }
+  }
+
+  @keyframes navigation-list-slide {
+    0% {
+      opacity: 0;
+      max-height: 0;
+      visibility: collapse;
+    }
+    50% { opacity: 1; }
+    99% { visibility: visible; }
+  }
+
+  @keyframes navigation-list-popup {
+    0% { transform: scaleY(0); }
+    50% { transform: scaleY(0); }
+  }
+
+  .m-navigation-list-level1.is-open {
+    visibility: visible;
+    animation: navigation-list-slide .24s ease-in;
+    overflow-y: scroll;
+    overflow: auto;
+    @include fallback-with-fixed-color(background-color,  $m-navigation-dropdown-background-color, $m-navigation-dropdown-background-color-fixed);
+
+    &::after {
+      animation: navigation-list-popup .3s;
+      transform-origin: center bottom;
+    }
+  }
+
+  .m-navigation-list-level1 {
+    pointer-events: auto;
+    visibility: collapse;
+    position: fixed;
+    top: $header-bottom-height-mobile;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 10000px;
+    padding-top: map-get($spacings, 1);
+    padding-bottom: map-get($spacings, 1);
+    padding-left: map-get($spacings, 3);
+    padding-right: map-get($spacings, 3);
+    text-transform: uppercase;
+    font-family: inherit;
+
+    @include mq('L')  {
+      visibility: visible;
+      text-align: left;
+      position: relative;
+      top: 0;
+      margin-top: 0;
+      padding: 0;
+      background-color: transparent;
+      @include fallback-with-fixed-color(color,  $m-navigation-color, $m-navigation-color-fixed);
+    }
+
+    .m-navigation-item-level1 {
+      @include h-transition-button;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1px;
+      font-family: inherit;
+      @include fallback-with-fixed-color(color,  $m-navigation-color, $m-navigation-color-fixed);
+      line-height: map-get($spacings, 4);
+      cursor: pointer;
+      transition: margin-top .15s ease-out;
+      left: map-get($spacings, 4);
+      letter-spacing: 1.1px;
+
+      @include mq('L')  {
+        margin: 0 map-get($spacings, 3);
+        padding-bottom: map-get($spacings, 3);
+        line-height: 1.5;
+        left: 0;
+        width: 90px;
+
+        span {
+          border-bottom: 1px solid transparent;
+        }
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .m-navigation-item-wrapper-level1 {
+    position: relative;
+
+    &--active {
+      .m-navigation-item-level1 {
+        text-decoration: underline;
+      }
+
+      &:hover .m-navigation-item-level1 span {
+        text-decoration: underline;
+      }
+    }
+
+    @include mq('L')  {
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      height: map-get($spacings, 4);
+
+      &:not(:first-of-type)::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        @include fallback-with-fixed-color(box-shadow, .5px 0 0 $m-navigation-color, .5px 0 0 $m-navigation-color-fixed);
+        height: 100%;
+        left: 0;
+      }
+
+      &:hover {
+        .m-navigation-item-level1 {
+          margin-top: $base-spacing * .25;
+        }
+
+        .m-navigation-list-level2 {
+          top: calc(100% + 7px);
+          pointer-events: inherit;
+          transition: top .2s ease .2s, opacity .3s ease-out .22s;
+          z-index: 1;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .m-navigation-item-expander:active {
+    text-shadow: 0 0 3px $color-white;
+  }
+
+  .m-navigation-item-expander.is-expanded {
+    &::before {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+
+  .m-navigation-item-expander {
+    position: relative;
+    cursor: pointer;
+    width: $base-spacing;
+    height: $base-spacing;
+    @include webfont-icon('fn-expand');
+
+    &::before {
+      @include fallback-with-fixed-color(color,  $m-navigation-color, $m-navigation-color-fixed);
+      transition: transform .3s ease, left .3s ease, top .3s ease;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: map-get($spacings, 2);
+      width: map-get($spacings, 2);
+      transform: translateY(-50%);
+      transform-origin: center;
+      opacity: 1;
+    }
+
+    @include mq('L')  {
+      display: none;
+    }
+  }
+
+  .m-navigation-item-wrapper-level1.m-navigation-item-wrapper--active {
+    font-weight: bold;
+
+    @include mq('L')  {
+      font-weight: normal;
+      @include webfont-icon-after('fn-expand');
+
+      &::after {
+        position: absolute;
+        content: '';
+        bottom: -22px;
+        top: auto;
+        right: calc(50% - 10px);
+        border-style: solid;
+        border-width: 0 10px 10px;
+        border-color: transparent transparent $color-brand-primary;
+      }
+    }
+  }
+
+  .m-navigation-item-wrapper-level2 {
+    margin-left: $base-spacing;
+    font-weight: normal;
+
+    @include mq('L')  {
+      margin-left: 0;
+    }
+
+    &.m-navigation-item-wrapper--active {
+      font-weight: bold;
+    }
+  }
+
+  .m-navigation-list-level2.is-expanded {
+    animation: navigation-list-item-slide 3s;
+    transform-origin: center top;
+    max-height: 10000px;
+  }
+
+  @keyframes navigation-list-item-slide {
+    0% {
+      max-height: 0;
+      overflow: hidden;
+    }
+    99% { overflow: visible; }
+  }
+
+  .m-navigation-list-level2 {
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    font-family: $default-font;
+    font-weight: $default-font--font-weight;
+    text-transform: none;
+    letter-spacing: 1.1px;
+
+    @include mq('L')  {
+      overflow: visible;
+      position: absolute;
+      display: inline-block;
+      text-align: left;
+      left: 50%;
+      top: 50%;
+      max-height: 10000px;
+      transform: translateX(-50%);
+      padding: map-get($spacings, 2) map-get($spacings, 4) map-get($spacings, 2) map-get($spacings, 2);
+      min-width: 200px;
+      @include fallback-with-fixed-color(background-color,  $m-navigation-dropdown-background-color, $m-navigation-dropdown-background-color-fixed);
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: 0 0 12px 2px rgba(0, 0, 0, .15); // sass-lint:disable-line no-color-literals
+      font-size: 15px;
+
+      &::before {
+        font-family: 'a-icons';
+        content: map-get($webfont-icons, 'chevron-bottom');
+        font-size: .7em;
+        color: $color-brand-primary;
+        position: absolute;
+        margin-top: -(map-get($spacings, 1));
+        left: 50%;
+      }
+    }
+  }
+
+  .m-navigation-item-level2 {
+    display: inline-block;
+    margin: 5px 0 5px 20px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &::before {
+      font-family: 'a-icons';
+      content: map-get($webfont-icons, 'chevron-right');
+      padding-right: map-get($spacings, 1);
+      font-size: .9em;
+      @include fallback-with-fixed-color(color,  $m-navigation-color, $m-navigation-color-fixed);
+    }
+
+    @include mq('L')  {
+      position: relative;
+      padding: 10px 0;
+      margin: 0;
+      @include fallback-with-fixed-color(color,  $m-navigation-color, $m-navigation-color-fixed);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 0;
+
+      @include mq('L') {
+        white-space: nowrap;
+      }
+
+      &:hover {
+        span {
+          text-decoration: none;
+          border-bottom: 1px solid transparent;
+          @include fallback-with-fixed-color(border-bottom-color,  $m-navigation-color, $m-navigation-color-fixed);
+        }
+      }
+    }
+  }
+}

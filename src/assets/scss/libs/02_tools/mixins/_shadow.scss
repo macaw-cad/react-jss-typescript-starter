@@ -1,0 +1,4 @@
+@mixin h-shadow ($z-index: '') {
+  // sass-lint:disable-block no-color-literals
+  box-shadow: map-get($z-index-shadow, $z-index);
+}

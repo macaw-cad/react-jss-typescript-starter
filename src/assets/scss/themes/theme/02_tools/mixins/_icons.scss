@@ -1,0 +1,68 @@
+// sass-lint:disable-all
+@font-face {
+  font-family: 'a-icons';
+  src: url("") format("woff2"),
+  url("") format("woff");
+}
+
+$webfont-icons: (
+  'call': '\f101',
+  'check': '\f102',
+  'chevron-bottom': '\f103',
+  'chevron-left': '\f104',
+  'chevron-right': '\f105',
+  'chevron-top': '\f106',
+  'close': '\f107',
+  'dropdown-arrow': '\f108',
+  'email': '\f109',
+  'facebook': '\f10a',
+  'linkedin': '\f10b',
+  'menu': '\f10c',
+  'twitter': '\f10d',
+  'user': '\f10e',
+  'invalid': '\f10f',
+);
+
+@mixin icon-font {
+  font-family: 'a-icons'
+}
+
+@mixin webfont-icon-common-definition {
+    line-height: 1;
+    font-family: 'a-icons';
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin webfont-icon($name) {
+  $icon: map-get($webfont-icons, $name);
+
+  @if map-has-key($webfont-fn-icons, $name) {
+    $icon: map-get($webfont-icons, map-get($webfont-fn-icons, $name));
+  }
+
+  &::before {
+    @include webfont-icon-common-definition;
+    vertical-align: middle;
+    content: $icon;
+  }
+}
+
+@mixin webfont-icon-after($name) {
+  $icon: map-get($webfont-icons, $name);
+
+  @if map-has-key($webfont-fn-icons, $name) {
+    $icon: map-get($webfont-icons, map-get($webfont-fn-icons, $name));
+  }
+
+  &::after {
+    @include webfont-icon-common-definition;
+    vertical-align: middle;
+    content: $icon;
+  }
+}
+
+// sass-lint:enable-all

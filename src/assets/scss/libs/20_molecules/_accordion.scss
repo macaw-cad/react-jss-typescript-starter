@@ -1,0 +1,101 @@
+.m-accordion {
+  width: 100%;
+
+  &__panel {
+    &.static {
+      margin-top: map-get($spacings, 3);
+    }
+  }
+
+  &__panel-label {
+    @include heading-style;
+    position: relative;
+    display: block;
+    width: 100%;
+    background: none;
+    border: 0;
+    font-size: $base-fontsize;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: $color-black;
+    transition: color .2s linear;
+    margin-bottom: map-get($spacings, 1);
+    padding-right: map-get($spacings, 4);
+    outline: none;
+    cursor: pointer;
+
+    &.static {
+      cursor: default;
+    }
+  }
+
+  &__svg {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    @include fallback-with-fixed-color(color, $color-shade-dark, $color-shade-dark-fixed);
+    height: auto;
+    width: 16px;
+
+    .a-icon {
+      display: block;
+      @include h-transition-accordion-icon;
+    }
+
+    &--active .a-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__panel-inner {
+    @include h-transition-accordion-inner;
+    overflow: hidden;
+    max-height: 0;
+    margin: 0;
+
+    .m-accordion__panel-content {
+      @include h-transition-accordion-content;
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+
+    &[aria-hidden='false'] {
+      max-height: none;
+      margin-top: map-get($spacings, 1);
+      margin-bottom: map-get($spacings, 3);
+
+      .m-accordion__panel-content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &__panel-content {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    transition: opacity .3s linear .18s;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 3px;
+  }
+}
+
+// variant horizontal (only on desktop)
+.m-accordion__panel-content-title {
+  display: none;
+}
+
+@include mq('S') {
+  .m-accordion {
+    &__panel-content {
+      font-size: 16px;
+    }
+  }
+}

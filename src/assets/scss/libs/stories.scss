@@ -1,0 +1,83 @@
+@charset 'utf-8';
+@viewport {
+  zoom: 1.0; // sass-lint:disable-line no-trailing-zero
+  width: device-width;
+}
+
+body {
+  overflow-x: visible !important; // sass-lint:disable-line no-important otherwise the submenu is not visible on hover of the MegaMenuButton
+  background-color: rgb(247, 247, 247); // sass-lint:disable-line no-color-literals
+}
+
+.grid-highlight {
+  .m-grid {
+    background-color: #f8f8f8; // sass-lint:disable-line no-color-literals
+
+    [class*='m-grid__']:empty {
+      background-color: rgb(228, 228, 228); // sass-lint:disable-line no-color-literals
+    }
+  }
+
+  .placeholder__container {
+    border: 1px solid transparent;
+    min-height: 50px;
+    cursor: pointer;
+    background: transparent url('../../../images/EmptyPlaceholderBg.png') repeat;
+    background-color: rgb(179, 208, 253) !important; // sass-lint:disable-line no-color-literals, no-important
+
+    &:hover {
+      border: 1px solid #a5a5a5; // sass-lint:disable-line no-color-literals
+      background-color: rgb(159, 197, 255) !important; // sass-lint:disable-line no-color-literals, no-important
+    }
+
+    code {
+      visibility: hidden;
+      display: none;
+    }
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
+
+.o-vehicle-item--image {
+  background: transparent url('../../../images/greyshot-shop-auto-niet-gevonden.png') repeat;
+}
+
+.blockteaser-showcase {
+  width: 345px;
+}
+
+.icons-container-showcase {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+
+  &__icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    width: 120px;
+    padding: 6px;
+    margin: 6px;
+    background-color: #dfdfdf; // sass-lint:disable-line no-color-literals
+    border-radius: 6px;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: .8em;
+  }
+
+  .a-icon {
+    font-size: 3em;
+  }
+}
+
+.storybook-breakout {
+  margin: -20px;
+}

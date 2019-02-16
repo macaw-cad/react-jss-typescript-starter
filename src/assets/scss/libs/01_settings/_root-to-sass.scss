@@ -1,0 +1,99 @@
+// These variables are a copy from Sitecore.
+// They will be overwritten by dynamic variables by Sitecore clientside
+
+// ** FONTS ** //
+
+$header-font: var(--typeface-headings); // better header-font? Keeps BE and FE aligned
+$default-font: var(--typeface-body); // better default-font? Keeps BE and FE aligned
+
+// ** COLORS ** //
+
+// Colors for section backgrounds and 'foreground' in components
+// in light themed sites the contrast colors will be light
+
+$color-brand-primary: var(--color-brand-primary);
+$color-brand-primary--hue: var(--color-brand-primary--hue);
+$color-brand-primary--saturation: var(--color-brand-primary--saturation);
+$color-brand-primary--lightness: var(--color-brand-primary--lightness);
+
+$color-brand-secondary: var(--color-brand-secondary);
+$color-brand-secondary--hue: var(--color-brand-secondary--hue);
+$color-brand-secondary--saturation: var(--color-brand-secondary--saturation);
+$color-brand-secondary--lightness: var(--color-brand-secondary--lightness);
+
+$color-brand-tertiary: var(--color-brand-tertiary);
+$color-brand-tertiary--hue: var(--color-brand-tertiary--hue);
+$color-brand-tertiary--saturation: var(--color-brand-tertiary--saturation);
+$color-brand-tertiary--lightness: var(--color-brand-tertiary--lightness);
+
+$color-contrast-primary: var(--color-contrast-primary);
+$color-contrast-primary--hue: var(--color-contrast-primary--hue);
+$color-contrast-primary--saturation: var(--color-contrast-primary--saturation);
+$color-contrast-primary--lightness: var(--color-contrast-primary--lightness);
+
+$color-contrast-secondary: var(--color-contrast-secondary);
+$color-contrast-secondary--hue: var(--color-contrast-secondary--hue);
+$color-contrast-secondary--saturation: var(--color-contrast-secondary--saturation);
+$color-contrast-secondary--lightness: var(--color-contrast-secondary--lightness);
+
+$color-contrast-tertiary: var(--color-contrast-tertiary);
+$color-contrast-tertiary--hue: var(--color-contrast-tertiary--hue);
+$color-contrast-tertiary--saturation: var(--color-contrast-tertiary--saturation);
+$color-contrast-tertiary--lightness: var(--color-contrast-tertiary--lightness);
+
+$color-brand-accent: var(--color-brand-accent);
+$color-brand-accent--hue: var(--color-brand-accent--hue);
+$color-brand-accent--saturation: var(--color-brand-accent--saturation);
+$color-brand-accent--lightness: var(--color-brand-accent--lightness);
+
+$color-contrast-accent: var(--color-contrast-accent);
+$color-contrast-accent--hue: var(--color-contrast-accent--hue);
+$color-contrast-accent--saturation: var(--color-contrast-accent--saturation);
+$color-contrast-accent--lightness: var(--color-contrast-accent--lightness);
+
+$color-text-brand-body: var(--color-text-brand-body);
+$color-text-brand-body--hue: var(--color-text-brand-body--hue);
+$color-text-brand-body--saturation: var(--color-text-brand-body--saturation);
+$color-text-brand-body--lightness: var(--color-text-brand-body--lightness);
+
+$color-text-brand-heading: var(--color-text-brand-headings);
+$color-text-brand-heading--hue: var(--color-text-brand-headings--hue);
+$color-text-brand-heading--saturation: var(--color-text-brand-headings--saturation);
+$color-text-brand-heading--lightness: var(--color-text-brand-headings--lightness);
+
+$color-text-contrast-body: var(--color-text-contrast-body);
+$color-text-contrast-body--hue: var(--color-text-contrast-body--hue);
+$color-text-contrast-body--saturation: var(--color-text-contrast-body--saturation);
+$color-text-contrast-body--lightness: var(--color-text-contrast-body--lightness);
+
+$color-text-contrast-heading: var(--color-text-contrast-headings);
+$color-text-contrast-heading--hue: var(--color-text-contrast-headings--hue);
+$color-text-contrast-heading--saturation: var(--color-text-contrast-headings--saturation);
+$color-text-contrast-heading--lightness: var(--color-text-contrast-headings--lightness);
+
+// Grey scales or subtile color shades for foreground, used to process the shades in between
+$color-shade-darkest: var(--color-shade-darkest);
+$color-shade-darkest--hue: var(--color-shade-darkest--hue);
+$color-shade-darkest--saturation: var(--color-shade-darkest--saturation);
+$color-shade-darkest--lightness: var(--color-shade-darkest--lightness);
+
+$color-shade-lightest: var(--color-shade-lightest);
+$color-shade-lightest--hue: var(--color-shade-lightest--hue);
+$color-shade-lightest--saturation: var(--color-shade-lightest--saturation);
+$color-shade-lightest--lightness: var(--color-shade-lightest--lightness);
+
+// Info colors
+$color-info-warning: var(--color-info-warning);
+$color-info-warning--hue: var(--color-info-warning--hue);
+$color-info-warning--saturation: var(--color-info-warning--saturation);
+$color-info-warning--lightness: var(--color-info-warning--lightness);
+
+$color-info-danger: var(--color-info-danger);
+$color-info-danger--hue: var(--color-info-danger--hue);
+$color-info-danger--saturation: var(--color-info-danger--saturation);
+$color-info-danger--lightness: var(--color-info-danger--lightness);
+
+$color-info-success: var(--color-info-success);
+$color-info-success--hue: var(--color-info-success--hue);
+$color-info-success--saturation: var(--color-info-success--saturation);
+$color-info-success--lightness: var(--color-info-success--lightness);
