@@ -34,6 +34,7 @@
     "@storybook/addon-actions": "^4.1.4",
     "@storybook/addon-knobs": "^4.1.4",
     "@storybook/addon-options": "^4.1.4",
+    "storybook-readme": "4.0.5",
     "@storybook/react": "^4.1.4",
     "awesome-typescript-loader": "^5.2.1",
     "style-loader": "0.23.1",
