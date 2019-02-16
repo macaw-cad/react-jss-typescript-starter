@@ -1,0 +1,23 @@
+.a-picture {
+  position: relative;
+  overflow: hidden;
+
+  &__ratio {
+    display: block;
+  }
+
+  &__image {
+    // sass-lint:disable no-important
+    display: block !important;
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    height: auto;
+    margin: auto;
+  }
+}

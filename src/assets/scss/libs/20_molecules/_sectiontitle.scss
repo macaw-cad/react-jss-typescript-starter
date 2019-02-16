@@ -1,0 +1,59 @@
+.m-section__title {
+  padding-top: map-get($spacings, 4);
+
+  @include mq('M') {
+    padding-top: map-get($spacings, 5);
+  }
+
+  .m-section__title--container {
+    @include contained;
+    position: relative;
+    text-align: center;
+
+    .m-section__title--heading {
+      @include heading-style;
+      @include h2;
+      display: inline-block;
+      position: relative;
+      max-width: 80%;
+
+      color: $color-text-brand-heading;
+
+      .h-background-color--contrast-primary &,
+      .h-background-color--contrast-secondary &,
+      .h-background-color--contrast-tertiary & {
+        color: $color-text-brand-heading;
+      }
+
+      .h-background-color--brand-primary &,
+      .h-background-color--brand-secondary &,
+      .h-background-color--brand-tertiary & {
+        color: $color-text-contrast-heading;
+      }
+
+      &::after {
+        content: '';
+        width: 75%;
+        margin: 0 auto;
+        display: block;
+        position: relative;
+        height: 1px;
+        margin-top: map-get($spacings, 3);
+        margin-bottom: map-get($spacings, 3);
+        @include fallback-with-fixed-color(background-color, $color-shade-very-light, $color-shade-very-light-fixed);
+
+        .h-background-color--contrast-primary &,
+        .h-background-color--contrast-secondary &,
+        .h-background-color--contrast-tertiary & {
+          @include fallback-with-fixed-color(background-color, $color-shade-very-light, $color-shade-very-light-fixed);
+        }
+
+        .h-background-color--brand-primary &,
+        .h-background-color--brand-secondary &,
+        .h-background-color--brand-tertiary & {
+          background-color: $color-text-contrast-heading;
+        }
+      }
+    }
+  }
+}

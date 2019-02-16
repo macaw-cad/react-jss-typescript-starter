@@ -1,0 +1,281 @@
+@mixin link-list-icons {
+  &__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: map-get($spacings, 1);
+
+    .a-icon {
+      @include h3;
+      color: inherit;
+
+      &::before {
+        vertical-align: top;
+      }
+    }
+  }
+
+  a .a-icon {
+    transition: transform .3s ease, color .3s ease;
+    transform: scale(1);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.m-navigation-link-list {
+  @include link-list-icons;
+
+  &__title {
+    @include heading-style;
+    @include h3;
+    color: $color-brand-secondary;
+    padding-bottom: map-get($spacings, 2);
+
+    @include mq('L') {
+      padding-bottom: map-get($spacings, 3);
+    }
+
+    .h-background-color--brand-secondary &,
+    .h-background-color--brand-tertiary & {
+      color: $color-contrast-primary;
+    }
+
+    .h-background-color--brand-primary & {
+      @include fallback-with-fixed-color(color, $color-brand-secondary-very-light, $color-brand-secondary-very-light-fixed);
+    }
+
+    @include mq('M-max') {
+      margin-top: map-get($spacings, 2);
+    }
+  }
+
+  &__no-title {
+    @include mq('M') {
+      @include heading-style;
+      @include h3;
+      padding-bottom: map-get($spacings, 2);
+
+      @include mq('L') {
+        padding-bottom: map-get($spacings, 3);
+      }
+
+      &::after {
+        content: ' ';
+        display: inline-block;
+      }
+    }
+  }
+
+  &__items {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  &__item {
+    position: relative;
+    margin-bottom: map-get($spacings, 2);
+    padding-left: map-get($spacings, 2);
+    color: $color-text-brand-body;
+    @include webfont-icon('fn-next');
+
+    @include mq('L') {
+      padding-left: map-get($spacings, 3);
+    }
+
+    .h-background-color--brand-primary &,
+    .h-background-color--brand-secondary &,
+    .h-background-color--brand-tertiary & {
+      color: $color-contrast-primary;
+    }
+
+    a {
+      cursor: pointer;
+      color: inherit;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: $color-brand-primary;
+
+        .h-background-color--brand-primary &,
+        .h-background-color--brand-secondary &,
+        .h-background-color--brand-tertiary & {
+          color: inherit;
+        }
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .m-navigation-link-list__item--title {
+      hyphens: auto;
+
+      &.m-navigation-link-list__item--with-text {
+        font-weight: $bold-font--font-weight;
+      }
+    }
+
+    .m-navigation-link-list__item--text {
+      hyphens: auto;
+      display: block;
+    }
+
+    &::before {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      font-size: .55em;
+    }
+  }
+}
+
+.m-navigation-link-list--horizontal {
+  display: block;
+
+  .m-navigation-link-list {
+    margin-bottom: 0;
+
+    &__title {
+      @include h4;
+      display: inline-block;
+      padding-bottom: 0;
+      margin-top: map-get($spacings, 1) / 2;
+      margin-bottom: map-get($spacings, 1) / 2;
+      margin-right: map-get($spacings, 2);
+      vertical-align: middle;
+
+      .h-background-color--brand-primary & {
+        color: $color-contrast-primary;
+      }
+    }
+
+    &__no-title {
+      display: none;
+    }
+
+    &__items {
+      margin-bottom: 0;
+      margin-top: 0;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: - map-get($spacings, 2);
+      margin-right: - map-get($spacings, 2);
+    }
+
+    &__item {
+      display: inline-block;
+      padding-left: 0;
+      margin-top: map-get($spacings, 1) / 2;
+      margin-bottom: map-get($spacings, 1) / 2;
+      margin-right: map-get($spacings, 2);
+      margin-left: map-get($spacings, 2);
+
+      @include mq('L') {
+        padding-left: 0;
+      }
+
+      &::before {
+        display: none;
+      }
+
+      &--text {
+        text-transform: none;
+      }
+
+      &--title {
+        @include heading-style;
+        @include h4;
+        transition: color .3s ease;
+        color: $color-brand-primary;
+
+        .h-background-color--brand-secondary &,
+        .h-background-color--brand-tertiary & {
+          color: $color-contrast-primary;
+        }
+
+        .h-background-color--brand-primary & {
+          @include fallback-with-fixed-color(color, $color-brand-secondary-very-light, $color-brand-secondary-very-light-fixed);
+        }
+      }
+
+      a {
+        &:hover {
+          text-decoration: none;
+
+          .m-navigation-link-list__item--title,
+          .m-navigation-link-list__icon  {
+            @include fallback-with-fixed-color(color,$color-brand-primary-dark, $color-brand-primary-dark-fixed);
+
+            .h-background-color--brand-secondary &,
+            .h-background-color--brand-tertiary & {
+              @include fallback-with-fixed-color(color, $color-contrast-primary-dark, $color-contrast-primary-dark-fixed);
+            }
+
+            .h-background-color--brand-primary & {
+              @include fallback-with-fixed-color(color, $color-brand-secondary-light, $color-brand-secondary-light-fixed);
+            }
+          }
+        }
+      }
+    }
+
+    &__icon-list + .m-navigation-link-list__icon-list {
+      margin-top: 0;
+    }
+
+    &__icon {
+      @include h3;
+      color: $color-brand-primary;
+      margin-right: 5px;
+
+      .h-background-color--brand-secondary &,
+      .h-background-color--brand-tertiary & {
+        color: $color-contrast-primary;
+      }
+
+      .h-background-color--brand-primary & {
+        @include fallback-with-fixed-color(color, $color-brand-secondary-very-light, $color-brand-secondary-very-light-fixed);
+      }
+
+      .a-icon {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+
+    &__icon:only-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.o-header .m-grid__M12 > .placeholder__container > .placeholder > div > .m-section > .placeholder__container { // sass-lint:disable-line class-name-format
+  .m-navigation-link-list--horizontal span {
+    font-family: $font-family-header;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .m-navigation-link-list--horizontal {
+    font-size: $small-font-size;
+    text-transform: uppercase;
+
+    span,
+    .a-icon {
+      font-size: inherit;
+    }
+  }
+
+  > div:first-child .m-navigation-link-list--horizontal {
+    margin-right: $base-spacing;
+
+    span,
+    .a-icon {
+      color: $color-text-brand-body;
+    }
+  }
+}

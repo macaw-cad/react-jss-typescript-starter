@@ -1,0 +1,122 @@
+.h-display-flex {
+  display: flex;
+}
+
+.h-text-align-left {
+  text-align: left;
+}
+
+.h-text-align-center {
+  text-align: center;
+}
+
+.h-text-align-right {
+  text-align: right;
+}
+
+.h-flex-h-align-left {
+  justify-content: flex-start;
+}
+
+.h-flex-h-align-center {
+  justify-content: center;
+}
+
+.h-flex-h-align-right {
+  justify-content: flex-end;
+}
+
+.h-flex-h-align-space-between {
+  justify-content: space-between;
+}
+
+.h-flex-v-align-top {
+  align-items: flex-start;
+}
+
+.h-flex-v-align-center {
+  align-items: center;
+}
+
+.h-flex-v-align-bottom {
+  align-items: flex-end;
+}
+
+// CustomStyle will not work on GridBuilder without this:
+.m-grid.h-flex-h-align-center {
+  @include sitecore-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.m-grid.h-flex-h-align-right {
+  @include sitecore-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.m-grid.h-flex-h-align-left {
+  @include sitecore-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+.m-grid.h-flex-h-align-space-between {
+  @include sitecore-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    @include sitecore-content-child (':first-of-type:last-of-type') {
+      width: 100%;
+    }
+  }
+}
+
+.m-grid.h-flex-v-align-center {
+  @include sitecore-content-container {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.m-grid.h-flex-v-align-bottom {
+  @include sitecore-content-container {
+    display: flex;
+    align-items: flex-end;
+  }
+}
+
+%h-flex-equal-height {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  min-height: 1px;
+
+  > * {
+    flex-grow: 1;
+  }
+}
+
+.m-grid.h-flex-equal-height {
+  @include sitecore-content-container {
+    @extend %h-flex-equal-height;
+    @include sitecore-content-child {
+      @extend %h-flex-equal-height;
+    }
+  }
+}
+
+.m-grid.h-flex-equal-height > * {
+  margin-bottom: 0;
+  margin-top: 0;
+  vertical-align: top;
+}
+// End CustomStyle for GridBuilder

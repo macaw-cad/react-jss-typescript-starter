@@ -1,0 +1,82 @@
+html {
+  // sass-lint:disable no-vendor-prefixes
+  font-weight: normal;
+  box-sizing: border-box;
+  line-height: $base-lineheight;
+  font-size: $base-fontsize;
+  font-family: $default-font;
+  font-weight: $default-font--font-weight;
+  color: $color-text-brand-body;
+  // remove iOS highlight on touch
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+header {
+  background-color: $color-white;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+  background-color: $theme-body-background;
+}
+
+p {
+  a {
+    @include fallback-with-fixed-color(color, $color-shade-dark, $color-shade-dark-fixed);
+  }
+}
+
+a {
+  text-decoration: none;
+  @include fallback-with-fixed-color(color, $color-shade-dark, $color-shade-dark-fixed);
+
+  &:hover,
+  &:active {
+    text-decoration: underline;
+	}
+}
+
+figure {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+blockquote {
+  margin: 0;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 1.29;
+}
+
+button { // undo user agent stylesheet
+  text-decoration: none;
+  padding: 0;
+  border: 0;
+  text-align: inherit;
+
+  &:focus {
+    outline: none;
+	}
+}
+
+.rich-text { // Rich text from Sitecore
+  padding-top: $grid-spacing * 4;
+  padding-bottom: $grid-spacing * 4;
+}

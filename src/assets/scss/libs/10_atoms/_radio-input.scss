@@ -1,0 +1,126 @@
+$a-radio-checked-color: $color-brand-accent !default;
+$a-radio-hover-color: $color-brand-accent !default;
+
+.a-radio-input {
+  font-size: $base-fontsize;
+  @include fallback-with-fixed-color(color, $color-shade-very-dark, $color-shade-very-dark-fixed);
+  line-height: 2;
+
+  @include mq('M') {
+    font-size: rem(18px);
+  }
+
+  &__block {
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      .a-radio-input__label {
+        color: $color-black;
+      }
+
+      .a-radio-input__styled-input {
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .1); // sass-lint:disable-line no-color-literals
+      }
+    }
+
+    &:active {
+      .a-radio-input__styled-input {
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .1); // sass-lint:disable-line no-color-literals
+      }
+    }
+  }
+
+  &__styled-input {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: rem(20px);
+    height: rem(20px);
+    cursor: pointer;
+  }
+
+  &__input-hidden {
+    z-index: 1;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+
+    &:checked + .a-radio-input__input-visible,
+    &[checked] + .a-radio-input__input-visible {
+      background-color: $a-radio-checked-color;
+      border: 3px solid $color-shade-lightest;
+      box-shadow: 0 0 0 1px $color-text-brand-body;
+    }
+  }
+
+  &__input-visible {
+    display: block;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid $color-shade-lightest;
+    background-color: $color-shade-lightest;
+    @include fallback-with-fixed-color(box-shadow, 0 0 0 1px $color-shade-very-dark, 0 0 0 1px $color-shade-very-dark-fixed);
+    transition: border-color .3s, background-color .3s, box-shadow .3s;
+  }
+
+  &__label {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: (map-get($spacings, 5) / 2);
+    cursor: pointer;
+    white-space: nowrap;
+
+    @include mq('M') {
+      padding-left: rem(35px);
+    }
+  }
+}
+
+.a-radio-buttons {
+  font-size: $base-fontsize;
+  @include fallback-with-fixed-color(color, $color-shade-very-dark, $color-shade-very-dark-fixed);
+  display: flex;
+  flex-flow: wrap;
+
+  &__input-hidden {
+    z-index: 1;
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+
+    &:checked + .a-radio-buttons__input-visible,
+    &[checked] + .a-radio-buttons__input-visible {
+      border-color: $a-radio-checked-color;
+      color: $a-radio-checked-color;
+    }
+  }
+
+  &__input-visible {
+    display: table;
+    @include fallback-with-fixed-color(border, 2px solid $color-shade-dark, 2px solid $color-shade-dark-fixed);
+    margin: (map-get($spacings, 1) / 2) (map-get($spacings, 1)) (map-get($spacings, 1) / 2) 0;
+    white-space: nowrap;
+    line-height: rem(25px);
+    transition: border-color .3s, background-color .3s;
+
+    &:hover {
+      border-color: $a-radio-hover-color;
+      color: $a-radio-hover-color;
+    }
+  }
+
+  &__label {
+    margin: auto 0;
+    display: table-cell;
+    vertical-align: middle;
+    padding: map-get($spacings, 1);
+    padding-left: map-get($spacings, 3);
+    padding-right: map-get($spacings, 3);
+    cursor: pointer;
+  }
+}

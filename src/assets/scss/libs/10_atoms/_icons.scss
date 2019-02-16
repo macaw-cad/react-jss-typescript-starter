@@ -1,0 +1,94 @@
+// sass-lint:disable no-vendor-prefixes
+
+.a-icon::before,
+[class*='a-icon__']::before {
+  @include webfont-icon-common-definition;
+  vertical-align: middle;
+}
+
+@each $name in map-keys($webfont-icons) {
+  $icon: map-get($webfont-icons, $name);
+
+  .a-icon__#{$name}::before {
+    content: $icon;
+  }
+}
+
+.a-icon {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+}
+
+// For later use.
+@each $name in map-keys($webfont-fn-icons) {
+  $alias-name: map-get($webfont-fn-icons, $name);
+
+  .a-icon__#{$name} {
+    @include webfont-icon($alias-name);
+  }
+}
+
+// Icon Sizes
+// -------------------------
+
+// makes the font 33% larger relative to the icon container
+.a-icon--lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -15%;
+}
+
+.a-icon--2x { font-size: 2em; }
+.a-icon--3x { font-size: 3em; }
+.a-icon--4x { font-size: 4em; }
+.a-icon--5x { font-size: 5em; }
+
+.a-icon--rotate-90 {
+  transform: rotate(90deg);
+}
+
+.a-icon--rotate-180 {
+  transform: rotate(180deg);
+}
+
+.a-icon--rotate-270 {
+  transform: rotate(270deg);
+}
+
+.a-icon--flip-horizontal {
+  transform: scale(-1, 1);
+}
+
+.a-icon--flip-vertical {
+  transform: scale(1, -1);
+}
+
+.a-icon--stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+
+.a-icon--1x,
+.a-icon--2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.a-icon--1x {
+  line-height: inherit;
+}
+
+.a-icon--stack-2x {
+  font-size: 2em;
+}

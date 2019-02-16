@@ -1,0 +1,30 @@
+.h-boxed {
+  @include h-boxed;
+
+  @each $z-index in map-keys($z-index-shadow) {
+    &--z-index-#{$z-index} {
+      @include h-shadow($z-index);
+    }
+  }
+}
+
+.h-boxed__form {
+  @include h-boxed__form;
+
+  &--disabled {
+    @include h-boxed__form;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: .3;
+      background-color: $color-white;
+      z-index: map-get($z-index, 'h-boxed-form-disabled'); // Specify a stack order in case you're using a different order for other elements
+    }
+  }
+}

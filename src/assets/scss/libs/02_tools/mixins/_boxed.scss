@@ -1,0 +1,26 @@
+@mixin h-boxed (
+  $background-color: $color-white,
+  $padding: map-get($spacings, 3),
+  $z-order: 0)
+  {
+  background-color: $background-color;
+  padding: $padding;
+  @include h-shadow($z-order);
+}
+
+@mixin h-boxed__form($background-color: $color-white) {
+  @include h-boxed($background-color, map-get($spacings, 3));
+  margin-left: (- map-get($spacings, 3));
+  margin-right: (- map-get($spacings, 3));
+  margin-top: map-get($spacings, 4);
+
+  @include mq('L') {
+    margin-top: map-get($spacings, 5);
+  }
+
+  @include mq('M') {
+    margin-left: 0;
+    margin-right: 0;
+    padding: map-get($spacings, 4);
+  }
+}
