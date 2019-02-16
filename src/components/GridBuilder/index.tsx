@@ -2,7 +2,7 @@ import * as React from "react";
 import { CustomStyleParametersProps } from "../../Types/CustomStyle";
 import { joinClasses } from "../../utils/Filters";
 import CustomStyle from "../../containers/CustomStyle";
-import { Placeholder } from "@sitecore-jss/sitecore-jss-react";
+import { Placeholder } from "../../containers/Placeholder";
 
 export interface GridBuilderProps {
   smallColumns?: number[];
@@ -43,7 +43,7 @@ const GridBuilder: React.SFC<GridBuilderProps> = (
 
         return (
           <div key={index} className={GridColumnClassName}>
-            <Placeholder {...placeholders} />
+            <Placeholder children={children} placeholders={placeholders} placeholderIndex={index} />
           </div>
         );
       })}
