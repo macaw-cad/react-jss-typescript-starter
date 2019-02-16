@@ -1,0 +1,41 @@
+@keyframes h-animation-grow-out-in {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: center;
+  }
+
+  25% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: center;
+  }
+}
+
+@keyframes h-animation-grow-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: center;
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: center;
+  }
+}
+
+@mixin h-animation-grow-out-in {
+  animation-name: h-animation-grow-out-in;
+  animation-duration: .3s;
+}
+
+@mixin h-animation-grow-in {
+  animation-name: h-animation-grow-in;
+  animation-duration: .3s;
+}

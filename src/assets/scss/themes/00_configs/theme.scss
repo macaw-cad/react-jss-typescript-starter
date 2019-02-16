@@ -1,0 +1,79 @@
+// sass-lint:disable-all
+
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import url('https://fonts.googleapis.com/css?family=Mukta:500');
+
+:root {
+  --typeface-body: 'PT Sans', sans-serif;
+  --typeface-headings: 'Mukta', sans-serif;
+
+  --color-brand-primary: #1f7e66;
+  --color-brand-primary--hue: 165;
+  --color-brand-primary--saturation: 61%;
+  --color-brand-primary--lightness: 31%;
+
+  --color-brand-secondary: #898d26;
+  --color-brand-secondary--hue: 62;
+  --color-brand-secondary--saturation: 58%;
+  --color-brand-secondary--lightness: 35%;
+
+  --color-brand-tertiary: #404040;
+  --color-brand-tertiary--hue: 0;
+  --color-brand-tertiary--saturation: 0%;
+  --color-brand-tertiary--lightness: 25%;
+
+  --color-contrast-primary: #FFFFFF;
+  --color-contrast-primary--hue: 0;
+  --color-contrast-primary--saturation: 0%;
+  --color-contrast-primary--lightness: 100%;
+
+  --color-contrast-secondary: #f5f5f5;
+  --color-contrast-secondary--hue: 0;
+  --color-contrast-secondary--saturation: 0%;
+  --color-contrast-secondary--lightness: 96%;
+
+  --color-contrast-tertiary: #f2f2f2;
+  --color-contrast-tertiary--hue: 0;
+  --color-contrast-tertiary--saturation: 0%;
+  --color-contrast-tertiary--lightness: 95%;
+
+  --color-brand-accent: #ef8302;
+  --color-brand-accent--hue: 33;
+  --color-brand-accent--saturation: 98%;
+  --color-brand-accent--lightness: 47%;
+
+  --color-contrast-accent: #ffffff;
+  --color-contrast-accent--hue: 0;
+  --color-contrast-accent--saturation: 0%;
+  --color-contrast-accent--lightness: 100%;
+
+  --color-text-brand-body: #666;
+  --color-text-brand-body--hue: 0;
+  --color-text-brand-body--saturation: 0%;
+  --color-text-brand-body--lightness: 4%;
+
+  --color-text-brand-headings: #1f7e66;
+  --color-text-brand-headings--hue: 165;
+  --color-text-brand-headings--saturation: 61%;
+  --color-text-brand-headings--lightness: 31%;
+
+  --color-text-contrast-body: #ffffff;
+  --color-text-contrast-body--hue: 0;
+  --color-text-contrast-body--saturation: 0%;
+  --color-text-contrast-body--lightness: 100%;
+
+  --color-text-contrast-headings: #ffffff;
+  --color-text-contrast-headings--hue: 0;
+  --color-text-contrast-headings--saturation: 0%;
+  --color-text-contrast-headings--lightness: 100%;
+
+  --color-shade-darkest: #454545;
+  --color-shade-darkest--hue: 0;
+  --color-shade-darkest--saturation: 0%;
+  --color-shade-darkest--lightness: 27%;
+
+  --color-shade-lightest: #fafafa;
+  --color-shade-lightest--hue: 0;
+  --color-shade-lightest--saturation: 0%;
+  --color-shade-lightest--lightness: 98%;
+}

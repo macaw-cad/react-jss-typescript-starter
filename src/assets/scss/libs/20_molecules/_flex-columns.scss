@@ -1,0 +1,26 @@
+.m-flex-columns {
+  display: flex;
+  flex-direction: column;
+
+  &--reversed-on-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  @include mq('M') {
+    flex-direction: row;
+    justify-content: space-between;
+
+    &--reversed {
+      flex-direction: row;
+    }
+
+    &__col--5 {
+      width: 20%;
+    }
+  }
+
+  &__col {
+    display: block;
+  }
+}

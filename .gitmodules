@@ -1,0 +1,3 @@
+[submodule "src/Types/Macaw"]
+	path = src/Types/Macaw
+	url = https://github.com/macaw-interactive/JSS.Macaw.Types.git

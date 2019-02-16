@@ -1,0 +1,96 @@
+// sass-lint:disable no-important
+
+// These spacings classes are based on [https://getbootstrap.com/docs/4.1/utilities/spacing/]
+// and our own best practices it includes scoping for theming with one markup,
+// so that we have the flexibility to change margins/paddings based on different themes.
+
+// Spacing utilities apply to all breakpoints, from S to XL, but you could also use it without breakpoints.
+// The classes are named using the format h-{property}{sides}__{size} and {property}{sides}__{breakpoint}{size} for M, L, and XL breakpoints.
+// You could also add --{theme}, to scope it for a specific theme.
+
+// Or use it to align elements like h-{property}{sides}__{breakpoint}-auto
+@mixin spacing-properties ($prop-type-selector, $breakpoint, $size, $prop-type, $prop-value, $scope) {
+  .h-spacing-#{$prop-type-selector}#{$breakpoint}#{$size}#{$scope} { #{$prop-type}: $prop-value !important; }
+
+  .h-spacing-#{$prop-type-selector}t#{$breakpoint}#{$size}#{$scope},
+  .h-spacing-#{$prop-type-selector}y#{$breakpoint}#{$size}#{$scope} {
+    #{$prop-type}-top: $prop-value !important;
+  }
+
+  .h-spacing-#{$prop-type-selector}r#{$breakpoint}#{$size}#{$scope},
+  .h-spacing-#{$prop-type-selector}x#{$breakpoint}#{$size}#{$scope} {
+    #{$prop-type}-right: $prop-value !important;
+  }
+
+  .h-spacing-#{$prop-type-selector}b#{$breakpoint}#{$size}#{$scope},
+  .h-spacing-#{$prop-type-selector}y#{$breakpoint}#{$size}#{$scope} {
+    #{$prop-type}-bottom: $prop-value !important;
+  }
+
+  .h-spacing-#{$prop-type-selector}l#{$breakpoint}#{$size}#{$scope},
+  .h-spacing-#{$prop-type-selector}x#{$breakpoint}#{$size}#{$scope} {
+    #{$prop-type}-left: $prop-value !important;
+  }
+}
+
+@mixin spacing-utils ($scope, $breakpoint) {
+  // $infix acts as a divider '__', if there is a breakpoint it will be post-fixed like '__L'
+  $infix: '__';
+
+  @if ($breakpoint != '') {
+    $infix: '__#{$breakpoint}';
+  }
+
+  @each $prop-type, $prop-type-selector in (margin: m, padding: p) {
+    @each $size, $prop-value in $spacings {
+      @include spacing-properties($prop-type-selector, $infix, $size, $prop-type, $prop-value, $scope);
+
+      @if($prop-type-selector == m) {
+        @include spacing-properties($prop-type-selector, $infix, (-$size), $prop-type, (-$prop-value), $scope);
+
+        .edit-mode { // sitecore specific class so that components in the editor won't go underneath other components
+          @include spacing-properties($prop-type-selector, $infix, (-$size), $prop-type, 0, $scope);
+        }
+      }
+    }
+  }
+
+  $infix: '';
+
+  @if ($breakpoint != '') {
+    $infix: '__#{$breakpoint}';
+  }
+
+  // Some special margin utils
+  .h-spacing-m-auto#{$infix}#{$scope} { margin: auto !important; }
+
+  .h-spacing-mt-auto#{$infix}#{$scope},
+  .h-spacing-my-auto#{$infix}#{$scope} {
+    margin-top: auto !important;
+  }
+
+  .h-spacing-mr-auto#{$infix}#{$scope},
+  .h-spacing-mx-auto#{$infix}#{$scope} {
+    margin-right: auto !important;
+  }
+
+  .h-spacing-mb-auto#{$infix}#{$scope},
+  .h-spacing-my-auto#{$infix}#{$scope} {
+    margin-bottom: auto !important;
+  }
+
+  .h-spacing-ml-auto#{$infix}#{$scope},
+  .h-spacing-mx-auto#{$infix}#{$scope} {
+    margin-left: auto !important;
+  }
+}
+
+@each $scope in $scopes {
+  @include spacing-utils($scope, '');
+
+  @each $breakpoint in map-keys($breakpoints) {
+    @include mq($breakpoint) {
+      @include spacing-utils($scope, $breakpoint);
+    }
+  }
+}

@@ -1,0 +1,26 @@
+// molecule still needs to be made: can take in its panel a string, string[] or ([key: string] : string)
+// just styled the version with ([key: string] : string) for now
+.m-collapsible {
+
+  .line { // for ([key: string] : string) models
+    display: flex;
+    margin-bottom: map-get($spacings, 1);
+    opacity: .7;
+    @include fallback-with-fixed-color(color, $color-shade-very-dark, $color-shade-very-dark-fixed);
+
+    &:first-child {
+      margin-top: map-get($spacings, 2);
+    }
+
+    div {
+      width: 50%;
+      padding-right: map-get($spacings, 1);
+
+      + div {
+        padding-right: 0;
+        padding-left: map-get($spacings, 1);
+        text-align: right;
+      }
+    }
+  }
+}

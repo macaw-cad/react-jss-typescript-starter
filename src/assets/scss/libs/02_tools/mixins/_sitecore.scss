@@ -1,0 +1,20 @@
+@mixin sitecore-content-container ($special-selector: '') {
+  .placeholder__container#{$special-selector} {
+    @content;
+  }
+}
+
+@mixin sitecore-content-child ($special-selector: '') {
+  > .placeholder#{$special-selector},
+  > .react-rendering-container#{$special-selector} {
+    @content;
+  }
+}
+
+@mixin sitecore-content {
+  @include sitecore-content-container {
+    @include sitecore-content-child {
+      @content;
+    }
+  }
+}

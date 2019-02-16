@@ -1,0 +1,61 @@
+$theme: 'theme';
+
+$scopes: (
+  '',
+  '--#{$theme}'
+);
+
+// font basics
+$small-font-size: 14px;
+
+// fontstacks
+$header-font--font-weight: 700;
+$default-font--font-weight: 400;
+$bold-font--font-weight: 700;
+$font-family-header: 'Mukta', sans-serif;
+$font-family-header: var(--typeface-headings);
+$font-family-header--font-weight: 500;
+
+$header-font--sizes: (
+  'h1': 40px,
+  'h2': 30px,
+  'h3': 20px,
+  'h4': 18px,
+  'h5': 18px,
+  'h6': 18px,
+);
+
+$z-index: (
+  background:                 -1,
+  navigation:               1001,
+  header:                   1002,
+  shopheader-background:    -1,
+  shopheader-content:       2,
+);
+
+$breakpoints: (
+  'XS':	375px,
+  'S':	576px,
+  'M':	768px,
+  'L':  1024px,
+  'XL':	1132px
+) ;
+
+// specific for components
+$switch-nav-height: 60px;
+
+// sass-lint:disable no-css-comments
+/* available fonts;
+normal = normal
+normal italic = normal italic
+light = 300
+semi-light italic = 300
+semi-bold = 600
+bold = bold
+*/
+// sass-lint:enable no-css-comments
+
+$grid-spacing--spacious: map-get($spacings, 3);
+$header-top-height: 50px;
+$header-bottom-height: 85px;
+$header-bottom-height-mobile: 50px;

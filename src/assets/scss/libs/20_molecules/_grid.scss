@@ -1,0 +1,141 @@
+// This grid is based on Nicole Sullivans OOCSS principles but
+// uses flexbox to line up columns/cells/units.
+
+// Unit size is set by [$gridname]__[sizename] classes and can be breakpoint-specific
+// by using [$gridname]__[breakpoint][sizename].
+
+// The width units can be used only as offsets by using the offset-[sizename] class
+// or as arbitrary width only modifier by using the width-XofY class.
+
+
+//   Grid cell setup
+
+$gridsizes: (
+  '1': 8.333%,
+  '2': 16.666%,
+  '3': 25%,
+  '4': 33.333%,
+  '5': 41.666%,
+  '6': 50%,
+  '7': 58.333%,
+  '8': 66.666%,
+  '9': 75%,
+  '10':	83.333%,
+  '11':	91.666%,
+  '12':	100%
+);
+
+$gridsizes-length: length(map-keys($gridsizes));
+
+// Grid cell creation mixin
+@mixin make-grid($counter, $mycellname: $gridcellname, $myoffsetname: $offsetname) {
+
+  #{'.' + $mycellname + nth(map-keys($gridsizes), $counter)} {
+    width: nth(map-values($gridsizes), $counter);
+  }
+
+  @if $grid-offsets {
+    #{'.' + $myoffsetname + nth(map-keys($gridsizes), $counter)} {
+      margin-left: nth(map-values($gridsizes), $counter);
+    }
+  }
+}
+
+//  actual making of grid styling
+@if $use-grid {
+
+  // Grid definition
+  .#{$gridname} {
+    // sass-lint:disable-block no-duplicate-properties
+    display: block;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    max-width: $max-site-width;
+    //min-width: $min-site-width; Don't think this is relevant, because of using the grid within the grid.
+    margin: 0 auto;
+    padding: 0 $grid-side-spacing;
+    list-style: none; // so we can use this on lists
+    background: none;
+
+    @include mq('M') {
+      padding: 0 $grid-side-spacing--desktop;
+    }
+
+    // for 100% wide content
+    &--wide {
+      max-width: 100%;
+  	}
+
+    &--spacious {
+      @include mq('M') {
+        padding: 0 ($grid-spacing * 2);
+
+        > [class*='m-grid__'] {
+          padding-left: ($grid-spacing * 2);
+          padding-right: ($grid-spacing * 2);
+        }
+
+        @include mq('L') {
+          padding: 0 ($grid-spacing--spacious);
+
+          > [class*='m-grid__'] {
+            padding-left: $grid-spacing--spacious;
+            padding-right: $grid-spacing--spacious;
+          }
+        }
+      }
+    }
+
+    .#{$gridname} {
+      width: auto;
+      margin-left: -($grid-side-spacing + $grid-spacing);
+      margin-right: -($grid-side-spacing + $grid-spacing);
+
+      @include mq('M') {
+        margin-left: -($grid-side-spacing--desktop + $grid-spacing);
+        margin-right: -($grid-side-spacing--desktop + $grid-spacing);
+      }
+    }
+
+    // basic styling for all grid columns/cells/units
+    @at-root [class*= #{'"' + $gridcellname + '"'} ] {
+      display: inline-block;
+      display: flex;
+      flex-flow: column;
+      list-style: none;
+      margin: 0;
+      padding-left: $grid-spacing;
+      padding-right: $grid-spacing;
+      width: 100%;
+      min-height: 1px;
+
+      * {
+        min-height: 1px;
+      }
+	}
+  }
+
+  // cell rendering
+  @for $i from 1 through $gridsizes-length {
+    @include make-grid($i)
+	}
+
+  @if $grid-responsive {
+    @for $i from 1 through length($breakpoints) {
+      @include mq(nth(nth($breakpoints, $i), 1)) {
+        @for $j from 1 through $gridsizes-length {
+          @include make-grid($j, #{$gridcellname + nth(nth($breakpoints, $i), 1)}, #{$offsetname + '-' + nth(nth($breakpoints, $i), 1)})
+				}
+			}
+		}
+	}
+}
+
+.m-grid--reverse-on-phone {
+  flex-direction: column-reverse;
+
+  @include mq('M') {
+    flex-direction: row;
+  }
+}
