@@ -10,7 +10,6 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 import { StaticRouter } from 'react-router';
 
-import "./assets/css/app.scss";
 import "./index.scss";
 
 // This is the main JSX entry point of the app invoked by the renderer (server or client rendering).

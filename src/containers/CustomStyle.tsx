@@ -6,7 +6,7 @@ import {
     CustomSpacingsProps,
     CustomStyleParametersProps,
     CustomVerticalAlignOptions,
-} from "../Types/CustomStyle";
+} from "../types/CustomStyle";
 import { joinClasses } from "../utils/Filters";
 
 
@@ -14,120 +14,141 @@ interface CustomStyleProps extends CustomStyleParametersProps {
     createSpacingClassName?: any;
     generateSpacingClassesFromCustomParameters?: any;
 }
-const CustomStyle: React.SFC <CustomStyleProps> = (props) => {
+class CustomStyle extends React.Component<CustomStyleProps, any> {
 
-    props.createSpacingClassName = (prop: string, spacing?: CustomSpacingsProps): string | undefined => {
-        if (!spacing) {
-            return undefined;
-        }
+    createSpacingClassName: (prop: string, spacing?: CustomSpacingsProps) => string | undefined;
+    generateSpacingClassesFromCustomParameters: (
+        verticalSpacingTop: string,
+        verticalSpacingBottom: string, 
+        verticalSpacing: string, 
+        negativeMargin: string) => string | undefined;
 
-        if (typeof spacing === "number") {
-            return `h-spacing-${prop}__${spacing}`;
-        }
+    constructor(props) {
+        super(props);
 
-        return Object.keys(spacing).reduce((value, bp) => {
-            return Object.keys(spacing[bp]).reduce((v, pos) => {
-                return joinClasses(v, `h-spacing-${prop}${pos}__${bp}${spacing[bp][pos]}`);
-            }, value); // possibles outputs per variable: "h-spacing-[m|p][l|r|t|b|x|y]__[XL|L|M|S|''][size]"
-        }, "");
-    };
+        this.createSpacingClassName = (prop: string, spacing?: CustomSpacingsProps): string | undefined => {
+            if (!spacing) {
+                return undefined;
+            }
 
-    const {
-        verticalSpacingTop= "",
-        verticalSpacingBottom= "",
-        verticalSpacing= "",
-        negativeMargin= "",
-    } = props;
+            if (typeof spacing === "number") {
+                return `h-spacing-${prop}__${spacing}`;
+            }
 
-    props.generateSpacingClassesFromCustomParameters = () => {
+            return Object.keys(spacing).reduce((value, bp) => {
+                return Object.keys(spacing[bp]).reduce((v, pos) => {
+                    return joinClasses(v, `h-spacing-${prop}${pos}__${bp}${spacing[bp][pos]}`);
+                }, value); // possibles outputs per variable: "h-spacing-[m|p][l|r|t|b|x|y]__[XL|L|M|S|''][size]"
+            }, "");
+        };
 
-        let localSpacingClassNames = "";
+        this.generateSpacingClassesFromCustomParameters = (verticalSpacingTop,
+            verticalSpacingBottom, verticalSpacing, negativeMargin) => {
 
-        if (negativeMargin !== "") {
+            let localSpacingClassNames = "";
 
-            const negativeMarginClass = props.createSpacingClassName("m", {
-                "": {t: -negativeMargin} });
+            if (negativeMargin !== "") {
 
-            localSpacingClassNames = joinClasses(localSpacingClassNames,
-                negativeMarginClass ? negativeMarginClass : '');
+                const negativeMarginClass = this.createSpacingClassName("m", {
+                    "": { t: -negativeMargin }
+                });
 
-        } else if (verticalSpacing !== "") {
+                localSpacingClassNames = joinClasses(localSpacingClassNames,
+                    negativeMarginClass ? negativeMarginClass : '');
 
-            const verticalSpacingAsNumber = parseInt(verticalSpacing, 10);
+            } else if (verticalSpacing !== "") {
 
-            const verticalSpacingClass = props.createSpacingClassName("m", {
-                "": {  y: verticalSpacingAsNumber - 1 },
-                "M": {  y: verticalSpacingAsNumber },
-            });
+                const verticalSpacingAsNumber = parseInt(verticalSpacing, 10);
 
-            localSpacingClassNames = joinClasses(
-                localSpacingClassNames,
-                verticalSpacingClass ? verticalSpacingClass : '');
+                const verticalSpacingClass = this.createSpacingClassName("m", {
+                    "": { y: verticalSpacingAsNumber - 1 },
+                    "M": { y: verticalSpacingAsNumber },
+                });
 
-        } else if (verticalSpacingTop !== "") {
+                localSpacingClassNames = joinClasses(
+                    localSpacingClassNames,
+                    verticalSpacingClass ? verticalSpacingClass : '');
 
-            const verticalSpacingTopAsNumber = parseInt(verticalSpacingTop, 10);
+            } else if (verticalSpacingTop !== "") {
 
-            const verticalSpacingTopClass = props.createSpacingClassName("m", {
-                "": {  t: verticalSpacingTopAsNumber - 1 },
-                "M": {  t: verticalSpacingTopAsNumber },
-            });
+                const verticalSpacingTopAsNumber = parseInt(verticalSpacingTop, 10);
 
-            localSpacingClassNames = joinClasses(localSpacingClassNames,
-                verticalSpacingTopClass ? verticalSpacingTopClass : '');
+                const verticalSpacingTopClass = this.createSpacingClassName("m", {
+                    "": { t: verticalSpacingTopAsNumber - 1 },
+                    "M": { t: verticalSpacingTopAsNumber },
+                });
 
-        } else if (verticalSpacingBottom !== "") {
+                localSpacingClassNames = joinClasses(localSpacingClassNames,
+                    verticalSpacingTopClass ? verticalSpacingTopClass : '');
 
-            const verticalSpacingBottomAsNumber = parseInt(verticalSpacingBottom, 10);
+            } else if (verticalSpacingBottom !== "") {
 
-            const verticalSpacingBottomClass = props.createSpacingClassName("m", {
-                "": {  b: verticalSpacingBottomAsNumber - 1 },
-                "M": {  b: verticalSpacingBottomAsNumber },
-            });
+                const verticalSpacingBottomAsNumber = parseInt(verticalSpacingBottom, 10);
 
-            localSpacingClassNames = joinClasses(localSpacingClassNames,
-                verticalSpacingBottomClass ? verticalSpacingBottomClass : '');
-        }
+                const verticalSpacingBottomClass = this.createSpacingClassName("m", {
+                    "": { b: verticalSpacingBottomAsNumber - 1 },
+                    "M": { b: verticalSpacingBottomAsNumber },
+                });
 
-        return localSpacingClassNames;
-    };
+                localSpacingClassNames = joinClasses(localSpacingClassNames,
+                    verticalSpacingBottomClass ? verticalSpacingBottomClass : '');
+            }
 
-    const spacingClassNames = props.generateSpacingClassesFromCustomParameters(verticalSpacingTop,
-        verticalSpacingBottom, verticalSpacing, negativeMargin);
+            return localSpacingClassNames;
+        };
+    }
 
-    const backgroundColorClass = props.backgroundColor
-    ? props.backgroundColor in CustomBackgroundColors
-        ? "h-background-color--" + CustomBackgroundColors[props.backgroundColor]
-        : "h-background-color--default"
-    : "";
+    render() {
+        const {
+            verticalSpacingTop = "",
+            verticalSpacingBottom = "",
+            verticalSpacing = "",
+            negativeMargin = "",
+        } = this.props;
 
-    const contrastColorClass = props.contrastColor === "1" ? "h-contrast" : "";
+        const spacingClassNames = this.generateSpacingClassesFromCustomParameters(verticalSpacingTop,
+            verticalSpacingBottom, verticalSpacing, negativeMargin);
 
-    const horizontalAlignClass = props.horizontalAlign
-        ? props.horizontalAlign in CustomHorizontalAlignOptions
-            ? "h-flex-h-align-" + CustomHorizontalAlignOptions[props.horizontalAlign]
-            : ""
-        : "";
+        const backgroundColorClass = this.props.backgroundColor
+            ? this.props.backgroundColor in CustomBackgroundColors
+                ? "h-background-color--" + CustomBackgroundColors[this.props.backgroundColor]
+                : "h-background-color--default"
+            : "";
 
-    const verticalAlignClass = props.verticalAlign
-        ? props.verticalAlign in CustomVerticalAlignOptions
-            ? "h-flex-v-align-" + CustomVerticalAlignOptions[props.verticalAlign]
-            : ""
-        : "";
+        const contrastColorClass = this.props.contrastColor === "1" ? "h-contrast" : "";
 
-    const processedClassName = joinClasses(
-    props.className || "",
-    spacingClassNames || "",
-    contrastColorClass,
-    backgroundColorClass,
-    horizontalAlignClass,
-    verticalAlignClass);
+        const horizontalAlignClass = this.props.horizontalAlign
+            ? this.props.horizontalAlign in CustomHorizontalAlignOptions
+                ? "h-flex-h-align-" + CustomHorizontalAlignOptions[this.props.horizontalAlign]
+                : ""
+            : "";
 
-    return (
-        <div style={props.style} className={processedClassName}>
-            { props.children }
-        </div>
-    );
+        const verticalAlignClass = this.props.verticalAlign
+            ? this.props.verticalAlign in CustomVerticalAlignOptions
+                ? "h-flex-v-align-" + CustomVerticalAlignOptions[this.props.verticalAlign]
+                : ""
+            : "";
+
+        const processedClassName = joinClasses(
+            this.props.className || "",
+            spacingClassNames || "",
+            contrastColorClass,
+            backgroundColorClass,
+            horizontalAlignClass,
+            verticalAlignClass);
+
+        return (
+            <div style={this.props.style} className={processedClassName}>
+                {this.props.children}
+            </div>
+        );
+    }
+
+
+
+
+
+
 };
 
 export default CustomStyle;
