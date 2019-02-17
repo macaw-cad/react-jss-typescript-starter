@@ -28,10 +28,6 @@ export interface CustomStyleParametersProps {
     style?: {[key: string]: string};
 }
 
-export enum CustomBackgroundColors {
-    default = 'default',
-}
-
 export enum CustomHorizontalAlignOptions {
     left = "left",
     center = "center",
@@ -53,4 +49,14 @@ export enum CustomButtonSizes {
     tiny = "tiny",
     normal = "normal",
     big = "big",
+}
+
+export enum CustomBackgroundColors {
+    default = 'default',
+    brandPrimary = 'brand-primary',
+    brandSecondary = 'brand-secondary',
+    brandTertiary = 'brand-tertiary',
+    contrastPrimary = 'contrast-primary',
+    contrastSecondary = 'contrast-secondary',
+    contrastTertiary = 'contrast-tertiary',
 }

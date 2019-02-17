@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CustomStyleParametersProps } from "../../Types/CustomStyle";
+import { CustomStyleParametersProps } from "../../types/CustomStyle";
 import { joinClasses } from "../../utils/Filters";
 import CustomStyle from "../../containers/CustomStyle";
 import { Placeholder } from "../../containers/Placeholder";
