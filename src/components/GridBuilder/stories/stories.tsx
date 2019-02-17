@@ -2,7 +2,6 @@
 import { withReadme } from 'storybook-readme';
 import { storiesOf } from '@storybook/react';
 import { text, select, withKnobs } from '@storybook/addon-knobs';
-
 import { columnSplitter1 } from './column-splitter-1-column';
 import { columnSplitter2 } from './column-splitter-2-columns';
 import { columnSplitter3 } from './column-splitter-3-columns';
