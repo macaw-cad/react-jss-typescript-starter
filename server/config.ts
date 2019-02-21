@@ -12,7 +12,7 @@ const dictionaryCache = new NodeCache({ stdTTL: 60 });
  * The JSS application name defaults to providing part of the bundle path as well as the dictionary service endpoint.
  * If not passed as an environment variable or set here, any application name exported from the bundle will be used instead.
  */
-let appName = process.env.SITECORE_JSS_APP_NAME || 'hello-jss-typescript';
+let appName = process.env.SITECORE_JSS_APP_NAME || 'react-jss-typescript-starter';
 
 /**
  * @type {ProxyConfig}

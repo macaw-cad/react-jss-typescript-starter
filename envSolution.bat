@@ -1,0 +1,1 @@
+set SOLUTIONNAME=react-jss-typescript-starter-development
