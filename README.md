@@ -86,26 +86,73 @@ The Node Express web server is configured through environment variables.
 
 The JSS React Starter Application is configured for TypeScript based development.
 
+### Daily development
 Default JSS based development workflow:
 
 `npm start`
 
 All other default JSS based scripts are available as well.
 
+### Check if app is working with server-side rendering
 Run the Node based web server with server side rendering in development mode:
 
 `npm run serve`
 
-Build production mode bundles and Node based web server:
+Build production mode server bundle for deployment to Sitecore:
 
 `npm run build`
 
-Execute from the folder `build.server` using `node index.js`.
+### Build server application
+Build the NodeJS server application supporting server-side rendering:
+
+- For development: `npm run build-server:development` (contains source-map)
+- For production: `npm run build-server:production` (minified)
+
+Execute the application from the folder `build.server` using `node index.js`.
 
 The `index.js` script contains all required code (server bundle with all components is embeded).
 
 Currently the Node web server runs in connected mode. Disconnected mode will come soon.
 
+# Docker
+
+The solution contains scripts to build and run a Docker image containing the app locally.
+The `Dockerfile` used to build the Docker image can be found at `Docker/Dockerfile`. The
+Dockerfile is a multi-stage Dockerfile that builds the production version of the app and
+creates an image containing the app.
+
+The resulting Docker image has the following features:
+
+- Uses Nginx as a reverse proxy (config file: `Docker/nginx.config)
+- Uses PM2 as a process manager to utilize all available cores and restart on crashing (config file: `Docker/process.yml`)
+- Contains an SSH server that connects to the web-based SSH client of Azure App Services when deployed on an Azure Web App for Containers
+
+The script `Docker/init.sh` is executed when the Docker container starts running.
+
+The configuration files in the `Docker` folder are used on a Linux system. These files could be in DOS
+format and must be converted to unix format. This can be done using the command:
+
+`scripts/docker-do.js prepare`
+
+This command only has to be executed if there are issues due to CRLF instead of LF as line endings (see bottom right when opening in Visual Studio Code).
+ 
+To build the Docker image:
+
+`scripts/docker-do.js build`
+
+To run the Docker image locally:
+
+`scripts/docker-do.js run [--port <portnumber>] [--debug]`
+
+The default port is 8888, so the website will be available on `http://localhost:8888`.
+
+The `run` script does two things:
+
+- Kill a running previous image if needed
+- Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
+- Start the server application with server-side rendering on ``http://localhost:8888`
+
+All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background.
 
 # References
 

@@ -14,9 +14,9 @@ server.settings['x-powered-by'] = false;
 
 // Serve static app assets from local /dist folder
 server.use(
-  '/dist/react-jss-typescript-starter/',
+  `/dist/${process.env.SITECORE_JSS_APP_NAME}/`,
   express.static('../build', {
-    fallthrough: false, // force 404 for unknown assets under /dist/react-jss-typescript-starter/
+    fallthrough: false, // force 404 for unknown assets under /dist/<appName>/
   })
 );
 

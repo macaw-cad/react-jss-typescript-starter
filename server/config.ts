@@ -8,11 +8,7 @@ import { IncomingMessage, ClientRequest, ServerResponse } from 'http';
 // We keep a cached copy of the site dictionary for performance. Default is 60 seconds.
 const dictionaryCache = new NodeCache({ stdTTL: 60 });
 
-/**
- * The JSS application name defaults to providing part of the bundle path as well as the dictionary service endpoint.
- * If not passed as an environment variable or set here, any application name exported from the bundle will be used instead.
- */
-let appName = process.env.SITECORE_JSS_APP_NAME || 'react-jss-typescript-starter';
+let appName = process.env.SITECORE_JSS_APP_NAME;
 
 /**
  * @type {ProxyConfig}
@@ -24,19 +20,18 @@ const config: ProxyConfig = {
    * Should be https for production. Must be https to use SSC auth service,
    * if supporting Sitecore authentication.
    */
-  apiHost: process.env.SITECORE_API_HOST || 'http://my.site.core',
+  apiHost: process.env.SITECORE_API_HOST,
   /**
    * layoutServiceRoot: The path to layout service for the JSS application.
    * Some apps, like advanced samples, use a custom LS configuration,
    * e.g. /sitecore/api/layout/render/jss-advanced-react
    */
-  layoutServiceRoute:
-    process.env.SITECORE_LAYOUT_SERVICE_ROUTE || '/sitecore/api/layout/render/jss',
+  layoutServiceRoute: process.env.SITECORE_LAYOUT_SERVICE_ROUTE,
   /**
    * apiKey: The Sitecore SSC API key your app uses.
    * Required.
    */
-  apiKey: process.env.SITECORE_API_KEY || '{APi-KEY}',
+  apiKey: process.env.SITECORE_API_KEY,
   /**
    * pathRewriteExcludeRoutes: A list of absolute paths
    * that are NOT app routes and should not attempt to render a route
@@ -61,7 +56,7 @@ const config: ProxyConfig = {
    * Writes verbose request info to stdout for debugging.
    * Must be disabled in production for reasonable performance.
    */
-  debug: !!process.env.SITECORE_ENABLE_DEBUG,
+  debug: process.env.SITECORE_ENABLE_DEBUG === 'true',
   /**
    * Maximum allowed proxy reply size in bytes. Replies larger than this are not sent.
    * Avoids starving the proxy of memory if large requests are proxied.
