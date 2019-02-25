@@ -15,8 +15,6 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
    * @type {ProxyConfig}
    */
 
-  console.log("process.env.SITECORE_API_HOST:", process.env.SITECORE_API_HOST);
-
   const config: ProxyConfig = {
 
     /**

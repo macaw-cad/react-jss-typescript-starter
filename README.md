@@ -81,6 +81,7 @@ The Node Express web server is configured through environment variables.
 | `SITECORE_API_KEY`                     | The Sitecore SSC API key your app uses.                                                                                                           |
 | `SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in [config.ts](./server/config.ts). |
 | `SITECORE_ENABLE_DEBUG`                | Optional. Writes verbose request info to stdout for debugging. Defaults to `false`.                                                               |
+| `SITECORE_PRODUCTION_DISCONNECTED`     | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'`.                         |
 
 ## Development scripts
 
@@ -103,6 +104,7 @@ Build production mode server bundle for deployment to Sitecore:
 `npm run build`
 
 ### Build server application
+
 Build the NodeJS server application supporting server-side rendering:
 
 - For development: `npm run build-server:development` (contains source-map)
@@ -113,6 +115,14 @@ Execute the application from the folder `build.server` using `node index.js`.
 The `index.js` script contains all required code (server bundle with all components is embeded).
 
 Currently the Node web server runs in connected mode. Disconnected mode will come soon.
+
+### Ports in use
+
+Sometimes when doing development anbd stopping a running process a port remains still in use. I have this sometimes
+when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
+kill the process using the (Windows only) command:
+
+`kill-ip.bat 3042`
 
 # Docker
 
@@ -142,7 +152,7 @@ To build the Docker image:
 
 To run the Docker image locally:
 
-`scripts/docker-do.js run [--port <portnumber>] [--debug]`
+`scripts/docker-do.js run [--port <portnumber>] [--disconnected] [--debug]`
 
 The default port is 8888, so the website will be available on `http://localhost:8888`.
 
@@ -150,7 +160,8 @@ The `run` script does two things:
 
 - Kill a running previous image if needed
 - Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
-- Start the server application with server-side rendering on ``http://localhost:8888`
+- Start the server application with server-side rendering on `http://localhost:8888`
+- Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background.
 

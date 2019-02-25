@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+
         {
             "type": "chrome",
             "request": "launch",
@@ -50,15 +50,25 @@
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
             }
-          },
+        },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${file}",
+            "name": "docker-do build",
+            "program": "${workspaceFolder}/scripts/docker-do.js",
             "args": [
-                "run",  "--port",  "9999"
+                "build"
             ],
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "docker-do run",
+            "program": "${workspaceFolder}/scripts/docker-do.js",
+            "args": [
+                "run"
+            ],
+        },
+        
     ]
 }

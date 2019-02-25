@@ -46,8 +46,9 @@ COPY --from=build-stage /app/build/ /app/build
 # Copy the Node Express server
 COPY --from=build-stage /app/build.server/ /app/server
 
-# Copy the data for running offline
+# Copy the data/sitecore for running offline
 COPY --from=build-stage /app/data/ /app/server/data
+COPY --from=build-stage /app/sitecore/ /app/server/sitecore
 
 WORKDIR /app/server
 

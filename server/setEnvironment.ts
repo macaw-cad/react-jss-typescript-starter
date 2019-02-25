@@ -5,15 +5,15 @@
 // "SITECORE_LAYOUT_SERVICE_ROUTE": "http://react-jss-typescript-starter.dev.local/sitecore/api/layout/render/jss",
 // "SITECORE_API_KEY": "{57231674-4CC9-48AA-AFF0-190DB9D68FE1}",
 // "SITECORE_PATH_REWRITE_EXCLUDE_ROUTES": "",
-// "SITECORE_ENABLE_DEBUG": true  
+// "SITECORE_ENABLE_DEBUG": "true",
+// "SITECORE_PRODUCTION_DISCONNECTED": "false"
 
 import * as fs from 'fs';
 import * as path from'path';
-import * as  readJson from 'read-package-json';
 
 export function setDevelopmentEnvironmentVariables(): void  {
-    const packageJsonPath = '../package.json';
-    const scjssJsonconfigPath = '../scjssconfig.json';
+    const packageJsonPath = path.resolve(__dirname, '../package.json');
+    const scjssJsonconfigPath = path.resolve(__dirname, '../scjssconfig.json');
 
     if (!fs.existsSync(packageJsonPath)) {
         console.error(`File ${packageJsonPath} is missing`);
@@ -25,12 +25,14 @@ export function setDevelopmentEnvironmentVariables(): void  {
     const packageJsonConfig = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     const scjssconfigJsonConfig = JSON.parse(fs.readFileSync(scjssJsonconfigPath, 'utf8'));
 
+    console.log("Setting development environment variables");
     process.env.SITECORE_JSS_APP_NAME = packageJsonConfig.config.appName;
     process.env.SITECORE_API_HOST = scjssconfigJsonConfig.sitecore.layoutServiceHost;
     process.env.SITECORE_LAYOUT_SERVICE_ROUTE = `${scjssconfigJsonConfig.sitecore.layoutServiceHost}/sitecore/api/layout/render/jss`;
     process.env.SITECORE_API_KEY = scjssconfigJsonConfig.sitecore.apiKey;
     process.env.SITECORE_PATH_REWRITE_EXCLUDE_ROUTES = "";
     process.env.SITECORE_ENABLE_DEBUG = "true";
+    process.env.SITECORE_PRODUCTION_DISCONNECTED = "true";
 }
 
 export function logEnvironmentVariables(): void {
@@ -42,4 +44,5 @@ export function logEnvironmentVariables(): void {
     console.log(`SITECORE_API_KEY=${process.env.SITECORE_API_KEY}`);
     console.log(`SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=${process.env.SITECORE_PATH_REWRITE_EXCLUDE_ROUTES}`);
     console.log(`SITECORE_ENABLE_DEBUG=${process.env.SITECORE_ENABLE_DEBUG}`);
+    console.log(`SITECORE_PRODUCTION_DISCONNECTED=${process.env.SITECORE_PRODUCTION_DISCONNECTED}`);
 }
