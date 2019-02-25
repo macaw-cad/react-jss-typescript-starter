@@ -74,10 +74,10 @@ prog
 
   .command('run', 'Run the locally generated Docker image')
   .option('--port <portnumber>', 'Number of the port to run on', prog.INT, 8888)
+  .option('--disconnected', 'Run disconnected (data from local data folder)', prog.BOOL, false)
   .option('--debug', 'Show debugging information', prog.BOOL, false)
   .action(function (args, options, logger) {
     const packageJsonPath = path.resolve(__dirname, '../package.json');
-
     readJson(packageJsonPath, logger.error, false, function (err, data) {
       if (err) {
         logger.error(`There was an error reading the package.json file from ${packageJsonPath}`);
@@ -90,12 +90,18 @@ prog
 
       // ngrok http -host-header=<layoutServiceHost> 80
       (async function () {
-        const url = await ngrok.connect({
-          proto: 'http',
-          addr: 80,
-          host_header: layoutServiceHost.replace('http://','').replace('https://','')
-        });
-        logger.info(`Ngrok url: ${url} exposing the internal url ${layoutServiceHost} for consumption by Docker container`);
+        let url;
+        if (options.disconnected) {
+          url = 'http://localhost:3001';
+          logger.info('Running disconnected');
+        } else {
+          url = await ngrok.connect({
+            proto: 'http',
+            addr: 80,
+            host_header: layoutServiceHost.replace('http://','').replace('https://','')
+          });
+          logger.info(`Ngrok url: ${url} exposing the internal url ${layoutServiceHost} for consumption by Docker container`);
+        }
 
         // docker ps -a -q  --filter ancestor=<image-name>
         let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `ancestor=${imageName}`]);
@@ -122,7 +128,7 @@ prog
             `-e`, `SITECORE_API_KEY=${apiKey}`,
             `-e`, `SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=`,
             `-e`, `SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
-            `-p`, `${options.port}:3000`,
+            `-p`, `${options.port}:3001`,
             imageName
           ],
           { cwd: path.resolve(__dirname, '../Docker') }
@@ -130,7 +136,7 @@ prog
 
         docker.stdout.on('data', (data) => {
           let dataString = data.toString();
-          if (dataString.includes('server listening on port 3000!')) {
+          if (dataString.includes('server listening on port 3001!')) {
             const message = `* Access site running in Docker container on http://localhost:${options.port} *`;
             const newText = '*'.repeat(message.length) + '\n' + message + '\n' + '*'.repeat(message.length) + '\n';
             dataString += newText;

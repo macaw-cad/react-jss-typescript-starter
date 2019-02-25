@@ -1,11 +1,20 @@
 import express from 'express';
 import compression from 'compression';  // compresses requests
 import scProxy from '@sitecore-jss/sitecore-jss-proxy';
-import config from './config';
 import { renderView, urlRouteParser } from '../server.bundle/server';
-const server = express();
-const port = process.env.PORT || 3000;
+import { setDevelopmentEnvironmentVariables, logEnvironmentVariables} from './setEnvironment'; 
+import { getSitecoreProxyConfiguration} from './sitecoreProxyConfiguration';
 
+// set all required environment variables basen on configuration in package.json and scjssconfig.json
+if (process.env.NODE_ENV == 'development') {
+  setDevelopmentEnvironmentVariables(); 
+}
+logEnvironmentVariables();
+
+const config = getSitecoreProxyConfiguration();
+
+const server = express();
+const port = process.env.PORT || 3001;
 // enable gzip compression for appropriate file types
 server.use(compression());
 
@@ -19,6 +28,8 @@ server.use(
     fallthrough: false, // force 404 for unknown assets under /dist/<appName>/
   })
 );
+
+console.log("TARGETCONFIG BEFORE:", config);
 
 // For any other requests, we render app routes server-side and return them
 server.use('*', scProxy(renderView, config, urlRouteParser));

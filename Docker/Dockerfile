@@ -46,6 +46,9 @@ COPY --from=build-stage /app/build/ /app/build
 # Copy the Node Express server
 COPY --from=build-stage /app/build.server/ /app/server
 
+# Copy the data for running offline
+COPY --from=build-stage /app/data/ /app/server/data
+
 WORKDIR /app/server
 
 EXPOSE 80 2222

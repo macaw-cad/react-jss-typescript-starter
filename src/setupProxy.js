@@ -1,6 +1,11 @@
 const proxy = require('http-proxy-middleware');
 const config = require('./temp/config');
 
+// SvdO: config.sitecoreApiHost === '' then set to http://localhost - must be running
+if (config.sitecoreApiHost === '') {
+  config.sitecoreApiHost = 'http://localhost:3000';
+}
+
 module.exports = (app) => {
   const isDisconnected = /localhost/i.test(config.sitecoreApiHost);
 

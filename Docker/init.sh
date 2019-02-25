@@ -5,4 +5,4 @@ echo "Starting SSH ..."
 service ssh start
 
 echo "Start the Node Express web server managed by pm2"
-pm2-runtime index.js
+pm2-runtime index.disconnected.js

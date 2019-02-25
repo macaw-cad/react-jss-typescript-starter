@@ -45,6 +45,9 @@ export default function i18nInit(language, dictionary) {
 
       options.backend = {
         loadPath: dictionaryServicePath,
+        requestOptions: {
+          mode: 'no-cors'
+        },
         parse: (data) => {
           const parsedData = JSON.parse(data);
           if (parsedData.phrases) {

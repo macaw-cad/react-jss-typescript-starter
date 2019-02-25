@@ -10,9 +10,13 @@ import AppRoot, { routePatterns } from '../src/AppRoot';
 import { setServerSideRenderingState } from '../src/RouteHandler';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
-import indexTemplate from '../build/index.html';
 import { RouteUrlParser } from '@sitecore-jss/sitecore-jss-proxy/types/RouteUrlParser';
+import { resolve } from 'q';
 
+let indexTemplate; // index.html template file contents, imported on production, requested as http://localhost:3000?prestine in development
+if (process.env.NODE_ENV === 'production') {
+  indexTemplate = require('../build/index.html');
+}
 /** Asserts that a string replace actually replaced something */
 function assertReplace(string: string, value: string, replacement: string): string {
   let success = false;
@@ -63,6 +67,26 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       App Rendering
     */
     initializei18n(state)
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          if (process.env.NODE_ENV !== 'production') {
+              fetch('http://localhost:3000?prestine', { mode: 'no-cors', cache: 'no-cache' })
+                .then(res => res.text())
+                .then(res => {
+                  indexTemplate = res;
+
+                  // resolve /static/js/... to http://localhost:3000/static/js/...
+                  indexTemplate = indexTemplate.replace(/\/static\/js\//g, 'http://localhost:3000/static/js/');
+                  resolve();
+                })
+                .catch(error => {
+                  reject(error); 
+                });
+          } else {
+            resolve(); // nothing to load, is already imported
+          }
+        });
+      })
       .then(() =>
         // renderToStringWithData() allows any GraphQL queries to complete their async call
         // before the SSR result is returned, so that the resulting HTML from GQL query results
@@ -113,6 +137,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
           '<head>',
           `<head>${helmet.title.toString()}${helmet.meta.toString()}${helmet.link.toString()}`
         );
+
 
         callback(null, { html });
       })

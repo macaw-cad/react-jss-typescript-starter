@@ -84,6 +84,7 @@
     "redux-devtools-extension": "^2.13.5",
     "sass-loader": "7.1.0",
     "serialize-javascript": "~1.6.1",
+    "source-map-support": "^0.5.10",
     "style-loader": "0.23.1",
     "ts-node-dev": "^1.0.0-pre.32",
     "typescript": "^3.3.1"
@@ -137,18 +138,19 @@
     "start": "npm-run-all --serial bootstrap:disconnected --parallel start:react start:proxy start:watch-components",
     "start:connected": "scjss-verify-setup && npm-run-all --serial bootstrap:connected start:react start:watch-components",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
-    "serve": "npm-run-all --parallel build-server:development:watch serve:nodemon",
-    "serve:nodemon": "pushd build.server && nodemon --config ../server/nodemon.json index.js",
-    "build-server:development:watch": "npx chokidar server/*.ts src/** -c \"npm run build-server:development\"",
-    "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --config server/server.webpack.config.js\"",
+    "serve": "npm-run-all --serial build-server:development --parallel start build-server:development:watch serve:nodemon",
+    "serve:connected": "npm-run-all --serial build-server:development --parallel start:connected build-server:development:watch serve:nodemon",
+    "serve:nodemon": "cd build.server && nodemon -r source-map-support/register --config server/nodemon.json index.js",
+    "build-server:development:watch": "npx chokidar server/*.ts server.bundle/*.tsx src/** -c \"npm run build-server:development\"",
+    "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --mode development --config server/server.webpack.config.js\"",
+    "build-server:production": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server/server.webpack.config.js\"",
     "build": "npm-run-all --serial bootstrap:connected build:client build:serverbundle",
-    "build-server:production": "cross-env-shell NODE_ENV=production \"webpack --config server/server.webpack.config.js\"",
     "scaffold": "node scripts/scaffold-component.js",
     "start:react": "react-scripts start",
     "start:proxy": "node scripts/disconnected-mode-proxy.js",
     "start:watch-components": "node scripts/generate-component-factory.js --watch",
     "build:client": "cross-env-shell PUBLIC_URL=$npm_package_config_sitecoreDistPath \"react-scripts build\"",
-    "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --config server.bundle/server.bundle.webpack.config.js\"",
+    "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server.bundle/server.bundle.webpack.config.js\"",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "bootstrap:connected": "node scripts/bootstrap.js",
     "bootstrap:disconnected": "node scripts/bootstrap.js --disconnected",
@@ -164,6 +166,5 @@
   ],
   "rescripts": [
     "env"
-  ],
-  "proxy": "https://localhost:5001"
+  ]
 }

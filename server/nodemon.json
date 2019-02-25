@@ -12,14 +12,5 @@
     "watch": [
       "index.js"
     ],
-    "env": {
-        "SITECORE_JSS_APP_NAME": "react-jss-typescript-starter",
-        "SITECORE_API_HOST": "http://react-jss-typescript-starter.dev.local",
-        "SITECORE_LAYOUT_SERVICE_ROUTE": "http://react-jss-typescript-starter.dev.local/sitecore/api/layout/render/jss",
-        "SITECORE_API_KEY": "{57231674-4CC9-48AA-AFF0-190DB9D68FE1}",
-        "SITECORE_PATH_REWRITE_EXCLUDE_ROUTES": "",
-        "SITECORE_ENABLE_DEBUG": true
-        
-    },
     "ext": "js,json"
   }
