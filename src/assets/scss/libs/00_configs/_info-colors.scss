@@ -1,0 +1,17 @@
+:root {
+  // sass-lint:disable-block no-color-literals
+  --color-info-warning: #ffc107;
+  --color-info-warning--hue: 45;
+  --color-info-warning--saturation: 100%;
+  --color-info-warning--lightness: 51%;
+
+  --color-info-danger: #C70000;
+  --color-info-danger--hue: 0;
+  --color-info-danger--saturation: 100%;
+  --color-info-danger--lightness: 39%;
+
+  --color-info-success: #44B735;
+  --color-info-success--hue: 113;
+  --color-info-success--saturation: 55%;
+  --color-info-success--lightness: 46%;
+}

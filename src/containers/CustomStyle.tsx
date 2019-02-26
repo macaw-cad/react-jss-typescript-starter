@@ -6,7 +6,7 @@ import {
     CustomSpacingsProps,
     CustomStyleParametersProps,
     CustomVerticalAlignOptions,
-} from "../Types/CustomStyle";
+} from "../types/CustomStyle";
 import { joinClasses } from "../utils/Filters";
 
 

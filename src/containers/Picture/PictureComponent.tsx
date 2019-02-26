@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import LazyLoad from 'react-lazy-load';
 import CustomStyle from '../CustomStyle';
-import Image from '../../Types/Image';
+import Image from '../../types/Image';
 
 const PictureComponent: React.SFC<Image> = (props) => {
     const { sizes, alt, cssDisplay = "inline-block", isDraggable, default: src, aspectRatio = "" } = props;

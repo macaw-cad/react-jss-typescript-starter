@@ -38,6 +38,7 @@
     "@storybook/addon-actions": "^4.1.4",
     "@storybook/addon-knobs": "^4.1.4",
     "@storybook/addon-options": "^4.1.4",
+    "storybook-readme": "4.0.5",
     "@storybook/react": "^4.1.4",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
