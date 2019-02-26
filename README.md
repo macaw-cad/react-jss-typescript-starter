@@ -161,10 +161,11 @@ The `run` script does two things:
 - Kill a running previous image if needed
 - Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
 - Start the server application with server-side rendering on `http://localhost:8888`
-- Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
+- **NOT WORKING YET**: Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background.
 
+NOTE: the /graphql page does not work on refresh in Docker container (to be solved)
 # References
 
 - [JSS Documentation](https://jss.sitecore.com/docs)
