@@ -1,6 +1,9 @@
 import { configure } from '@storybook/react';
 import '../src/assets/css/storybook-style.scss';
+import '../src/rootvars.css';
 import '../src/index.scss';
+import './storybook.scss';
+
 import { setOptions } from '@storybook/addon-options';
 
 setOptions({
