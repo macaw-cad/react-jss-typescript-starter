@@ -61,7 +61,12 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       The Apollo Client needs to be initialized to make GraphQL available to the JSS app.
       Not using GraphQL? Remove this, and the ApolloContext from `AppRoot`.
     */
-    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(config.graphQLEndpoint, true);
+    // For server-side rendering graphQL endpoint must be sbsolute url
+    let graphQLEndpoint = config.graphQLEndpoint as string;
+    if (!graphQLEndpoint.startsWith("http")) {
+      graphQLEndpoint = process.env.SITECORE_API_HOST + graphQLEndpoint;
+    }
+    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(graphQLEndpoint, true);
 
     /*
       App Rendering
