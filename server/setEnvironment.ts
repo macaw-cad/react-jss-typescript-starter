@@ -12,8 +12,10 @@ import * as fs from 'fs';
 import * as path from'path';
 
 export function setDevelopmentEnvironmentVariables(): void  {
-    const packageJsonPath = path.resolve(__dirname, '../package.json');
-    const scjssJsonconfigPath = path.resolve(__dirname, '../scjssconfig.json');
+    // we assume the application using this function is executed from a level
+    // one deeper than the configuration files (only used in development)
+    const packageJsonPath = path.join(process.env.PWD, '../package.json');
+    const scjssJsonconfigPath = path.join(process.env.PWD, '../scjssconfig.json');
 
     if (!fs.existsSync(packageJsonPath)) {
         console.error(`File ${packageJsonPath} is missing`);

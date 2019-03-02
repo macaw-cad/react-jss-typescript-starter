@@ -75,8 +75,8 @@ export function renderView(callback: (error: Error | null, successData: {html: s
                 .then(res => {
                   indexTemplate = res;
 
-                  // resolve /static/js/... to http://localhost:3000/static/js/...
-                  indexTemplate = indexTemplate.replace(/\/static\/js\//g, 'http://localhost:3000/static/js/');
+                  // replace <script src="{relativeurl}"></script> with <script src="http://localhost:3000{relativeurl}"></script>
+                  indexTemplate = indexTemplate.replace(/<script.*?"(.*?)"><\/script>/img, '<script src="http://localhost:3000$1"></script>')
                   resolve();
                 })
                 .catch(error => {

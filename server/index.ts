@@ -15,6 +15,9 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
   // turn off x-powered-by http header
   expressInstance.settings['x-powered-by'] = false;
 
+  // Ignore (204 - no content) requests to /sockjs-node/ - is for development tooling client-side
+  expressInstance.use('/sockjs-node/', (req, res) => res.status(204));
+
   // Serve static app assets from local /dist folder
   expressInstance.use(
     `/dist/${process.env.SITECORE_JSS_APP_NAME}/`,

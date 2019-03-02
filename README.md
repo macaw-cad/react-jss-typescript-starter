@@ -165,7 +165,7 @@ The `run` script does two things:
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background.
 
-NOTE: the /graphql page does not work on refresh in Docker container (to be solved)
+NOTE: the /graphql page does not work on refresh in Docker container (to be solved)``
 # References
 
 - [JSS Documentation](https://jss.sitecore.com/docs)
@@ -173,4 +173,4 @@ NOTE: the /graphql page does not work on refresh in Docker container (to be solv
 See the following blog posts:
 
 - [Render Sitecore 9.1 JSS site using separate node server](https://www.sergevandenoever.nl/sitecore_jss_typescript_node/)
-- [Developing React components in TypeScript with Sitecore JSS 9.1](https://www.sergevandenoever.nl/sitecore_jss_typescript/)
+- [Developing React components in TypeScript with Sitecore JSS 9.1](https://www.sergevandenoever.nl/sitecore_jss_typescript/)`

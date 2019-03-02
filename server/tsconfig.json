@@ -10,6 +10,7 @@
       "baseUrl": ".",
       "noImplicitAny": false,
       "jsx": "react",
+      "resolveJsonModule": true,
       "paths": {
           "*": [
               "../node_modules/*",
