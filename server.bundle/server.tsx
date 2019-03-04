@@ -4,7 +4,6 @@ import { StaticRouter, matchPath } from 'react-router-dom';
 import { renderToStringWithData } from 'react-apollo';
 import Helmet from 'react-helmet';
 import GraphQLClientFactory from '../src/lib/GraphQLClientFactory';
-import * as config from '../src/temp/config';
 import i18ninit from '../src/i18n';
 import AppRoot, { routePatterns } from '../src/AppRoot';
 import { setServerSideRenderingState } from '../src/RouteHandler';
@@ -35,10 +34,10 @@ function assertReplace(string: string, value: string, replacement: string): stri
 }
 
 /** Export the API key. This will be used by default in Headless mode, removing the need to manually configure the API key on the proxy. */
-export const apiKey: string = config.sitecoreApiKey;
+export const apiKey: string = process.env.REACT_APP_SITECORE_API_KEY
 
 /** Export the app name. This will be used by default in Headless mode, removing the need to manually configure the app name on the proxy. */
-export const appName: string = config.jssAppName;
+export const appName: string = process.env.REACT_APP_SITECORE_JSS_APP_NAME;
 
 /**
  * Main entry point to the application when run via Server-Side Rendering,
@@ -61,12 +60,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       The Apollo Client needs to be initialized to make GraphQL available to the JSS app.
       Not using GraphQL? Remove this, and the ApolloContext from `AppRoot`.
     */
-    // For server-side rendering graphQL endpoint must be sbsolute url
-    let graphQLEndpoint = config.graphQLEndpoint as string;
-    if (!graphQLEndpoint.startsWith("http")) {
-      graphQLEndpoint = process.env.SITECORE_API_HOST + graphQLEndpoint;
-    }
-    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(graphQLEndpoint, true);
+    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, true);
 
     /*
       App Rendering

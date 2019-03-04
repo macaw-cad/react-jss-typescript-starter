@@ -1,13 +1,7 @@
 const proxy = require('http-proxy-middleware');
-const config = require('./temp/config');
-
-// SvdO: config.sitecoreApiHost === '' then set to http://localhost - must be running
-if (config.sitecoreApiHost === '') {
-  config.sitecoreApiHost = 'http://localhost:3000';
-}
 
 module.exports = (app) => {
-  const isDisconnected = /localhost/i.test(config.sitecoreApiHost);
+  const isDisconnected = /localhost/i.test(process.env.REACT_APP_SITECORE_API_HOST);
 
   if (isDisconnected) {
     // when disconnected we proxy to the local faux layout service host,
@@ -19,10 +13,10 @@ module.exports = (app) => {
     // when in connected mode we want to proxy Sitecore paths
     // off to Sitecore
 
-    app.use(proxy('/sitecore', { target: config.sitecoreApiHost }));
+    app.use(proxy('/sitecore', { target: process.env.REACT_APP_SITECORE_API_HOST }));
     // media items
-    app.use(proxy('/-', { target: config.sitecoreApiHost }));
+    app.use(proxy('/-', { target: process.env.REACT_APP_SITECORE_API_HOST }));
     // visitor identification
-    app.use(proxy('/layouts', { target: config.sitecoreApiHost }));
+    app.use(proxy('/layouts', { target: process.env.REACT_APP_SITECORE_API_HOST }));
   }
 };

@@ -18,10 +18,11 @@ const touchToReloadFilePath = 'src/temp/config.js';
 
 const proxyOptions = {
   appRoot: path.join(__dirname, '..'),
-  appName: config.appName,
+  appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
   watchPaths: ['./data'],
-  language: config.language,
+  language: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
   port: process.env.PROXY_PORT || 3042,
+  // TODO, SvdO: how to handle reload if config not used anymore?
   onManifestUpdated: (manifest) => {
     // if we can resolve the config file, we can alter it to force reloading the app automatically
     // instead of waiting for a manual reload. We must materially alter the _contents_ of the file to trigger

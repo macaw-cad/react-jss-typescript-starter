@@ -74,6 +74,7 @@ prog
   .command('run', 'Run the locally generated Docker image')
   .option('--port <portnumber>', 'Number of the port to run on', prog.INT, 8888)
   .option('--disconnected', 'Run disconnected (data from local data folder)', prog.BOOL, false)
+  .option('--simulate', 'Run as if in Docker image', prog.BOOL, false)
   .option('--debug', 'Show debugging information', prog.BOOL, false)
   .action(function (args, options, logger) {
     const appName = packageJsonConfig.name;

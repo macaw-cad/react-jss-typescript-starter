@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRoot from './AppRoot';
 import { setServerSideRenderingState } from './RouteHandler';
 import GraphQLClientFactory from './lib/GraphQLClientFactory';
-import config from './temp/config';
 import i18ninit from './i18n';
 
 /* eslint-disable no-underscore-dangle */
@@ -52,7 +51,7 @@ if (window && window.location && window.location.search === '?prestine') {
   const initialGraphQLState =
     __JSS_STATE__ && __JSS_STATE__.APOLLO_STATE ? __JSS_STATE__.APOLLO_STATE : null;
 
-  const graphQLClient = GraphQLClientFactory(config.graphQLEndpoint, false, initialGraphQLState);
+  const graphQLClient = GraphQLClientFactory(process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, false, initialGraphQLState);
 
   /*
     App Rendering

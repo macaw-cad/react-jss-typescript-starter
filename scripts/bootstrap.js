@@ -15,7 +15,7 @@ const disconnected = process.argv.some((arg) => arg === '--disconnected');
   that the app can import and use.
 */
 const port = process.env.PORT || 3000;
-// SvdO: we don't want sitecoreApiHost to be set when disconnected, because we run onn
+// SvdO: we don't want sitecoreApiHost to be set when disconnected, because we run on
 // both http://localhost:3000 and http://localhost:3001 when running npm run serve.
 // Keep the path relative to work in both situations
 const configOverride = disconnected ? { sitecoreApiHost: '' /*`http://localhost:${port}`*/ } : null;

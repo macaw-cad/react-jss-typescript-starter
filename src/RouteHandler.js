@@ -4,7 +4,6 @@ import Helmet from 'react-helmet';
 import { isExperienceEditorActive, dataApi } from '@sitecore-jss/sitecore-jss-react';
 import SitecoreContextFactory from './lib/SitecoreContextFactory';
 import { dataFetcher } from './dataFetcher';
-import config from './temp/config';
 import Layout from './Layout';
 import NotFound from './NotFound';
 
@@ -23,7 +22,7 @@ export default class RouteHandler extends React.Component {
     this.state = {
       notFound: true,
       routeData: ssrInitialState, // null when client-side rendering
-      defaultLanguage: config.defaultLanguage,
+      defaultLanguage: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
     };
 
     if (ssrInitialState && ssrInitialState.sitecore && ssrInitialState.sitecore.route) {
@@ -199,8 +198,8 @@ export function setServerSideRenderingState(ssrState) {
  */
 function getRouteData(route, language) {
   const fetchOptions = {
-    layoutServiceConfig: { host: config.sitecoreApiHost },
-    querystringParams: { sc_lang: language, sc_apikey: config.sitecoreApiKey },
+    layoutServiceConfig: { host: process.env.REACT_APP_SITECORE_API_HOST },
+    querystringParams: { sc_lang: language, sc_apikey: process.env.REACT_APP_SITECORE_API_KEY },
     fetcher: dataFetcher,
   };
 
