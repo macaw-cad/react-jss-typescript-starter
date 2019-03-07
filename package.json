@@ -141,7 +141,7 @@
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
     "serve": "env-cmd .env.development.disconnected npm-run-all --serial build-server:development --parallel start build-server:development:watch serve:nodemon",
     "serve:connected": "env-cmd .env.development.connected npm-run-all --serial build-server:development --parallel start:connected build-server:development:watch serve:nodemon",
-    "serve:nodemon": "cd build.server && npx nodemon -r source-map-support/register --config server/nodemon.json index.js",
+    "serve:nodemon": "npx nodemon -r source-map-support/register --config server/nodemon.json build.server/index.js",
     "build-server:development:watch": "npm run build-server:development && npx chokidar server/*.ts server.bundle/*.tsx src/** -c \"npm run build-server:development\"",
     "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --mode development --config server/server.webpack.config.js\"",
     "build-server:production": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server/server.webpack.config.js\"",

@@ -10,7 +10,7 @@
     },
  
     "watch": [
-      "index.js"
+      "build.server"
     ],
     "ext": "js,json"
   }

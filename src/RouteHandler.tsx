@@ -213,7 +213,7 @@ export function setServerSideRenderingState(ssrState) {
  * @param {string} language Language to get route data in (content language, e.g. 'en')
  */
 function getRouteData(route: string, language: string) {
-  const host = Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
+  const host = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST;
   const fetchOptions = {
     layoutServiceConfig: { host: host },
     querystringParams: { sc_lang: language, sc_apikey: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY },
