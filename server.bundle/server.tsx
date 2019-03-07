@@ -1,3 +1,4 @@
+
 import serializeJavascript from 'serialize-javascript';
 import * as React from 'react';
 import { StaticRouter, matchPath } from 'react-router-dom';
@@ -10,10 +11,10 @@ import { setServerSideRenderingState } from '../src/RouteHandler';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { RouteUrlParser } from '@sitecore-jss/sitecore-jss-proxy/types/RouteUrlParser';
-import { resolve } from 'q';
+import { Environment } from '../src/Environment';
 
 let indexTemplate; // index.html template file contents, imported on production, requested as http://localhost:3000?prestine in development
-if (process.env.NODE_ENV === 'production') {
+if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
   indexTemplate = require('../build/index.html');
 }
 /** Asserts that a string replace actually replaced something */
@@ -34,10 +35,10 @@ function assertReplace(string: string, value: string, replacement: string): stri
 }
 
 /** Export the API key. This will be used by default in Headless mode, removing the need to manually configure the API key on the proxy. */
-export const apiKey: string = process.env.REACT_APP_SITECORE_API_KEY
+export const apiKey: string = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY;
 
 /** Export the app name. This will be used by default in Headless mode, removing the need to manually configure the app name on the proxy. */
-export const appName: string = process.env.REACT_APP_SITECORE_JSS_APP_NAME;
+export const appName: string = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
 
 /**
  * Main entry point to the application when run via Server-Side Rendering,
@@ -60,7 +61,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       The Apollo Client needs to be initialized to make GraphQL available to the JSS app.
       Not using GraphQL? Remove this, and the ApolloContext from `AppRoot`.
     */
-    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, true);
+    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(Environment.reactAppProcessEnv.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, true);
 
     /*
       App Rendering
@@ -68,13 +69,14 @@ export function renderView(callback: (error: Error | null, successData: {html: s
     initializei18n(state)
       .then(() => {
         return new Promise((resolve, reject) => {
-          if (process.env.NODE_ENV !== 'production') {
+          if (Environment.reactAppProcessEnv.NODE_ENV !== 'production') {
               fetch('http://localhost:3000?prestine', { mode: 'no-cors', cache: 'no-cache' })
                 .then(res => res.text())
                 .then(res => {
                   indexTemplate = res;
 
                   // replace <script src="{relativeurl}"></script> with <script src="http://localhost:3000{relativeurl}"></script>
+                  // so client scripts are loaded from the application running at http://localhost:3000
                   indexTemplate = indexTemplate.replace(/<script.*?"(.*?)"><\/script>/img, '<script src="http://localhost:3000$1"></script>')
                   resolve();
                 })

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 // Renders a route-not-found message when no route is available from Sitecore
 // The JSS equivalent of a 404 Not Found page.

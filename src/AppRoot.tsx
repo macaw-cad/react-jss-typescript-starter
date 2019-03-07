@@ -29,6 +29,7 @@ export const routePatterns = [
 // SitecoreContext: provides component resolution and context services via withSitecoreContext
 // Router: provides a basic routing setup that will resolve Sitecore item routes and allow for language URL prefixes.
 const AppRoot = ({ path, Router, graphQLClient }: { path: string, Router: any, graphQLClient: ApolloClient<NormalizedCacheObject> }) => {
+  // @ts-ignore
   const routeRenderFunction = (props: any) => <RouteHandler route={props} />;
   return (
     <ApolloProvider client={graphQLClient}>

@@ -5,12 +5,17 @@ import AppRoot from './AppRoot';
 import { setServerSideRenderingState } from './RouteHandler';
 import GraphQLClientFactory from './lib/GraphQLClientFactory';
 import i18ninit from './i18n';
+import { Environment } from './Environment';
+import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
+
 
 /* eslint-disable no-underscore-dangle */
 
 if (window && window.location && window.location.search === '?prestine') {
     // Return the content for index.html similar as loading index.html from filesystem.
     // Can be used in development mode for server-side rendering to get the index.html.
+    // TODO SvdO:
+    // @ts-ignore
     ReactDOM.render('', document.getElementById('root'));
 } else {
   let renderFunction = ReactDOM.render;
@@ -28,7 +33,8 @@ if (window && window.location && window.location.search === '?prestine') {
 
     SSR is initiated from /server/server.js.
   */
-  let __JSS_STATE__ = null;
+
+  let __JSS_STATE__: LayoutServiceData & LayoutServiceContextData & { APOLLO_STATE: any } | null = null;
   const ssrRawJson = document.getElementById('__JSS_STATE__');
   if (ssrRawJson) {
     __JSS_STATE__ = JSON.parse(ssrRawJson.innerHTML);
@@ -51,7 +57,7 @@ if (window && window.location && window.location.search === '?prestine') {
   const initialGraphQLState =
     __JSS_STATE__ && __JSS_STATE__.APOLLO_STATE ? __JSS_STATE__.APOLLO_STATE : null;
 
-  const graphQLClient = GraphQLClientFactory(process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, false, initialGraphQLState);
+  const graphQLClient = GraphQLClientFactory(Environment.reactAppProcessEnv.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, false, initialGraphQLState);
 
   /*
     App Rendering

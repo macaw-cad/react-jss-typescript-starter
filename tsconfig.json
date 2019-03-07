@@ -19,6 +19,13 @@
     "include": [
       "src"
     ],
-    "types": ["node"]
+    "typeRoots": [
+      "src/types",
+      "./node_modules/@types"
+    ], 
+    "types": [
+      "node",
+      "react-app-env"
+    ]
   }
   

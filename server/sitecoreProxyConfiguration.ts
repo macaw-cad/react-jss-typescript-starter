@@ -4,12 +4,13 @@ import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
 import { IncomingMessage, ClientRequest, ServerResponse } from 'http';
+import { Environment } from '../src/Environment';
 
 export function getSitecoreProxyConfiguration(): ProxyConfig {
-// We keep a cached copy of the site dictionary for performance. Default is 60 seconds.
+  // We keep a cached copy of the site dictionary for performance. Default is 60 seconds.
   const dictionaryCache = new NodeCache({ stdTTL: 60 });
 
-  let appName = process.env.SITECORE_JSS_APP_NAME;
+  let appName = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
 
   /**
    * @type {ProxyConfig}
@@ -22,18 +23,20 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
      * Should be https for production. Must be https to use SSC auth service,
      * if supporting Sitecore authentication.
      */
-    apiHost: process.env.SITECORE_API_HOST,
+    apiHost: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST,
     /**
      * layoutServiceRoot: The path to layout service for the JSS application.
      * Some apps, like advanced samples, use a custom LS configuration,
      * e.g. /sitecore/api/layout/render/jss-advanced-react
      */
-    layoutServiceRoute: process.env.SITECORE_LAYOUT_SERVICE_ROUTE,
+    layoutServiceRoute: Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE.startsWith('http') ?
+      Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE :
+      Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST + Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE,
     /**
      * apiKey: The Sitecore SSC API key your app uses.
      * Required.
      */
-    apiKey: process.env.SITECORE_API_KEY,
+    apiKey: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY,
     /**
      * pathRewriteExcludeRoutes: A list of absolute paths
      * that are NOT app routes and should not attempt to render a route
@@ -53,33 +56,38 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
       '/-/jssmedia',
       '/-/media',
       '/layouts/system',
-    ].concat((process.env.SITECORE_PATH_REWRITE_EXCLUDE_ROUTES || '').split('|')),
+    ].concat((Environment.reactAppProcessEnv.REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES || '').split('|')),
     /**
      * Writes verbose request info to stdout for debugging.
      * Must be disabled in production for reasonable performance.
      */
-    debug: process.env.SITECORE_ENABLE_DEBUG === 'true',
+    debug: Environment.reactAppProcessEnv.REACT_APP_SITECORE_ENABLE_DEBUG === 'true',
     /**
      * Maximum allowed proxy reply size in bytes. Replies larger than this are not sent.
      * Avoids starving the proxy of memory if large requests are proxied.
      * Default: 10MB
      */
     maxResponseSizeBytes: 10 * 1024 * 1024,
-    /**
-     * Options object for http-proxy-middleware. Consult its docs.
-     */
+
     proxyOptions: {
       // Setting this to false will disable SSL certificate validation
       // when proxying to a SSL Sitecore instance.
       // This is a major security issue, so NEVER EVER set this to false
       // outside local development. Use a real CA-issued certificate.
       secure: true,
+
+      // target host for proxy
+      target: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST,
+
       /**
        * Add the original client IP as a header for Sitecore Analytics and GeoIP.
        * We could use the xfwd option of http-proxy, but express will use ipv6 formatted
        * IPs by default and there are reported issues using ipv6 with GeoIP.
        */
       onProxyReq: (proxyReq, req, res) => {
+        if (!req.url.startsWith('http')) {
+          req.url = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST + req.url;
+        }
         let ipv4 = ipaddr.process(req.ip).toString(); // strip ipv6 prefix added by node/express
         if (ipv4 === '::1') {
           ipv4 = '127.0.0.1';
@@ -98,6 +106,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
         proxyReq.setHeader('Access-Control-Allow-Origin', '*');
       },
     },
+
     /**
      * Custom error handling in case our app fails to render.
      * Return null to pass through server response, or { content, statusCode }
@@ -122,6 +131,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
         });
       })
     },
+
     createViewBag: (request: ClientRequest, response: ServerResponse, proxyResponse: IncomingMessage, layoutServiceData: any) => {
       // fetches the dictionary from the Sitecore server for the current language so it can be SSR'ed
       // has a default cache applied since dictionary data is quite static and it helps rendering performance a lot
@@ -145,7 +155,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
 
       return fetch(
         `${config.apiHost}/sitecore/api/jss/dictionary/${appName}/${language}?sc_apikey=${
-          config.apiKey
+        config.apiKey
         }`
       )
         .then((result) => result.json())

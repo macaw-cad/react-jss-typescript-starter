@@ -3,7 +3,7 @@ import express from 'express';
 import compression from 'compression';  // compresses requests
 import scProxy from '@sitecore-jss/sitecore-jss-proxy';
 import { renderView, urlRouteParser } from '../server.bundle/server';
-import { setDevelopmentEnvironmentVariables, logEnvironmentVariables} from './setEnvironment'; 
+import { setDevelopmentEnvironmentVariables, validateEnvironmentVariables, logEnvironmentVariables} from './setEnvironment'; 
 import { getSitecoreProxyConfiguration} from './sitecoreProxyConfiguration';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
 import { createDefaultDisconnectedServer } from '@sitecore-jss/sitecore-jss-dev-tools';
@@ -20,7 +20,7 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
 
   // Serve static app assets from local /dist folder
   expressInstance.use(
-    `/dist/${process.env.SITECORE_JSS_APP_NAME}/`,
+    `/dist/${process.env.REACT_APP_SITECORE_JSS_APP_NAME}/`,
     express.static('../build', {
       fallthrough: false, // force 404 for unknown assets under /dist/<appName>/
     })
@@ -34,22 +34,30 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
   });
 }
 
-// set all required environment variables basen on configuration in package.json and scjssconfig.json
+// In development set all required environment variables based on:
+// .env.development: for disconnected mode
+// .env.development.connected: for connected mode
+// In production the environment variables are already defined.
+console.log("Application Express server with SSR");
 if (process.env.NODE_ENV == 'development') {
-  setDevelopmentEnvironmentVariables(); 
+  console.log("NODE_ENV: development");
+  const connected = process.argv.some((arg) => arg === '--connected');
+  console.log(`Sitecore mode: ${(connected? 'connected' : 'disconnected')}`);
+  setDevelopmentEnvironmentVariables(connected); 
 }
+validateEnvironmentVariables();
 logEnvironmentVariables();
 
 const config: ProxyConfig = getSitecoreProxyConfiguration();
 const server = express();
 const port: number = parseInt(process.env.PORT) || 3001;
 
-if (process.env.NODE_ENV == 'production' && process.env.SITECORE_PRODUCTION_DISCONNECTED === 'true') {
+if (process.env.REACT_APP_SITECORE_CONNECTED === 'false') {
   createDefaultDisconnectedServer({
-    watchPaths: ['./data'],
+    watchPaths: [path.join(process.cwd(), 'data')], // SvdO, TODO './data'
     port,
-    appRoot: path.resolve(__dirname, './data'),
-    appName: process.env.SITECORE_JSS_APP_NAME,
+    appRoot: path.join(process.cwd(), 'data'), // SvdO, TODO './data'
+    appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
     language: 'en',
     server,
     afterMiddlewareRegistered: (expressInstance) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Placeholder, VisitorIdentification } from '@sitecore-jss/sitecore-jss-react';
 import { NavLink } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
@@ -50,6 +50,8 @@ let Navigation = ({ t, i18n }) => (
 // inject dictionary props (`t`) into navigation so we can translate it
 // NOTE: using this is needed instead of using i18next directly to keep
 // the component state updated when i18n state (e.g. current language) changes
+// SvdO, TODO: compilation issue
+// @ts-ignore
 Navigation = withNamespaces()(Navigation);
 
 const Layout = ({ route }) => (
@@ -70,6 +72,8 @@ const Layout = ({ route }) => (
     */}
     <VisitorIdentification />
 
+    {/* 
+    // @ts-ignore */}
     <Navigation />
 
     {/* root placeholder for the app, which we add components to using route data */}

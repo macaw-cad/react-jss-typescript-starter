@@ -1,0 +1,14 @@
+export interface ReactAppProcessEnv {
+    NODE_ENV: 'development' | 'production' | 'test';
+    PUBLIC_URL: string;
+    REACT_APP_SITECORE_JSS_APP_NAME: string;
+    REACT_APP_SITECORE_API_KEY: string;
+    REACT_APP_SITECORE_API_HOST: string,
+    REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE: string;
+    REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE: string;
+    REACT_APP_SITECORE_GRAPHQL_ENDPOINT: string;
+    REACT_APP_SITECORE_DEFAULT_LANGUAGE: string;
+    REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES: string;
+    REACT_APP_SITECORE_ENABLE_DEBUG: 'true' | 'false';
+    REACT_APP_SITECORE_CONNECTED: 'true' | 'false';
+}

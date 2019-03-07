@@ -11,6 +11,8 @@ FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :3000') DO IF NO
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :3001') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :9001') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 
+call hotel stop
+call rmdir /s /q %userprofile%\.hotel
 call hotel start
 call hotel add "npm run start" --name react-client --port 3000
 call hotel add "npm run start:storybook" --name Storybook --port 9001

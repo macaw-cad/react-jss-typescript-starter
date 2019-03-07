@@ -44,11 +44,39 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Server [3001]",
-            "cwd": "${workspaceFolder}/build.server",
+            "name": "Server:disconnected [3001]",
+            "cwd": "${workspaceFolder}",
             "program": "${workspaceFolder}/build.server/index.js",
             "runtimeArgs": [
                 "-r", "source-map-support/register"
+            ],
+            "args": [
+                "--disconnected"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMapPathOverrides": {
+              "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
+              "webpack:///./*": "${workspaceRoot}/*",
+              "webpack:///*": "*"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server:connected [3001]",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/build.server/index.js",
+            "runtimeArgs": [
+                "-r", "source-map-support/register"
+            ],
+            "args": [
+                "--connected"
             ],
             "env": {
                 "NODE_ENV": "development",

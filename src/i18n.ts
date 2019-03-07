@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import fetchBackend from 'i18next-fetch-backend';
 import { reactI18nextModule } from 'react-i18next';
+import { Environment } from './Environment';
 
 /**
  * Initializes the i18next library to provide a translation dictionary to the app.
@@ -9,21 +10,24 @@ import { reactI18nextModule } from 'react-i18next';
  * @param {string} language Optional, the initial language. Only used for SSR; otherwise language set in RouteHandler.
  * @param {*} dictionary Optional, the dictionary to load. Only used for SSR; otherwise, the dictionary is loaded via JSS dictionary service.
  */
-export default function i18nInit(language, dictionary) {
+export default function i18nInit(language?: string, dictionary?: any) { // SvdO, TODO: type of Dictionary?!
   return new Promise((resolve, reject) => {
-    const options = {
+    let options: i18n.InitOptions = {
       debug: false,
       lng: language,
       fallbackLng: false, // fallback to keys
       load: 'currentOnly', // e.g. don't load 'es' when requesting 'es-MX' -- Sitecore config should handle this
-      useCookie: false, // using URLs and Sitecore to store language context, don't need a cookie
 
       interpolation: {
         escapeValue: false, // not needed for react
       },
     };
 
-    if (dictionary) {
+
+    // TODO, SvdO: options does not support useCookie?! 
+    (options as any).useCookie=  false; // using URLs and Sitecore to store language context, don't need a cookie
+
+    if (language && dictionary) {
       // if we got dictionary passed, that means we're in a SSR context with a server-provided dictionary
       // so we do not want a backend, because we already know all possible keys
       options.resources = {};
@@ -40,7 +44,7 @@ export default function i18nInit(language, dictionary) {
       // For higher performance (but less simplicity), consider adding the i18n chained backend to a local cache option like the local storage backend.
 
       // eslint-disable-next-line prettier/prettier
-      const dictionaryServicePath = process.env.REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE;
+      const dictionaryServicePath = Environment.reactAppProcessEnv.REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE;
 
       options.backend = {
         loadPath: dictionaryServicePath,

@@ -1,11 +1,13 @@
 import React from 'react';
 import i18n from 'i18next';
 import Helmet from 'react-helmet';
-import { isExperienceEditorActive, dataApi } from '@sitecore-jss/sitecore-jss-react';
+import { isExperienceEditorActive, dataApi, LayoutServiceData, LayoutServiceContextData, RouteData } from '@sitecore-jss/sitecore-jss-react';
 import SitecoreContextFactory from './lib/SitecoreContextFactory';
 import { dataFetcher } from './dataFetcher';
 import Layout from './Layout';
 import NotFound from './NotFound';
+import { Environment } from './Environment';
+import { Route } from 'react-router';
 
 // Dynamic route handler for Sitecore items.
 // Because JSS app routes are defined in Sitecore, traditional static React routing isn't enough -
@@ -13,18 +15,32 @@ import NotFound from './NotFound';
 // So react-router delegates all route rendering to this handler, which attempts to get the right
 // route data from Sitecore - and if none exists, renders the not found component.
 
-let ssrInitialState = null;
+type RouteHandlerProps = {
+  route: Route;
+};
 
-export default class RouteHandler extends React.Component {
-  constructor(props) {
+type RouteHandlerState = {
+  notFound: boolean;
+  routeData: LayoutServiceData | null;
+  defaultLanguage: string;
+};
+
+let ssrInitialState: LayoutServiceData & LayoutServiceContextData | null = null;
+
+export default class RouteHandler extends React.Component<RouteHandlerProps, RouteHandlerState> {
+  componentIsMounted: Readonly<boolean> = false;
+  languageIsChanging: Readonly<boolean> = false;
+
+  state: RouteHandlerState = {
+    notFound: true,
+    routeData: ssrInitialState, // null when client-side rendering
+    defaultLanguage: Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
+
+  };
+
+  constructor(props: RouteHandlerProps) {
     super(props);
-
-    this.state = {
-      notFound: true,
-      routeData: ssrInitialState, // null when client-side rendering
-      defaultLanguage: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-    };
-
+    
     if (ssrInitialState && ssrInitialState.sitecore && ssrInitialState.sitecore.route) {
       // set the initial sitecore context data if we got SSR initial state
       SitecoreContextFactory.setSitecoreContext({
@@ -59,12 +75,9 @@ export default class RouteHandler extends React.Component {
     // (once to find GraphQL queries that need to run, the second time to refresh the view with
     // GraphQL query results)
     // We test for SSR by checking for Node-specific process.env variable.
-    if (typeof window !== 'undefined') {
+    if (!Environment.isServer) {
       ssrInitialState = null;
     }
-
-    this.componentIsMounted = false;
-    this.languageIsChanging = false;
 
     // tell i18next to sync its current language with the route language
     this.updateLanguage();
@@ -95,7 +108,7 @@ export default class RouteHandler extends React.Component {
     const language = this.props.route.match.params.lang || this.state.defaultLanguage;
 
     // get the route data for the new route
-    getRouteData(sitecoreRoutePath, language).then((routeData) => {
+    getRouteData(sitecoreRoutePath, language).then((routeData: LayoutServiceData) => {
       if (routeData !== null && routeData.sitecore && routeData.sitecore.route) {
         // set the sitecore context data and push the new route
         SitecoreContextFactory.setSitecoreContext({
@@ -113,7 +126,7 @@ export default class RouteHandler extends React.Component {
   /**
    * Updates the current app language to match the route data.
    */
-  updateLanguage() {
+  updateLanguage(): void {
     const newLanguage = this.props.route.match.params.lang || this.state.defaultLanguage;
 
     if (i18n.language !== newLanguage) {
@@ -134,7 +147,7 @@ export default class RouteHandler extends React.Component {
     }
   }
 
-  componentDidUpdate(previousProps) {
+  componentDidUpdate(previousProps: RouteHandlerProps): void {
     const existingRoute = previousProps.route.match.url;
     const newRoute = this.props.route.match.url;
 
@@ -161,12 +174,15 @@ export default class RouteHandler extends React.Component {
     // Note: this is client-side only 404 handling. Server-side 404 handling is the responsibility
     // of the server being used (i.e. node-headless-ssr-proxy and Sitecore intergrated rendering know how to send 404 status codes).
     if (notFound) {
+      const name = routeData && routeData.sitecore && routeData.sitecore.context && routeData.sitecore.context.site && routeData.sitecore.context.site.name || '';
+      const language = routeData && routeData.sitecore && routeData.sitecore.context && routeData.sitecore.context.language || '';
+
       return (
         <div>
           <Helmet>
             <title>{i18n.t('Page not found')}</title>
           </Helmet>
-          <NotFound context={routeData.sitecore && routeData.sitecore.context} />
+          <NotFound context={{ site: { name: name }, language: language }} />
         </div>
       );
     }
@@ -196,10 +212,11 @@ export function setServerSideRenderingState(ssrState) {
  * @param {string} route Route path to get data for (e.g. /about)
  * @param {string} language Language to get route data in (content language, e.g. 'en')
  */
-function getRouteData(route, language) {
+function getRouteData(route: string, language: string) {
+  const host = Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
   const fetchOptions = {
-    layoutServiceConfig: { host: process.env.REACT_APP_SITECORE_API_HOST },
-    querystringParams: { sc_lang: language, sc_apikey: process.env.REACT_APP_SITECORE_API_KEY },
+    layoutServiceConfig: { host: host },
+    querystringParams: { sc_lang: language, sc_apikey: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY },
     fetcher: dataFetcher,
   };
 
