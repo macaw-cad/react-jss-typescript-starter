@@ -11,4 +11,5 @@ export interface ReactAppProcessEnv {
     REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES: string;
     REACT_APP_SITECORE_ENABLE_DEBUG: 'true' | 'false';
     REACT_APP_SITECORE_CONNECTED: 'true' | 'false';
+    REACT_APP_SITECORE_PROXY_PORT: string;
 }
