@@ -44,13 +44,16 @@ COPY Docker/nginx.config /etc/nginx/sites-available/default
 COPY --from=build-stage /app/build/ /app/build
 
 # Copy the Node Express server
-COPY --from=build-stage /app/build.server/ /app/server
+COPY --from=build-stage /app/build.server/ /app/build.server
+
+# Copy the disconnected mode proxy server
+COPY --from=build-stage /app/scripts/disconnected-mode-proxy.js /app/build.server
 
 # Copy the data/sitecore for running offline
-COPY --from=build-stage /app/data/ /app/server/data
-COPY --from=build-stage /app/sitecore/ /app/server/sitecore
+COPY --from=build-stage /app/data/ /app/data
+COPY --from=build-stage /app/sitecore/ /app/sitecore
 
-WORKDIR /app/server
+WORKDIR /app
 
 EXPOSE 80 2222
 ENTRYPOINT ["/usr/local/bin/init.sh"]

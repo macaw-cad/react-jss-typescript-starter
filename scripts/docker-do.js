@@ -85,7 +85,7 @@ prog
     (async function () {
       let url;
       if (options.disconnected) {
-        url = 'http://localhost:3001';
+        url = 'http://localhost:3042';
         logger.info('Running disconnected');
       } else {
         url = await ngrok.connect({
@@ -114,13 +114,18 @@ prog
           'run',
           '--rm',
           '-i',
-          '-e', `SITECORE_JSS_APP_NAME=${appName}`,
-          '-e', `SITECORE_API_HOST=${url}`,
-          '-e', `SITECORE_LAYOUT_SERVICE_ROUTE=${url}/sitecore/api/layout/render/jss`,
-          `-e`, `SITECORE_API_KEY=${apiKey}`,
-          `-e`, `SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=`,
-          `-e`, `SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
-          `-e`, `SITECORE_PRODUCTION_DISCONNECTED=${(options.disconnected? 'true' : 'false')}`,
+          '-e', `NODE_ENV=production`,
+          '-e', `REACT_APP_SITECORE_JSS_APP_NAME=${appName}`,
+          `-e`, `REACT_APP_SITECORE_API_KEY=${apiKey}`,
+          '-e', `REACT_APP_SITECORE_API_HOST=${url}`,
+          '-e', `REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE=${url}/sitecore/api/layout/render/jss`,
+          '-e', `REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE=${url}/sitecore/api/jss/dictionary/react-jss-typescript-starter/{{lng}}?sc_apikey=${apiKey}`,
+          `-e`, `REACT_APP_SITECORE_GRAPHQL_ENDPOINT=${url}/api/react-jss-typescript-starter?sc_apikey=${apiKey}`,
+          `-e`, `REACT_APP_SITECORE_DEFAULT_LANGUAGE=en`,
+          `-e`, `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=`,
+          `-e`, `REACT_APP_SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
+          `-e`, `REACT_APP_SITECORE_CONNECTED=${(options.disconnected? 'true' : 'false')}`,
+          `-e`, `REACT_APP_SITECORE_PROXY_PORT=3042`,
           `-p`, `${options.port}:3001`,
           imageName
         ],

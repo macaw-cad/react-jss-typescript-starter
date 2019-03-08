@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import * as ipaddr from 'ipaddr.js';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
@@ -127,7 +128,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
 
         resolve({
           statusCode: 500,
-          content: fs.readFileSync('error.html', 'utf8')
+          content: fs.readFileSync(path.join(process.cwd(), 'build/error.html'), 'utf8')
         });
       })
     },

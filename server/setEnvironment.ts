@@ -38,7 +38,7 @@ export function setDevelopmentEnvironmentVariables(connected: boolean): void  {
 export function validateEnvironmentVariables() {
     environmentVariables.map(e => {
         if (!process.env[e.name] && e.mandatory) {
-            throw `Missing mandatory environment variable ${e}`; 
+            throw `Missing mandatory environment variable ${e.name}`; 
         }
     });
 }
