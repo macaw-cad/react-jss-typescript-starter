@@ -7,12 +7,19 @@ import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig'
 import { IncomingMessage, ClientRequest, ServerResponse } from 'http';
 import { Environment } from '../src/Environment';
 
+function getApiHost() {
+  const apiHost = Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false'?
+    'http://localhost:3042' :
+    Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST;
+  return apiHost;
+}
+
 export function getSitecoreProxyConfiguration(): ProxyConfig {
   // We keep a cached copy of the site dictionary for performance. Default is 60 seconds.
   const dictionaryCache = new NodeCache({ stdTTL: 60 });
 
-  let appName = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
-
+  const appName = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
+  const apiHost = getApiHost();
   /**
    * @type {ProxyConfig}
    */
@@ -24,15 +31,13 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
      * Should be https for production. Must be https to use SSC auth service,
      * if supporting Sitecore authentication.
      */
-    apiHost: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST,
+    apiHost: apiHost,
     /**
      * layoutServiceRoot: The path to layout service for the JSS application.
      * Some apps, like advanced samples, use a custom LS configuration,
      * e.g. /sitecore/api/layout/render/jss-advanced-react
      */
-    layoutServiceRoute: Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE.startsWith('http') ?
-      Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE :
-      Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST + Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE,
+    layoutServiceRoute: apiHost + Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE,
     /**
      * apiKey: The Sitecore SSC API key your app uses.
      * Required.
@@ -86,8 +91,9 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
        * IPs by default and there are reported issues using ipv6 with GeoIP.
        */
       onProxyReq: (proxyReq, req, res) => {
+        const apiHost = getApiHost();
         if (!req.url.startsWith('http')) {
-          req.url = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST + req.url;
+          req.url = apiHost + req.url;
         }
         let ipv4 = ipaddr.process(req.ip).toString(); // strip ipv6 prefix added by node/express
         if (ipv4 === '::1') {
@@ -140,7 +146,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
         return {};
       }
 
-      const language = layoutServiceData.sitecore.context.language || 'en';
+      const language = layoutServiceData.sitecore.context.language || Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE;
       const site =
         layoutServiceData.sitecore.context.site && layoutServiceData.sitecore.context.site.name;
 
@@ -154,9 +160,10 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
 
       if (cached) return Promise.resolve(cached);
 
+      const apiHost = getApiHost();
       return fetch(
-        `${config.apiHost}/sitecore/api/jss/dictionary/${appName}/${language}?sc_apikey=${
-        config.apiKey
+        `${apiHost}/sitecore/api/jss/dictionary/${appName}/${language}?sc_apikey=${
+          Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY
         }`
       )
         .then((result) => result.json())

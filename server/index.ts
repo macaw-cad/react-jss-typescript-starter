@@ -80,20 +80,20 @@ const proxyPort: number = parseInt(Environment.reactAppProcessEnv.REACT_APP_SITE
 
 prepServer(server, config, port);
 // ##### New approach: proxy to the http://localhost:proxyPort
-// if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
-//   const targetUrl = `http://localhost:${proxyPort}`;
-//   console.log(`Sitecore disconnected proxy url: ${targetUrl}`);
-//   let sitecoreDisconnectedServerProxy = proxy(
-//     ['/assets', '/data/media', '/sitecore/api/layout/render', '/sitecore/api/jss/dictionary'],
-//     {
-//       target: targetUrl,
-//       pathRewrite: (path: string, req) => {
-//         console.log(`PATH: ${path}`);
-//         path = path.replace('sc_apikey=undefined', `sc_apikey=${Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY}`);
-//         return path;
-//       },
-//       logLevel: 'debug'
-//     }
-//   );
-//   server.use(sitecoreDisconnectedServerProxy);
-// }
+if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
+  const targetUrl = `http://localhost:3042`;
+  console.log(`Sitecore disconnected proxy url: ${targetUrl}`);
+  let sitecoreDisconnectedServerProxy = proxy(
+    ['/assets', '/data/media', '/sitecore/api/layout/render', '/sitecore/api/jss/dictionary'],
+    {
+      target: targetUrl,
+      pathRewrite: (path: string, req) => {
+        console.log(`PATH: ${path}`);
+        path = path.replace('sc_apikey=undefined', `sc_apikey=${Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY}`);
+        return path;
+      },
+      logLevel: 'debug'
+    }
+  );
+  server.use(sitecoreDisconnectedServerProxy);
+}
