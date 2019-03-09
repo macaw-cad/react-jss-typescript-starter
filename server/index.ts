@@ -83,7 +83,7 @@ if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
   const targetUrl = `http://localhost:3042`;
   console.log(`Sitecore disconnected proxy url: ${targetUrl}`);
   let sitecoreDisconnectedServerProxy = proxy(
-    ['/assets', '/data/media', '/sitecore/api/layout/render', '/sitecore/api/jss/dictionary'],
+    [/*'/assets', '/data/media',*/ '/sitecore/api/layout/render', '/sitecore/api/jss/dictionary'],
     {
       target: targetUrl,
       pathRewrite: (path: string, req) => {
@@ -94,5 +94,8 @@ if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
       logLevel: 'debug'
     }
   );
+  server.use('/assets', express.static(path.join(process.cwd(), 'assets')));
+  server.use('/data/media', express.static(path.join(process.cwd(), 'data/media')));
+
   server.use(sitecoreDisconnectedServerProxy);
 }
