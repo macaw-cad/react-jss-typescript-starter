@@ -131,10 +131,13 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
             content: undefined
           });
         }
-
+        const errorHtmlPath = Environment.reactAppProcessEnv.NODE_ENV === 'production' ?
+          path.join(process.cwd(), 'build/error.html') :
+          path.join(process.cwd(), 'public/error.html'); // development has no build folder yet
+          
         resolve({
           statusCode: 500,
-          content: fs.readFileSync(path.join(process.cwd(), 'build/error.html'), 'utf8')
+          content: fs.readFileSync(errorHtmlPath, 'utf8')
         });
       })
     },

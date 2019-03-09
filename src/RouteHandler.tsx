@@ -7,6 +7,7 @@ import { dataFetcher } from './dataFetcher';
 import Layout from './Layout';
 import NotFound from './NotFound';
 import { Environment } from './Environment';
+import { getSitecoreDefaultLanguage, getSitecoreApiKey } from './AppGlobals';
 import { Route } from 'react-router';
 
 // Dynamic route handler for Sitecore items.
@@ -30,12 +31,11 @@ let ssrInitialState: LayoutServiceData & LayoutServiceContextData | null = null;
 export default class RouteHandler extends React.Component<RouteHandlerProps, RouteHandlerState> {
   componentIsMounted: Readonly<boolean> = false;
   languageIsChanging: Readonly<boolean> = false;
-
+  
   state: RouteHandlerState = {
     notFound: true,
     routeData: ssrInitialState, // null when client-side rendering
-    defaultLanguage: Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-
+    defaultLanguage: getSitecoreDefaultLanguage() || 'en',
   };
 
   constructor(props: RouteHandlerProps) {
@@ -213,10 +213,11 @@ export function setServerSideRenderingState(ssrState) {
  * @param {string} language Language to get route data in (content language, e.g. 'en')
  */
 function getRouteData(route: string, language: string) {
+  // On server use specified Sitecore api host, from client go through proxy on same host
   const host = Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
   const fetchOptions = {
     layoutServiceConfig: { host: host },
-    querystringParams: { sc_lang: language, sc_apikey: Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY },
+    querystringParams: { sc_lang: language, sc_apikey: getSitecoreApiKey },
     fetcher: dataFetcher,
   };
 

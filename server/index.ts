@@ -7,7 +7,6 @@ import { renderView, urlRouteParser } from '../server.bundle/server';
 import { setDevelopmentEnvironmentVariables, validateEnvironmentVariables, logEnvironmentVariables} from './setEnvironment'; 
 import { getSitecoreProxyConfiguration} from './sitecoreProxyConfiguration';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
-import { createDefaultDisconnectedServer } from '@sitecore-jss/sitecore-jss-dev-tools';
 import { Environment } from '../src/Environment';
 
 function prepServer(expressInstance: express.Express, config: ProxyConfig, port: number): void {

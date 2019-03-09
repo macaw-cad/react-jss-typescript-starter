@@ -5,9 +5,9 @@ import AppRoot from './AppRoot';
 import { setServerSideRenderingState } from './RouteHandler';
 import GraphQLClientFactory from './lib/GraphQLClientFactory';
 import i18ninit from './i18n';
-import { Environment } from './Environment';
-import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
+import { getSitecoreGraphqlEndpoint } from './AppGlobals';
 
+import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -57,7 +57,7 @@ if (window && window.location && window.location.search === '?prestine') {
   const initialGraphQLState =
     __JSS_STATE__ && __JSS_STATE__.APOLLO_STATE ? __JSS_STATE__.APOLLO_STATE : null;
 
-  const graphQLClient = GraphQLClientFactory(Environment.reactAppProcessEnv.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, false, initialGraphQLState);
+  const graphQLClient = GraphQLClientFactory(getSitecoreGraphqlEndpoint(), false, initialGraphQLState);
 
   /*
     App Rendering

@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import fetchBackend from 'i18next-fetch-backend';
 import { reactI18nextModule } from 'react-i18next';
-import { Environment } from './Environment';
+import { getSitecoreDictionaryServiceRoute } from './AppGlobals';
 
 /**
  * Initializes the i18next library to provide a translation dictionary to the app.
@@ -44,7 +44,7 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
       // For higher performance (but less simplicity), consider adding the i18n chained backend to a local cache option like the local storage backend.
 
       // eslint-disable-next-line prettier/prettier
-      const dictionaryServicePath = Environment.reactAppProcessEnv.REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE;
+      const dictionaryServicePath = getSitecoreDictionaryServiceRoute();
 
       options.backend = {
         loadPath: dictionaryServicePath,
