@@ -6,9 +6,10 @@ import NodeCache from 'node-cache';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
 import { IncomingMessage, ClientRequest, ServerResponse } from 'http';
 import { Environment } from '../src/Environment';
+import { getSitecoreLayoutServiceRoute } from '../src/AppGlobals';
 
 function getApiHost() {
-  const apiHost = Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false'?
+  const apiHost = Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false' ?
     'http://localhost:3042' :
     Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST;
   return apiHost;
@@ -37,7 +38,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
      * Some apps, like advanced samples, use a custom LS configuration,
      * e.g. /sitecore/api/layout/render/jss-advanced-react
      */
-    layoutServiceRoute: apiHost + Environment.reactAppProcessEnv.REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE,
+    layoutServiceRoute: apiHost + getSitecoreLayoutServiceRoute(),
     /**
      * apiKey: The Sitecore SSC API key your app uses.
      * Required.
@@ -57,6 +58,7 @@ export function getSitecoreProxyConfiguration(): ProxyConfig {
     pathRewriteExcludeRoutes: [
       '/dist',
       '/assets',
+      '/data',
       '/sitecore/api',
       '/api',
       '/-/jssmedia',

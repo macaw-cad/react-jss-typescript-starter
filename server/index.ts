@@ -55,7 +55,6 @@ logEnvironmentVariables();
 const config: ProxyConfig = getSitecoreProxyConfiguration();
 const server = express();
 const port: number = 3001;
-const proxyPort: number = parseInt(Environment.reactAppProcessEnv.REACT_APP_SITECORE_PROXY_PORT, 10);
 
 // ##### Initial approach: embed disconnected server in web server
 // if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
@@ -78,7 +77,7 @@ const proxyPort: number = parseInt(Environment.reactAppProcessEnv.REACT_APP_SITE
 // }
 
 prepServer(server, config, port);
-// ##### New approach: proxy to the http://localhost:proxyPort
+// ##### New approach: proxy to the http://localhost:3042
 if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
   const targetUrl = `http://localhost:3042`;
   console.log(`Sitecore disconnected proxy url: ${targetUrl}`);

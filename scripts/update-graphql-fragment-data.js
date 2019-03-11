@@ -10,9 +10,9 @@ import fs from 'fs';
 //
 // The `jss graphql:update` command should be executed when Sitecore templates related to the site are altered.
 
-console.log(`Updating GraphQL fragment type data from ${process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT}...`);
-
-fetch(process.env.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, {
+const graphqlEndpoint =  `/api/${process.env.REACT_APP_SITECORE_JSS_APP_NAME}?sc_apikey=${process.env.REACT_APP_SITECORE_API_KEY}`;
+console.log(`Updating GraphQL fragment type data from ${graphqlEndpoint}...`);
+fetch(graphqlEndpoint, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({

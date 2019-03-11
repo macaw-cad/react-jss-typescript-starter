@@ -21,6 +21,8 @@ export class Environment {
     }
 
     public static get reactAppProcessEnv(): ReactAppProcessEnv {
-        return process.env as unknown as ReactAppProcessEnv
+        const typedEnv =  process.env as unknown as ReactAppProcessEnv;
+        // console.log('Typed env: ', typedEnv);
+        return typedEnv;
     }
 }

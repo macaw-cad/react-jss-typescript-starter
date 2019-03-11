@@ -1,17 +1,20 @@
 const proxy = require('http-proxy-middleware');
 
 module.exports = (app) => {
-  const isDisconnected = /localhost/i.test(process.env.REACT_APP_SITECORE_API_HOST);
+  const isDisconnected = process.env.REACT_APP_SITECORE_CONNECTED === 'false';
 
   if (isDisconnected) {
+    console.log("==== Configuring Create React App proxy for disconnected mode");
+
     // when disconnected we proxy to the local faux layout service host,
     // see scripts/disconnected-mode-proxy.js
-    const proxyUrl = `http://localhost:${process.env.PROXY_PORT || 3042}/`;
+    const proxyUrl = 'http://localhost:3042';
     app.use(proxy('/sitecore', { target: proxyUrl }));
     app.use(proxy('/data/media', { target: proxyUrl }));
   } else {
-    // when in connected mode we want to proxy Sitecore paths
-    // off to Sitecore
+    console.log("==== Configuring Create React App proxy for connected mode");
+
+    // when in connected mode we want to proxy Sitecore paths off to Sitecore
 
     app.use(proxy('/sitecore', { target: process.env.REACT_APP_SITECORE_API_HOST }));
     // media items

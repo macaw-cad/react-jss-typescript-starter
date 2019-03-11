@@ -12,6 +12,7 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { RouteUrlParser } from '@sitecore-jss/sitecore-jss-proxy/types/RouteUrlParser';
 import { Environment } from '../src/Environment';
+import { getSitecoreGraphqlEndpoint } from '../src/AppGlobals';
 
 let indexTemplate; // index.html template file contents, imported on production, requested as http://localhost:3000?prestine in development
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
@@ -61,7 +62,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       The Apollo Client needs to be initialized to make GraphQL available to the JSS app.
       Not using GraphQL? Remove this, and the ApolloContext from `AppRoot`.
     */
-    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(Environment.reactAppProcessEnv.REACT_APP_SITECORE_GRAPHQL_ENDPOINT, true);
+    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(getSitecoreGraphqlEndpoint(), true);
 
     /*
       App Rendering

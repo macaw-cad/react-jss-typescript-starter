@@ -20,7 +20,7 @@ const proxyOptions = {
   appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
   watchPaths: ['./data'],
   language: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-  port: process.env.REACT_APP_SITECORE_PROXY_PORT,
+  port: 3042,
   // TODO, SvdO: how to handle reload if config not used anymore?
   onManifestUpdated: (manifest) => {
     // if we can resolve the config file, we can alter it to force reloading the app automatically

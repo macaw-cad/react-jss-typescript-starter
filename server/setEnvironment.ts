@@ -9,9 +9,6 @@ const environmentVariables = [
     { name: "REACT_APP_SITECORE_JSS_APP_NAME", mandatory: true },
     { name: "REACT_APP_SITECORE_API_KEY", mandatory: true },
     { name: "REACT_APP_SITECORE_API_HOST", mandatory: true },
-    { name: "REACT_APP_SITECORE_LAYOUT_SERVICE_ROUTE", mandatory: true },
-    { name: "REACT_APP_SITECORE_DICTIONARY_SERVICE_ROUTE", mandatory: true },
-    { name: "REACT_APP_SITECORE_GRAPHQL_ENDPOINT", mandatory: true },
     { name: "REACT_APP_SITECORE_DEFAULT_LANGUAGE", mandatory: true },
     { name: "REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES", mandatory: false },
     { name: "REACT_APP_SITECORE_ENABLE_DEBUG", mandatory: true },
@@ -38,7 +35,7 @@ export function setDevelopmentEnvironmentVariables(connected: boolean): void  {
 export function validateEnvironmentVariables() {
     environmentVariables.map(e => {
         if (!process.env[e.name] && e.mandatory) {
-            throw `Missing mandatory environment variable ${e.name}`; 
+            throw `Missing mandatory environment variable ${e}`; 
         }
     });
 }

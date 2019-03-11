@@ -214,10 +214,15 @@ export function setServerSideRenderingState(ssrState) {
  */
 function getRouteData(route: string, language: string) {
   // On server use specified Sitecore api host, from client go through proxy on same host
-  const host = Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
+  const host = Environment.isServer? 
+    Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
+    // Environment.serverUrl === 'http://localhost:3000' ?
+    //   'http://localhost:3042' : // when running using development server
+    //   Environment.serverUrl; // other url's (i.e. http://localhost:3001 - Node Express server) will proxy
+
   const fetchOptions = {
     layoutServiceConfig: { host: host },
-    querystringParams: { sc_lang: language, sc_apikey: getSitecoreApiKey },
+    querystringParams: { sc_lang: language, sc_apikey: getSitecoreApiKey() },
     fetcher: dataFetcher,
   };
 
