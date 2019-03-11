@@ -21,7 +21,7 @@ start chrome http://localhost:2000
 GOTO DONE
 
 :NOTADMINISTRATOR
-@ECHO Run this script in a shell with administrator previleges
+@ECHO Run this script in a shell with administrator privileges
 
 :DONE
 

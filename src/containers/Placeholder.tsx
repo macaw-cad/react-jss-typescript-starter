@@ -43,7 +43,7 @@ export class PrivatePlaceholder extends React.Component<any, {}> {
 
     render() {
         let self = this;
-
+        console.log('RENDER');
         // If we have a props object called "placeholder" this is supplied by 
         // Sitecore so return the value in the placeholder key and ignore 
         // any of the static front end code in the file.
@@ -64,6 +64,8 @@ export class PrivatePlaceholder extends React.Component<any, {}> {
 
     renderFED() {
         let self = this;
+
+        console.log('RENDER FED');
 
         if (this.props.content) {
             // Todo: refactor for strict null checking
@@ -154,7 +156,7 @@ function renderReactPlaceholders({placeholders, children, name, placeholderIndex
         });
 
         // if a name or index is requested, only return this result
-        if ((reactChild.props.name && name) && reactChild.props.name === name
+        if ((reactChild && reactChild.props && reactChild.props.name && name) && reactChild.props.name === name
                 || typeof placeholderIndex !== 'undefined' && index === placeholderIndex) {
             returnOneChild = true;
             returnChildren = [];

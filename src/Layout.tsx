@@ -9,7 +9,7 @@ import './rootvars.css';
 // without needing extra CSS in the sample app. Remove it in package.json as well if it's removed here.
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/css/app.css';
-import logo from './assets/images/sc_logo.png';
+import logo from './assets/images/sitecore.svg';
 
 /*
   APP LAYOUT

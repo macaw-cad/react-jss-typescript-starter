@@ -23,7 +23,7 @@ const chokidar = require('chokidar');
 /* eslint-disable no-console */
 
 const componentFactoryPath = path.resolve('src/temp/componentFactory.ts');
-const componentRootPath = 'src/components';
+const componentRootPath = 'src/jsscomponents';
 
 const isWatch = process.argv.some((arg) => arg === '--watch');
 
@@ -73,7 +73,7 @@ function generateComponentFactory() {
       const importVarName = componentFolder.replace(/[^\w]+/g, '');
 
       console.debug(`Registering JSS component ${componentFolder}`);
-      imports.push(`import ${importVarName} from '../components/${componentFolder}';`);
+      imports.push(`import ${importVarName} from '../${componentRootPath.replace('src/', '')}/${componentFolder}';`);
       registrations.push(`components.set('${componentFolder}', ${importVarName});`);
     }
   });
