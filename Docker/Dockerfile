@@ -46,8 +46,10 @@ COPY --from=build-stage /app/build/ /app/build
 # Copy the Node Express server
 COPY --from=build-stage /app/build.server/ /app/build.server
 
-# Copy the disconnected mode proxy server
-COPY --from=build-stage /app/scripts/disconnected-mode-proxy.js /app/build.server
+# Copy the disconnected mode proxy server and install dependencies
+COPY --from=build-stage /app/server.disconnectedproxy/ /app/server.disconnectedproxy
+WORKDIR /app/server.disconnectedproxy
+RUN npm install
 
 # Copy the data/sitecore for running offline
 COPY --from=build-stage /app/data/ /app/data

@@ -93,6 +93,8 @@ prog
           addr: 80,
           host_header: layoutServiceHost.replace('http://','').replace('https://','')
         });
+        logger.info('Running connected');
+
         logger.info(`Ngrok url: ${url} exposing the internal url ${layoutServiceHost} for consumption by locally running Docker container`);
       }
 
@@ -121,7 +123,7 @@ prog
           `-e`, `REACT_APP_SITECORE_DEFAULT_LANGUAGE=en`,
           `-e`, `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=`,
           `-e`, `REACT_APP_SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
-          `-e`, `REACT_APP_SITECORE_CONNECTED=${(options.disconnected? 'true' : 'false')}`,
+          `-e`, `REACT_APP_SITECORE_CONNECTED=${(options.disconnected? 'false' : 'true')}`,
           `-p`, `${options.port}:3001`,
           imageName
         ],

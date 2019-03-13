@@ -17,6 +17,25 @@ import { getSitecoreGraphqlEndpoint } from '../src/AppGlobals';
 let indexTemplate; // index.html template file contents, imported on production, requested as http://localhost:3000?prestine in development
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
   indexTemplate = require('../build/index.html');
+  [
+    'REACT_APP_NAME',
+    'REACT_APP_APPINSIGHTS_KEY',
+    'REACT_APP_BUILDVERSION',
+    'REACT_APP_ENVIRONMENT',
+    'REACT_APP_ENVIRONMENTCONNECTIONS',
+    'REACT_APP_ADDITIONALSETTINGS',
+
+    'REACT_APP_SITECORE_JSS_APP_NAME',
+    'REACT_APP_SITECORE_API_KEY',
+    'REACT_APP_SITECORE_API_HOST',
+    'REACT_APP_SITECORE_DEFAULT_LANGUAGE',
+    'REACT_APP_SITECORE_ENABLE_DEBUG',
+    'REACT_APP_SITECORE_CONNECTED',
+    'REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES'
+  ].map((envName: string) => {
+    const value: string = process.env[envName]? process.env[envName] : '';
+    indexTemplate = indexTemplate.replace(`##${envName}##`, value);
+  });
 }
 /** Asserts that a string replace actually replaced something */
 function assertReplace(string: string, value: string, replacement: string): string {
