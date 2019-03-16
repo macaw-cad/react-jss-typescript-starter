@@ -33,6 +33,9 @@ COPY Docker/sshd_config /etc/ssh/
 # Install PM2
 RUN npm install -g pm2
 
+# PM2 process script
+COPY Docker/process.yml /app/
+
 # Entry point script
 COPY Docker/init.sh /usr/local/bin/init.sh
 RUN chmod u+x /usr/local/bin/init.sh

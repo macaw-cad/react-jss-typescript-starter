@@ -10,21 +10,43 @@
 /* eslint-disable no-console */
 
 const fs = require('fs');
-const path = require('path');
-const { createDefaultDisconnectedServer } = require('@sitecore-jss/sitecore-jss-dev-tools');
+const Express = require('express');
+const { createDisconnectedDictionaryService, createDisconnectedLayoutService } = require('@sitecore-jss/sitecore-jss-dev-tools');
 
-const touchToReloadFilePath = 'src/temp/config.js';
+function loadManifestSync(language) {
+  const manifestPath = `${process.cwd()}/sitecore/manifest/${language}/sitecore-import.json`;
 
-const proxyOptions = {
-  appRoot: path.join(__dirname, '..'),
-  appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
-  watchPaths: ['./data'],
-  language: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-  port: 3042
-};
+  if (!fs.existsSync(manifestPath)) {
+    console.error(`File ${manifestPath} is missing`);
+  }
 
-// Need to customize something that the proxy options don't support?
-// createDefaultDisconnectedServer() is a boilerplate that you can copy from
-// and customize the middleware registrations within as you see fit.
-// See https://github.com/Sitecore/jss/blob/master/packages/sitecore-jss-dev-tools/src/disconnected-server/create-default-disconnected-server.ts
-createDefaultDisconnectedServer(proxyOptions);
+  const manifestInstance = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  return manifestInstance;
+}
+
+let manifestInstance = loadManifestSync('en');
+const layoutService = createDisconnectedLayoutService({
+  manifest: manifestInstance
+});
+
+// creates a fake version of the Sitecore Dictionary Service that is powered by your disconnected manifest file
+const dictionaryService = createDisconnectedDictionaryService({
+  manifest: manifestInstance,
+  manifestLanguageChangeCallback: (language) => {
+    const newManifest = loadManifestSync(language); // TODO: only useful for single user?
+    layoutService.updateManifest(newManifest);
+    dictionaryService.updateManifest(newManifest);
+  }
+});
+
+const app = Express();
+
+// attach our disconnected service mocking middleware to express
+app.use('/assets', Express.static(`${process.cwd()}/assets`));
+app.use('/data/media', Express.static(`${process.cwd()}/data/media`));
+app.use('/sitecore/api/layout/render', layoutService.middleware);
+app.use('/sitecore/api/jss/dictionary/:appName/:language', dictionaryService.middleware);
+
+app.listen(3042);
+
+console.log(`JSS Disconnected-mode Proxy is listening on port 3042`);

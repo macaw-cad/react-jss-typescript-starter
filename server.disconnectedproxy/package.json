@@ -16,6 +16,7 @@
   "dependencies": {
     "@sitecore-jss/sitecore-jss-dev-tools": "^11.0.2",
     "@sitecore-jss/sitecore-jss-proxy": "^11.0.2",
+    "chalk": "^2.4.2",
     "express": "^4.16.4"
   }
 }

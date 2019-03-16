@@ -138,7 +138,7 @@
     "jss": "jss",
     "start": "npm run start:disconnected",
     "start:disconnected": "env-cmd .env.disconnected npm-run-all --parallel start:react start:proxy start:watch-components",
-    "start:connected": "env-cmd .env.connected npm-run-all --serial scjss-verify-setup --parallel start:react start:watch-components",
+    "start:connected": "env-cmd .env.connected npm-run    -all --serial scjss-verify-setup --parallel start:react start:watch-components",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
     
     "serve": "npm run server:disconnected",
@@ -149,8 +149,10 @@
     "build-server:development:watch": "npm run build-server:development && npx chokidar server/*.ts server.bundle/*.tsx src/** -c \"npm run build-server:development\"",
     "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --mode development --config server/server.webpack.config.js\"",
     "build-server:production": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server/server.webpack.config.js\"",
-    
-    "build": "env-cmd .env.production npm-run-all --serial build:client build:serverbundle build-server:production",
+    "build:manifest:en": "jss manifest --includeContent --includeDictionary --language en --manifestOutputPath ./sitecore/manifest/en",
+    "build:manifest:dk": "jss manifest --includeContent --includeDictionary --language dk --manifestOutputPath ./sitecore/manifest/dk",
+    "build:manifest": "npm run build:manifest:en",
+    "build": "env-cmd .env.production npm-run-all --serial build:client build:serverbundle build-server:production build:manifest",
     
     "run-build:connected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:connected",
     "run-build:disconnected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
@@ -159,7 +161,7 @@
     "run-build:server.disconnectedproxy": "env-cmd .env.disconnected node server.disconnectedproxy/disconnected-mode-proxy.js",
     
     "scaffold": "node scripts/scaffold-component.js",
-    "start:react": "react-scripts start",
+    "start:react": "env-cmd .env.disconnected react-scripts start",
     "start:proxy": "node scripts/disconnected-mode-proxy.js",
     "start:watch-components": "node scripts/generate-component-factory.js --watch",
     "build:client": "cross-env-shell PUBLIC_URL=$npm_package_config_sitecoreDistPath \"react-scripts build\"",
@@ -169,7 +171,7 @@
     "bootstrap:connected": "node scripts/bootstrap.js",
     "bootstrap:disconnected": "node scripts/bootstrap.js --disconnected",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject-dont-do-this": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",
