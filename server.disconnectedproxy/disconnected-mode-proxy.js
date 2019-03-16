@@ -20,23 +20,7 @@ const proxyOptions = {
   appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
   watchPaths: ['./data'],
   language: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-  port: 3042,
-  // TODO, SvdO: how to handle reload if config not used anymore?
-  onManifestUpdated: (manifest) => {
-    // if we can resolve the config file, we can alter it to force reloading the app automatically
-    // instead of waiting for a manual reload. We must materially alter the _contents_ of the file to trigger
-    // an actual reload, so we append "// reloadnow" to the file each time. This will not cause a problem,
-    // since every build regenerates the config file from scratch and it's ignored from source control.
-    if (fs.existsSync(touchToReloadFilePath)) {
-      const currentFileContents = fs.readFileSync(touchToReloadFilePath, 'utf8');
-      const newFileContents = `${currentFileContents}\n// reloadnow`;
-      fs.writeFileSync(touchToReloadFilePath, newFileContents, 'utf8');
-
-      console.log('Manifest data updated. Reloading the browser.');
-    } else {
-      console.log('Manifest data updated. Refresh the browser to see latest content!');
-    }
-  },
+  port: 3042
 };
 
 // Need to customize something that the proxy options don't support?

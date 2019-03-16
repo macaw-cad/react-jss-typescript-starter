@@ -16,7 +16,7 @@ const environmentVariables = [
 ];
 
 export function setDevelopmentEnvironmentVariables(connected: boolean): void  {
-    const envPath = path.resolve(process.cwd(), `./.env.development.${(connected? 'connected' : 'disconnected')}`);
+    const envPath = path.resolve(process.cwd(), `./.env.${(connected? 'connected' : 'disconnected')}`);
     if (!fs.existsSync(envPath)) {
         const error = `Expected file ${envPath} containing development environment setting for ${(connected? 'connected' : 'disconnected')} mode is missing`;
         throw error;

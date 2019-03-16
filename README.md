@@ -103,18 +103,25 @@ Build production mode server bundle for deployment to Sitecore:
 
 `npm run build`
 
-### Build server application
+### Build web server application
 
 Build the NodeJS server application supporting server-side rendering:
 
 - For development: `npm run build-server:development` (contains source-map)
 - For production: `npm run build-server:production` (minified)
 
-Execute the application from the folder `build.server` using `node index.js`.
+Execute the application from the root folder `node build.server/index.js`.
 
 The `index.js` script contains all required code (server bundle with all components is embeded).
 
 Currently the Node web server runs in connected mode. Disconnected mode will come soon.
+
+### Debugging the solution
+
+When debugging the server-side code it might be useful to run just the the front-end in connected or disconnected mode:
+
+- connected mode: `npx env-cmd .env.connected npm run start:react`
+- disconnected mode: `npx env-cmd .env.disconnected npm run start:react`
 
 ### Ports in use
 

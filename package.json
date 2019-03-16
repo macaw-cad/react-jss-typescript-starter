@@ -136,11 +136,13 @@
     "scjss-verify-setup": "scjss-verify-setup",
     "hotel": "hotel",
     "jss": "jss",
-    "start": "env-cmd .env.disconnected npm-run-all --parallel start:react start:proxy start:watch-components",
+    "start": "npm run start:disconnected",
+    "start:disconnected": "env-cmd .env.disconnected npm-run-all --parallel start:react start:proxy start:watch-components",
     "start:connected": "env-cmd .env.connected npm-run-all --serial scjss-verify-setup --parallel start:react start:watch-components",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
     
-    "serve": "env-cmd .env.disconnected npm-run-all --serial build-server:development --parallel start build-server:development:watch serve:nodemon",
+    "serve": "npm run server:disconnected",
+    "serve:disconnected": "env-cmd .env.disconnected npm-run-all --serial build-server:development --parallel start build-server:development:watch serve:nodemon",
     "serve:connected": "env-cmd .env.connected npm-run-all --serial build-server:development --parallel start:connected build-server:development:watch serve:nodemon",
     "serve:nodemon": "npx nodemon -r source-map-support/register --config server/nodemon.json build.server/index.js",
     
@@ -150,10 +152,11 @@
     
     "build": "env-cmd .env.production npm-run-all --serial build:client build:serverbundle build-server:production",
     
-    "run-build:connected": "cross-env-shell NODE_ENV=production env-cmd .env.connected npm-run-all --parallel run-build:server",
-    "run-build:disconnected": "cross-env-shell NODE_ENV=production env-cmd .env.disconnected npm-run-all --parallel run-build:server run-build:server.disconnectedproxy",
-    "run-build:server": "node build.server/index.js",
-    "run-build:server.disconnectedproxy": "node server.disconnectedproxy/disconnected-mode-proxy.js",
+    "run-build:connected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:connected",
+    "run-build:disconnected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
+    "run-build:server:connected": "env-cmd .env.connected node build.server/index.js",
+    "run-build:server:disconnected": "env-cmd .env.disconnected node build.server/index.js",
+    "run-build:server.disconnectedproxy": "env-cmd .env.disconnected node server.disconnectedproxy/disconnected-mode-proxy.js",
     
     "scaffold": "node scripts/scaffold-component.js",
     "start:react": "react-scripts start",

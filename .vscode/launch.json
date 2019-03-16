@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "type": "node",
             "request": "launch",
@@ -91,6 +90,20 @@
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
             }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "SC disconnected [3042]",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/server.disconnectedproxy/disconnected-mode-proxy.js",
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         },
         {
             "type": "node",

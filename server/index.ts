@@ -36,8 +36,8 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
 }
 
 // In development set all required environment variables based on:
-// .env.development.disconnected: for disconnected mode
-// .env.development.connected: for connected mode
+// .env.disconnected: for disconnected mode
+// .env.connected: for connected mode
 // In production the environment variables are already defined.
 console.log("Application Express server with SSR");
 console.log(`Current working directory: ${process.cwd()}`);
