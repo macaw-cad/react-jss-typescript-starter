@@ -125,7 +125,7 @@ When debugging the server-side code it might be useful to run just the the front
 
 ### Ports in use
 
-Sometimes when doing development anbd stopping a running process a port remains still in use. I have this sometimes
+Sometimes when doing development and stopping a running process a port remains still in use. I have this sometimes
 when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
 kill the process using the (Windows only) command:
 
@@ -168,11 +168,10 @@ The `run` script does two things:
 - Kill a running previous image if needed
 - Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
 - Start the server application with server-side rendering on `http://localhost:8888`
-- **NOT WORKING YET**: Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
+- Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
 
-All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background.
+All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`. 
 
-NOTE: the /graphql page does not work on refresh in Docker container (to be solved)``
 # References
 
 - [JSS Documentation](https://jss.sitecore.com/docs)

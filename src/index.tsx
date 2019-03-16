@@ -6,9 +6,9 @@ import { setServerSideRenderingState } from './RouteHandler';
 import GraphQLClientFactory from './lib/GraphQLClientFactory';
 import i18ninit from './i18n';
 import { getSitecoreGraphqlEndpoint } from './AppGlobals';
-
 import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
 
+import __ignore__ from ''
 /* eslint-disable no-underscore-dangle */
 
 if (window && window.location && window.location.search === '?prestine') {

@@ -86,6 +86,7 @@
     "source-map-support": "^0.5.10",
     "storybook-readme": "4.0.5",
     "style-loader": "0.23.1",
+    "touch": "^3.1.0",
     "ts-node-dev": "^1.0.0-pre.32",
     "typescript": "^3.3.1"
   },
@@ -140,12 +141,10 @@
     "start:disconnected": "env-cmd .env.disconnected npm-run-all --parallel start:react start:proxy start:watch-components",
     "start:connected": "env-cmd .env.connected npm-run    -all --serial scjss-verify-setup --parallel start:react start:watch-components",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
-    
     "serve": "npm run server:disconnected",
     "serve:disconnected": "env-cmd .env.disconnected npm-run-all --serial build-server:development --parallel start build-server:development:watch serve:nodemon",
     "serve:connected": "env-cmd .env.connected npm-run-all --serial build-server:development --parallel start:connected build-server:development:watch serve:nodemon",
     "serve:nodemon": "npx nodemon -r source-map-support/register --config server/nodemon.json build.server/index.js",
-    
     "build-server:development:watch": "npm run build-server:development && npx chokidar server/*.ts server.bundle/*.tsx src/** -c \"npm run build-server:development\"",
     "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --mode development --config server/server.webpack.config.js\"",
     "build-server:production": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server/server.webpack.config.js\"",
@@ -153,13 +152,11 @@
     "build:manifest:dk": "jss manifest --includeContent --includeDictionary --language dk --manifestOutputPath ./sitecore/manifest/dk",
     "build:manifest": "npm run build:manifest:en",
     "build": "env-cmd .env.production npm-run-all --serial build:client build:serverbundle build-server:production build:manifest",
-    
     "run-build:connected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:connected",
     "run-build:disconnected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
     "run-build:server:connected": "env-cmd .env.connected node build.server/index.js",
     "run-build:server:disconnected": "env-cmd .env.disconnected node build.server/index.js",
     "run-build:server.disconnectedproxy": "env-cmd .env.disconnected node server.disconnectedproxy/disconnected-mode-proxy.js",
-    
     "scaffold": "node scripts/scaffold-component.js",
     "start:react": "env-cmd .env.disconnected react-scripts start",
     "start:proxy": "node scripts/disconnected-mode-proxy.js",
@@ -168,8 +165,6 @@
     "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server.bundle/server.bundle.webpack.config.js\"",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "graphql:update": "node -r babel-register -r dotenv/config ./scripts/update-graphql-fragment-data.js dotenv_config_path=.env.connected",
-    "bootstrap:connected": "node scripts/bootstrap.js",
-    "bootstrap:disconnected": "node scripts/bootstrap.js --disconnected",
     "test": "react-scripts test --env=jsdom",
     "eject-dont-do-this": "react-scripts eject"
   },
