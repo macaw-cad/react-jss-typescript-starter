@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Teaser } from '../../types/macaw/features/FeatureTypes';
-import PictureComponent from '../../containers/Picture/PictureComponent';
+import PictureComponent from '../../components/Picture/PictureComponent';
 import { CustomStyleParametersProps } from '../../types/CustomStyle';
 import { joinClasses } from '../../utils/Filters';
-import CustomStyle from '../../containers/CustomStyle';
-import Heading from '../../containers/Heading';
+import CustomStyle from '../../components/helpers/CustomStyle';
+import Heading from '../../components/Heading';
 
 interface TeaserProps extends Teaser {
     parameters: any;

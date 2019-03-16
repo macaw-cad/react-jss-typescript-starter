@@ -1,8 +1,8 @@
 import * as React from "react";
 import { CustomStyleParametersProps } from "../../types/CustomStyle";
 import { Headings } from '../../types/macaw/Headings';
-import CustomStyle from '../../containers/CustomStyle';
-import Heading from '../../containers/Heading';
+import CustomStyle from '../../components/helpers/CustomStyle';
+import Heading from '../../components/Heading';
 
 interface Props {
     title: string;

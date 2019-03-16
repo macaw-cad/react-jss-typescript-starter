@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, Placeholder } from '@sitecore-jss/sitecore-jss-react';
-import CustomStyle from '../../containers/CustomStyle';
+import CustomStyle from '../../components/helpers/CustomStyle';
 import { joinClasses } from '../../utils/Filters';
 const uuidv1 = require('uuid/v1');
 

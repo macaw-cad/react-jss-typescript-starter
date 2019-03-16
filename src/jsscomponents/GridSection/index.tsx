@@ -2,8 +2,8 @@ import * as React from 'react';
 import { BreakPoints } from '../../types/macaw/BreakPoints';
 import { Headings } from '../../types/macaw/Headings';
 import Image from '../../types/Image';
-import CustomStyle from "../../containers/CustomStyle";
-import { Placeholder } from "../../containers/Placeholder";
+import CustomStyle from "../../components/helpers/CustomStyle";
+import { Placeholder } from "../../components/Placeholder";
 import SectionTitle from './GridSectionTitle';
 
 export interface SectionProps {
