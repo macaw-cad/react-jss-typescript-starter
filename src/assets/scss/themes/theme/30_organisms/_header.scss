@@ -1,0 +1,287 @@
+#root, .story-body {
+    margin: 0 !important;
+}
+
+.o-header {
+    position: fixed;
+    display: flex;
+    align-items: stretch;
+    height: rem($headerMobileHeight);
+    width: 100%;
+    transition: background .2s linear;
+    z-index: $zindexTooltip;
+
+    // for sitecore edit mode
+    .editmode & {
+        position: static !important;
+    }
+
+    .sitecore {
+        fill:black;
+    }
+
+    @include mq("M") {
+        height: rem($headerHeight);
+    }
+
+    .m-section { align-items: stretch; }
+    .m-grid { height: 100%; }
+    [class*="m-grid__"] { justify-content: center; }
+    a { transition: 0s; text-decoration: none; }
+    
+    // normal + hover version
+    &, &:hover {
+        background-color: white;
+        color: $color-text;
+        box-shadow: 0 3px 4px rgba(0,0,0,.12);
+
+        .sitecore {
+            fill:black;
+        }
+    
+        .is-selected {
+            color: $color-highlight;
+        }
+    }
+
+    // over image version
+    &--transparent:not(&--openmenu):not(:hover) {
+        background-color: transparent;
+        color: white;
+        text-shadow: 2px 0 3px rgba(0, 0, 0, 0.486);
+        box-shadow: 0 3px 4px rgba(0,0,0,0);
+
+        .sitecore {
+            fill:white;
+        }
+        
+        .is-selected {
+            color: inherit;
+            text-decoration: underline;
+        }
+    }
+
+    @at-root a#{&}__logo { 
+        margin-left: $half-spacing;
+        opacity: 1;
+        transition: opacity .5s linear;
+
+        &, &:visited, &:link, &:hover, &:active {
+            color: inherit;
+        }
+
+        @include mq("M") {
+            margin-left: $base-spacing;
+        }
+
+        svg {
+            display: block;
+            width: rem(62px);
+            height: rem(10px);
+            fill: currentColor;
+            
+            @include mq("M") {
+                width: rem(90px);
+                height: rem(15px);
+            }
+        }
+
+        .mm-opening & {
+            opacity: 0;
+            transition: opacity .2s .2s linear;
+        }
+    }
+
+
+    // Main navigation
+    &__menu {
+        display: none;
+        height: 100%;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: rem(18px);
+        font-weight: 600;
+
+        @include mq("M") { display: flex; }
+
+        > .a-list {
+            height: 100%;
+            padding: 0 $half-spacing;
+        }
+
+        li:hover {
+            text-decoration: underline;
+        }
+
+        a, span {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            color: inherit;
+            padding: 0 $half-spacing;
+        }
+    }
+
+    &__lang {
+
+        .o-header__menu &:hover {
+            text-decoration: none;
+        }
+
+        a, span {
+            display: inline-flex;
+            padding-right: 0;
+            padding-left: $half-spacing/4;
+
+            &:first-child {
+                padding-left: $half-spacing;
+            }
+            
+            &:last-child {
+                padding-right: $half-spacing;
+            }
+        }
+
+        span {
+            cursor: default;
+            opacity: .35;
+        }
+
+        a {
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__submenu {
+        position: fixed;
+        overflow: hidden;
+        left: 0;
+        right: 0;
+        top: rem(80px);
+        display: block;
+
+        &.is-closed {
+            display: none;
+        }
+
+        > .a-list {
+            display: flex;
+            height: rem(109px);
+            justify-content: center;
+            align-items: center;
+            background: $color-text;
+            color: white;
+            font-weight: normal;
+        }
+
+        li { height: rem(109px); }
+    }
+    
+    // mobile menu open
+    &__btn-open {
+        position: fixed;
+        height: rem(30px);
+        padding: 0 $half-spacing;
+        margin-top: rem(0px);
+        right: 0;
+        display: flex;
+        align-items: center;
+        transition: transform .35s ease;
+
+        &, &:visited, &:link {
+            color: inherit;
+        }
+
+        @include mq('M') {
+            display: none;
+        }
+
+        svg {
+            display: block;
+            width: rem(24px);
+            height: rem(11px);
+        }
+        
+        .mm-opening & {
+            transform: translateX( calc( #{rem(50px)} - 100vw));
+            opacity: 0;
+            transition: transform .35s ease, opacity .35s .5s ease-in;
+        }
+    }
+    
+    // mobile menu close
+    &__btn-close {
+        position: fixed;
+        height: rem(54px);
+        padding: 0 $half-spacing;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        display: none;
+        align-items: center;
+        animation: revealClose 1s ease-in;
+        pointer-events: none;
+        z-index: $zindexModal;
+
+        &, &:visited, &:link {
+            color: $color-white;
+        }
+
+        .mm-opening & {
+            display: flex;
+        }
+
+        @include mq('M') {
+            display: none;
+        }
+
+        svg {
+            display: block;
+            width: rem(20px);
+            height: rem(20px);
+        }
+
+        @keyframes revealClose {
+            0% { opacity: 0; transform: scale(.3); }
+            70% { opacity: 0; }
+            80% {  transform: scale(.3);}
+        }
+    }
+
+    // mobile menu
+    &__mobile {
+
+        .o-header & {
+            display: none;
+        }
+    }
+	
+	// search button
+	@at-root a#{&}__search {
+        opacity: 1;
+        transition: opacity .5s linear;
+
+        &, &:visited, &:link, &:hover, &:active {
+            color: inherit; // IE11 issue?
+        }
+
+        svg {
+            display: block;
+            width: rem(16px);
+            height: rem(16px);
+            fill: currentColor; // IE11 issue?
+            
+            @include mq("M") {
+                width: rem(16px);
+                height: rem(16px);
+            }
+        }
+
+        .mm-opening & {
+            opacity: 0;
+            transition: opacity .2s .2s linear;
+        }
+    }
+}

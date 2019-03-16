@@ -66,9 +66,12 @@
 @import '20_molecules/nav';
 @import '20_molecules/teaserblock';
 @import '20_molecules/teasertopic';
+@import '20_molecules/markdown';
 
 // Umbrella component styling
-@import '20_molecules/header';
+@import '30_organisms/header';
+@import '30_organisms/hero';
+@import '30_organisms/footer';
 @import '../../libs/20_molecules/nav';
 
 // Organisms

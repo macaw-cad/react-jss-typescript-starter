@@ -1,23 +1,17 @@
 import * as React from 'react';
-import { Text } from '@sitecore-jss/sitecore-jss-react';
 
-type {{ properCase name }}PropsFields = {
-  heading: {
-    value?: string;
-    editable?: string;
-  } 
-}
-type {{ properCase name }}Props = {
-  fields: {{ properCase name }}PropsFields;
+interface Props {
 };
 
-type {{ properCase name }}AllProps = {{ properCase name }}Props;
+interface State {
+};
 
-const {{ properCase name }}: React.SFC<{{ properCase name }}AllProps> = (props: {{ properCase name }}AllProps) => (
-  <div>
-    <p>{{ properCase name }} Component</p>
-    <Text field={props.fields.heading} />
-  </div>
-);
+class {{ properCase name }} extends React.Component<Props, State> {
+    render() {
+        return (
+            <div></div>
+        )
+    }
+};
 
 export default {{ properCase name }};

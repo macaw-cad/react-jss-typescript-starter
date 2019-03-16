@@ -1,7 +1,9 @@
 .m-section {
-  position: relative;
-  margin: 0 auto;
-  background-position: center;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  flex-flow: column wrap;
 
   // solves problem with margins inside the sections
   &::before,

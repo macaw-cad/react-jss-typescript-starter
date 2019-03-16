@@ -5,6 +5,88 @@ $scopes: (
   '--#{$theme}'
 );
 
+///////////////////////////////////////////////
+//
+// vars
+//
+///////////////////////////////////////////////
+
+// font basics
+$base-fontsize:			14px;
+$base-lineheight:		1.75;
+
+// fontstacks
+$default-font:	"Asap", Helvetica, Arial, sans-serif;
+$alt-font:		"Alegreya Sans SC", "Times New Roman", Times, Baskerville, Georgia, serif;
+
+// standard sizing
+$base-spacing:		14px;
+$half-spacing:		$base-spacing/2;
+$double-spacing:	$base-spacing*2;
+
+// z-indexes
+$zindexDropdown: 		1000;
+$zindexPopover: 		1010;
+$zindexTooltip: 		1020;
+$zindexModalBackdrop: 	1030;
+$zindexModal: 			1040;
+
+// slightly kinda random picked number for max. width of regular site content
+$max-site-width:		1110px;
+// content has a different max width
+$max-content-width: 	740px;
+
+// mediaquery breakpoints
+/*
+   these general breakpoints are in principle only to be used in the layout grid
+   the breakpoints are used 'mobile first'
+   !! components should have their own breakpoints defined by their unique design !!
+*/
+$breakpoints: (
+	"S":	650px,
+	"M":	1024px,
+	"L":	$max-site-width
+);
+
+/* =============================================================================
+   Grid config
+   ========================================================================== */
+
+	$use-grid:			true;
+
+	// grid cell naming
+	/* 
+		will construct:
+			.[$gridname]
+			.[$gridname]__[cellsizename],
+			.[$gridname]__[$breakpoints name][cellsizename] 
+	*/
+	$gridname:			"m-grid";
+	$gridcellname:		#{$gridname + "__"};
+
+	// grid gutter size
+	$grid-spacing:		$base-spacing;
+
+	// cell offsets
+	/* generates lots of extra classes, use only when needed */
+	$grid-offsets:		false;
+
+	// grid cell offset naming
+	/* will construct:
+		.[$offsetname]__[cellsizename]
+		.[$offsetname]__[$breakpoints name][cellsizename] 
+	*/
+	$offsetname:		"m-offset__";
+
+	// media query grid
+	/* will only render for mq's defined in $breakpoints */
+	$grid-responsive:	true;
+
+
+	////////////////////////////////////////////////////////
+	$headerHeight:			80px;
+  $headerMobileHeight:	54px;
+  
 // font basics
 $small-font-size: 14px;
 

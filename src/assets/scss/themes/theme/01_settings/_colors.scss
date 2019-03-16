@@ -1,5 +1,62 @@
 // This file is site specific
 
+
+$color-white:			#fff;
+$color-black:			#000;
+
+// macaw colors
+
+$color-turbo:           #ffea00;
+$color-kournikova:      #ffed73;
+$color-gold:            #fbd200;
+$color-corn:            #f2c007;
+$color-armadillo:       #403e36;
+$color-desert-storm:    #f7f7f6;
+$color-celeste:         #cdcdc6;
+$color-lemon-grass:     #9e9e93;
+$color-viking:          #5bc2df;
+$color-deep-cerulean:   #00809e;
+$color-viridian:        #407f6e;
+$color-asparagus:       #649850;
+$color-regent-st-blue:  #a5d4e6;
+$color-neptune:         #7dafbe;
+$color-acapulco:        #73a994;
+$color-norway:          #a0bb9a;
+$color-burnt-sienna:	#eb715f;
+$color-mulberry:		#c55f7f;
+$color-night-shadz:		#b13955;
+$color-russett:			#7e645b;
+$color-manhattan:		#f6b4a1;
+$color-careys-pink:		#d098a1;
+$color-contessa:		#c67072;
+$color-mongoose:		#bda286;
+
+
+// theme colors
+
+$color-thema1:          $color-celeste;      
+$color-thema2:          $color-careys-pink;
+$color-thema3:          $color-norway;
+$color-thema4:          $color-celeste;  
+$color-thema5:          $color-night-shadz;
+$color-thema6:          $color-viking;
+
+// UI colors
+
+$color-brand:           $color-turbo;
+$color-text:            $color-armadillo;
+$color-alert:           $color-night-shadz;
+$color-warning:         $color-burnt-sienna;
+$color-info:            $color-lemon-grass;
+$color-highlight:       $color-corn;
+$color-light:           $color-celeste;
+$color-background:      $color-desert-storm;
+$color-darkbackground:	$color-thema4;
+$color-link:			$color-armadillo;
+$color-link-inverted:	$color-manhattan;
+$color-blockquote:		$color-night-shadz;
+
+
 // Section default color
 $color-default-background: $color-contrast-primary;
 

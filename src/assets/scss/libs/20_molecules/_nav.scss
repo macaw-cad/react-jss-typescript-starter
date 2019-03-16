@@ -407,25 +407,36 @@ nav ul {
   display: inline-block;
 }
 
+.o-topmenu {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: inherit;
+  background-color: #fbd200 !important;
+  box-shadow: 0 7px 40px 0 rgba(0, 0, 0, 0.3);
+}
 nav.o-nav {
 
   position: relative;
-  width: 980px;
+  width: 100%;
   height: 700px;
   margin: 0 auto;
-  // background: red;
+
+
 
   #mega {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 920px;
+    width: 900px;
+    max-width: 920px;
     height: auto;
     padding: 20px 30px;
-    background: rgb(39, 39, 39);
+    background: rgb(54, 54, 54);
     flex-direction: row;
     flex-wrap: wrap;
     display: none;
+    box-shadow: 0 7px 40px 0 rgba(53, 53, 53, 0.3);
   }
 
   & ul#menu {
@@ -468,6 +479,14 @@ nav.o-nav {
       position: relative;
       display: inline-block;
 
+      &:hover {       
+        background: rgb(39, 39, 39);
+
+        & > a {
+          color: white !important;
+        }
+      }
+
       & ul {
         & a {
           font-size: .75em;
@@ -489,7 +508,6 @@ nav.o-nav {
 
         &:hover {
           background: rgb(39, 39, 39);
-          color: white;
 
           &>a {
             background: red;
