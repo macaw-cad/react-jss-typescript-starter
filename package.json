@@ -42,7 +42,6 @@
     "@storybook/react": "^4.1.4",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
-    "aphrodite": "^2.2.3",
     "apollo-cache-inmemory": "~1.3.12",
     "apollo-client": "~2.4.8",
     "apollo-link": "~1.2.6",
@@ -138,7 +137,6 @@
     "scjss-verify-setup": "scjss-verify-setup",
     "hotel": "hotel",
     "jss": "jss",
-
     "start": "npm run start:disconnected",
     "start:disconnected": "npm run bootstrap:disconnected && env-cmd .env.disconnected npm-run-all --parallel start:react:disconnected start:proxy start:watch-components",
     "start:connected": "npm run scjss-verify-setup && npm run bootstrap:connected && env-cmd .env.connected npm-run-all --parallel start:react:connected start:watch-components",
@@ -147,12 +145,10 @@
     "start:proxy": "node scripts/disconnected-mode-dev-proxy.js",
     "start:watch-components": "node scripts/generate-component-factory.js --watch",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
-
     "serve": "npm run serve:disconnected",
     "serve:disconnected": "npm run bootstrap:disconnected && env-cmd .env.disconnected npm-run-all --serial build-server:development --parallel start:disconnected build-server:development:watch serve:nodemon",
     "serve:connected": "npm run scjss-verify-setup && npm run bootstrap:connected && env-cmd .env.connected npm-run-all --serial build-server:development --parallel start:connected build-server:development:watch serve:nodemon",
     "serve:nodemon": "npx nodemon -r source-map-support/register --config server/nodemon.json build.server/index.js",
-
     "build": "env-cmd .env.production npm-run-all --serial build:client build:serverbundle build-server:production build:manifest",
     "build-server:development:watch": "npm run build-server:development && npx chokidar server/*.ts server.bundle/*.tsx src/** -c \"npm run build-server:development\"",
     "build-server:development": "cross-env-shell NODE_ENV=development \"webpack --mode development --config server/server.webpack.config.js\"",
@@ -163,17 +159,13 @@
     "build:client": "cross-env-shell PUBLIC_URL=$npm_package_config_sitecoreDistPath \"react-scripts build\"",
     "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server.bundle/server.bundle.webpack.config.js\"",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
-
-
     "run-build:disconnected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
     "run-build:connected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:connected",
     "run-build:server:disconnected": "env-cmd .env.disconnected node build.server/index.js",
     "run-build:server.disconnectedproxy": "env-cmd .env.disconnected node server.disconnectedproxy/disconnected-mode-proxy.js",
     "run-build:server:connected": "env-cmd .env.connected node build.server/index.js",
-
     "bootstrap:connected": "node scripts/bootstrap.js",
     "bootstrap:disconnected": "node scripts/bootstrap.js --disconnected",
-
     "scaffold": "node scripts/scaffold-component.js",
     "graphql:update": "node -r babel-register -r dotenv/config ./scripts/update-graphql-fragment-data.js dotenv_config_path=.env.connected",
     "test": "react-scripts test --env=jsdom",

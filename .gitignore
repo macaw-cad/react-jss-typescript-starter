@@ -24,3 +24,5 @@ node_modules
 
 scjssconfig.json
 *.deploysecret.config
+.env.connected
+.env.disconnected
