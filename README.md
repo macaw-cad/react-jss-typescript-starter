@@ -59,7 +59,7 @@ The above command deploys the build artifacts in the folder `build` from your ap
 
 The above deployment process is slow and requires a Sitecore server to deploy to. 
 
-There is also another approach that can be started with the command `npm run serve`. The app is now served using a Node Express based web server in development mode with the following features:
+There is also another approach that can be started with the command `npm run serve:connected`. The app is now served using a Node Express based web server in development mode with the following features:
 
 1. Provides server-side rendering without creating a production build and costly deployments to Sitecore first
 2. JavaScript bundle required for running the web-server (including all code for the React components) is rebuilt on each code change
@@ -69,19 +69,20 @@ There is also another approach that can be started with the command `npm run ser
 6. The server-side rendering can also be done in disconnected mode using `npm run serve:disconnected`
 
 The Node Express web server can be configured through [environment variables](#node_config) as described below.
-In `npm run serve` we use `nodemon` which watches for code changes. Nodemon is configured through [nodemon.json](./server/nodemon.json) which contains the environment variabnle settings.
+In `npm run serve` we use `nodemon` which watches for code changes. Nodemon is configured through [nodemon.json](./server/nodemon.json).
 ## <a name="node_config"></a>Configuring the Node Express web server
 
 The Node Express web server is configured through environment variables.
 
 | Parameter                              | Description                                                                                                                                       |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SITECORE_API_HOST`                    | Sitecore instance host name. Should be HTTPS in production.                                                                                       |
-| `SITECORE_LAYOUT_SERVICE_ROUTE`        | Optional. The path to layout service for the JSS application. Defaults to `/sitecore/api/layout/render/jss`.                                      |
-| `SITECORE_API_KEY`                     | The Sitecore SSC API key your app uses.                                                                                                           |
-| `SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in [config.ts](./server/config.ts). |
-| `SITECORE_ENABLE_DEBUG`                | Optional. Writes verbose request info to stdout for debugging. Defaults to `false`.                                                               |
-| `SITECORE_PRODUCTION_DISCONNECTED`     | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'`.                         |
+| `REACT_APP_SITECORE_JSS_APP_NAME`                | Sitecore app name.
+| `REACT_APP_SITECORE_API_KEY`                     | The Sitecore SSC API key your app uses.                                                                                                           |
+| `REACT_APP_SITECORE_API_HOST`                    | Sitecore instance host name (should be HTTPS in production) when connected, http://localhost:3042 is disconnected.                                                                                       |
+| `REACT_APP_SITECORE_DEFAULT_LANGUAGE`            | Default language to use. |
+| `SITECORE_ENABLE_DEBUG`                | Writes verbose request info to stdout for debugging. Defaults to `false`.                                                               |
+| `REACT_APP_SITECORE_CONNECTED`     | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'`.                         |
+| `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in [config.ts](./server/config.ts). |
 
 ## Development scripts
 
