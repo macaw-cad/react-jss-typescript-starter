@@ -135,8 +135,8 @@ kill the process using the (Windows only) command:
 
 The solution contains scripts to build and run a Docker image containing the app locally.
 The `Dockerfile` used to build the Docker image can be found at `Docker/Dockerfile`. The
-Dockerfile is a multi-stage Dockerfile that builds the production version of the app and
-creates an image containing the app.
+Dockerfile is a multi-stage Dockerfile that builds the production version of the solution and
+creates an image containing the solution.
 
 The resulting Docker image has the following features:
 
@@ -165,12 +165,14 @@ The default port is 8888, so the website will be available on `http://localhost:
 
 The `run` script does two things:
 
-- Kill a running previous image if needed
+- Kill a running previous container if needed
 - Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
 - Start the server application with server-side rendering on `http://localhost:8888`
-- Run disconnected from Sitecore when ``--disconnected`` is specified. In this case the `data` folder is used.
+- Run disconnected from Sitecore when `--disconnected` is specified. In this case the `data` folder is used.
 
-All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`. 
+All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`.
+
+The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production) 
 
 # References
 

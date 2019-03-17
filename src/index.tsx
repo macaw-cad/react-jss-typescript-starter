@@ -8,13 +8,12 @@ import i18ninit from './i18n';
 import { getSitecoreGraphqlEndpoint } from './AppGlobals';
 import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
 
-import __ignore__ from ''
 /* eslint-disable no-underscore-dangle */
 
 if (window && window.location && window.location.search === '?prestine') {
     // Return the content for index.html similar as loading index.html from filesystem.
     // Can be used in development mode for server-side rendering to get the index.html.
-    // TODO SvdO:
+    // TODO SvdO: ts-ignore - we need to render somwething resulting in <div id="root"></div>.
     // @ts-ignore
     ReactDOM.render('', document.getElementById('root'));
 } else {
@@ -63,7 +62,7 @@ if (window && window.location && window.location.search === '?prestine') {
     App Rendering
   */
   // initialize the dictionary, then render the app
-  // note: if not making a multlingual app, the dictionary init can be removed.
+  // note: if not making a multilingual app, the dictionary init can be removed.
   i18ninit().then(() => {
     // HTML element to place the app into
     const rootElement = document.getElementById('root');

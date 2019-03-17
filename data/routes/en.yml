@@ -22,7 +22,7 @@ placeholders:
   jss-main:
   - componentName: Hero
     fields:
-      heading: Serge's hero component!
+      heading: Serge's hero component!!!!
   - componentName: ContentBlock
     fields:
       heading: Welcome to Sitecore JSS

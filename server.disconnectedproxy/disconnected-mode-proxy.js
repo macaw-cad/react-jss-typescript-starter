@@ -3,8 +3,8 @@
   the app copies of the Sitecore APIs it depends on (layout service, dictionary service, content service)
   to talk to so that the app can run using the locally defined disconnected data.
 
-  This is accomplished by spinning up a small Express server that mocks the APIs, and then
-  telling the dev server to proxy requests to the API paths to this express instance.
+  This is accomplished by spinning up a small Express server that mocks the APIs, and let
+  the web server proxy requests to the API paths to this express instance.
 */
 
 /* eslint-disable no-console */
@@ -17,11 +17,15 @@ function loadManifestSync(language) {
   const manifestPath = `${process.cwd()}/sitecore/manifest/${language}/sitecore-import.json`;
 
   if (!fs.existsSync(manifestPath)) {
-    console.error(`File ${manifestPath} is missing`);
+    throw(`Sitecore manifest file '${manifestPath}' is missing`);
   }
 
-  const manifestInstance = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  return manifestInstance;
+  try {
+    const manifestInstance = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    return manifestInstance;
+  } catch(error) {
+    throw(`Sitecore manifest file '${manifestPath}' could not be processed: ${error}`);
+  }
 }
 
 let manifestInstance = loadManifestSync('en');
@@ -29,7 +33,7 @@ const layoutService = createDisconnectedLayoutService({
   manifest: manifestInstance
 });
 
-// creates a fake version of the Sitecore Dictionary Service that is powered by your disconnected manifest file
+// creates a fake version of the Sitecore Dictionary Service that is powered by the disconnected manifest file
 const dictionaryService = createDisconnectedDictionaryService({
   manifest: manifestInstance,
   manifestLanguageChangeCallback: (language) => {
@@ -41,7 +45,7 @@ const dictionaryService = createDisconnectedDictionaryService({
 
 const app = Express();
 
-// attach our disconnected service mocking middleware to express
+// attach the disconnected service mocking middleware to express
 app.use('/assets', Express.static(`${process.cwd()}/assets`));
 app.use('/data/media', Express.static(`${process.cwd()}/data/media`));
 app.use('/sitecore/api/layout/render', layoutService.middleware);

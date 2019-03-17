@@ -1,3 +1,7 @@
+// This proxy configuration is used by create react app to modify the proxy workings.
+// See: https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development
+// Must be implementated in plain JavaScript.
+
 const proxy = require('http-proxy-middleware');
 
 module.exports = (app) => {
@@ -7,7 +11,7 @@ module.exports = (app) => {
     console.log("==== Configuring Create React App proxy for disconnected mode");
 
     // when disconnected we proxy to the local faux layout service host,
-    // see scripts/disconnected-mode-proxy.js
+    // see scripts/disconnected-mode-dev-proxy.js and server.disconnectedproxy\disconnected-mode-proxy.js
     const proxyUrl = 'http://localhost:3042';
     app.use(proxy('/sitecore', { target: proxyUrl }));
     app.use(proxy('/data/media', { target: proxyUrl }));
