@@ -13,6 +13,9 @@ variables:
   imageName: 'react-jss-typescript-starter'
 
 steps:
+- checkout: self
+  submodules: true
+  
 - script: |
     docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
     docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
