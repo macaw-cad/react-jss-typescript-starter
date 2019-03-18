@@ -11,12 +11,10 @@ pool:
 
 variables:
   imageName: 'react-jss-typescript-starter'
-  dockerId: 'svdoever'
-  pswd: '/eLxAsguOyEreDVKmNRBSGNFRA6VynDv'
 
 steps:
 - script: |
     docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
-    docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
+    docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName)
   displayName: 'docker build'
