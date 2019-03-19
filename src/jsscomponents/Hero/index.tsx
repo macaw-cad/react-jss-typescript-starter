@@ -38,14 +38,8 @@ class Hero extends React.Component<any> {
   render() {    
     return (
       <div id="hero" className="o-hero h-ph h-pv-d">	
-        <div className="o-hero__image">
-          <Image
-            field={this.props.fields.heroImage}
-            srcSet={[{ mw: 300 }, { mw: 100 }]}
-            sizes="(min-width: 960px) 300px, 100px"
-            className="img-fluid"
-          />
-          {/*<picture>
+        <div className="o-hero__image">          
+          <picture>
             <img 
               alt="Umbrella for Sitecore JSS"
               sizes="100vw"
@@ -54,7 +48,7 @@ class Hero extends React.Component<any> {
               /images/umbrella3.jpg?width=1280&height=532 1280w,				
               /images/umbrella4.jpg?width=1920&height=532 1920w"
               src="/images/umbrella3.jpg?width=1280&height=532"/>
-          </picture>  */}
+          </picture>
         </div>
         <div className="o-hero__wrapper">		
           <ul className="o-hero__breadcrumb a-list a-list--hor">
