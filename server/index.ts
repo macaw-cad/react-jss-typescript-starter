@@ -38,10 +38,10 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
 // In development set all required environment variables based on:
 // .env.disconnected: for disconnected mode
 // .env.connected: for connected mode
-// In production the environment variables are already defined.
+// In production the environment variables are already defined externally.
 console.log("Application Express server with SSR");
 console.log(`Current working directory: ${process.cwd()}`);
-console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`NODE_ENV: ${Environment.reactAppProcessEnv.NODE_ENV}`);
 
 const connected = process.argv.some((arg) => arg === '--connected');
 
@@ -53,48 +53,33 @@ validateEnvironmentVariables();
 logEnvironmentVariables();
 
 const config: ProxyConfig = getSitecoreProxyConfiguration();
-const server = express();
+const app = express();
 const port: number = 3001;
 
-// ##### Initial approach: embed disconnected server in web server
-// if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
-//   createDefaultDisconnectedServer({
-//     appRoot: path.join(__dirname, '..'),
-//     appName: Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME,
-//     watchPaths: ['./data'],
-//     language: Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
-//     port,
-//     server,
-//     afterMiddlewareRegistered: (expressInstance) => {
-//       // to make disconnected SSR work, we need to add additional middleware (beyond mock layout service) to handle
-//       // local static build artifacts, and to handle SSR by loopback proxying to the disconnected
-//       // layout service on the same express server
-//       prepServer(expressInstance, config, port);
-//     }
-//   });
-// } else {
-//   prepServer(server, config, port);
-// }
+// serve static files from public folder
+app.use('/images', express.static(path.join(process.cwd(), Environment.isProduction? 'build/images' : '/public/images')));
+app.use('/icons', express.static(path.join(process.cwd(), Environment.isProduction? 'build/icons' : '/public/icons')));
+app.use('/partners', express.static(path.join(process.cwd(), Environment.isProduction? 'build/partners' : '/public/partners')));
 
-prepServer(server, config, port);
-// ##### New approach: proxy to the http://localhost:3042
-if (Environment.reactAppProcessEnv.REACT_APP_SITECORE_CONNECTED === 'false') {
-  const targetUrl = `http://localhost:3042`;
-  console.log(`Sitecore disconnected proxy url: ${targetUrl}`);
-  let sitecoreDisconnectedServerProxy = proxy(
-    [/*'/assets', '/data/media',*/ '/sitecore/api/layout/render', '/sitecore/api/jss/dictionary'],
-    {
-      target: targetUrl,
-      pathRewrite: (path: string, req) => {
-        console.log(`PATH: ${path}`);
-        path = path.replace('sc_apikey=undefined', `sc_apikey=${Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY}`);
-        return path;
-      },
-      logLevel: 'debug'
-    }
-  );
-  server.use('/assets', express.static(path.join(process.cwd(), 'assets')));
-  server.use('/data/media', express.static(path.join(process.cwd(), 'data/media')));
+app.use(compression());
 
-  server.use(sitecoreDisconnectedServerProxy);
-}
+// turn off x-powered-by http header
+app.settings['x-powered-by'] = false;
+
+// Ignore (204 - no content) requests to /sockjs-node/ - is for development tooling client-side
+app.use('/sockjs-node/', (req, res) => res.status(204));
+
+// Serve static app assets from local /dist folder
+app.use(
+  `/dist/${process.env.REACT_APP_SITECORE_JSS_APP_NAME}/`,
+  express.static('./build', {
+    fallthrough: false, // force 404 for unknown assets under /dist/<appName>/
+  })
+);
+
+// For any other requests, we render app routes server-side and return them
+app.use('*', scProxy(renderView, config, urlRouteParser));
+
+app.listen(port, () => {
+  console.log(`Web server listening on port ${port}!`);
+});
