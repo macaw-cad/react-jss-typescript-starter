@@ -40,7 +40,7 @@ placeholders:
             fields:
               heading: Image
               sample1:
-                src: /data/media/img/sc_logo.png
+                src: /data/media/img/sitecore.svg
                 alt: Sitecore Logo
               sample2:
                 src: /data/media/img/jss_logo.png

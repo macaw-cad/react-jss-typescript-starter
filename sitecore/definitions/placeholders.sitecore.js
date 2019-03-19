@@ -10,6 +10,7 @@ import { Manifest } from '@sitecore-jss/sitecore-jss-manifest';
 export default function addPlaceholdersToManifest(manifest) {
   manifest.addPlaceholder(
     { name: 'jss-main', displayName: 'Main' },
+    { name: 'jss-grid', displayName: 'GridBuilder' },
     { name: 'page-structure-header', displayName: 'header', id: 'page-structure-header' },
     { name: 'page-structure-content', displayName: 'content', id: 'page-structure-content' },
     { name: 'page-structure-main', displayName: 'main', id: 'page-structure-main' },

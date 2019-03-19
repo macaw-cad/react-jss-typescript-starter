@@ -1,0 +1,381 @@
+.o-footer {
+	background-color: rgb(49, 49, 49);
+	box-shadow: -5px 0 10px rgba(0,0,0,.1);
+
+	svg {
+		width: rem(84px);
+		height: rem(18.4px);
+	}
+	.sitecore {
+		fill: #ffffff;
+	}
+
+	p, h6, div, span {
+		color: $color-celeste;
+	}
+	a {
+		color: $color-celeste;
+
+		&:hover, &:active {
+			color: lighten($color-link-inverted,10%);
+		}
+	}
+
+	&__nav {
+		@include mq("M") {
+			.m-grid__M9 { order: 2; }
+			.m-grid__12 { order: 1; }
+			.m-grid__M3 { order: 3; }
+			.o-footer__address { order: 1; }
+			.o-footer__social { order: 2; }
+		}
+	}
+
+	&__payoff {
+		text-align: center;
+		font-size: 1.25rem;
+
+		@include mq("S") {
+			text-align: left;
+			padding-top: $double-spacing;
+			padding-bottom: $double-spacing;
+			padding-left: $half-spacing;
+		}
+
+		@include mq("M") {
+			padding-left: $base-spacing;
+		}
+
+		svg {
+			width: rem(75px);
+			height: rem(13px);
+			display: inline-block;
+			vertical-align: baseline;
+			transform: translateY(.07em);
+		}
+
+		&text {
+			display: block;
+			white-space: nowrap;
+
+			@include mq("S") {
+				display: inline;
+				padding-left: .75em;
+			}
+		}
+	}
+	
+	&--payingoff &__payofftext span {
+		display: none;
+	}
+		
+	&--paidoff &__payofftext span {
+		display: inline;
+		animation: payoff1 2s linear;
+
+		&:last-child {
+			animation-name: payoff2;
+		}
+		
+	}
+	
+	@keyframes payoff1 {
+		0% { opacity: 0; }
+		72% { opacity: 0; }
+		75% { opacity: 1; }
+	}
+		
+	@keyframes payoff2 {
+		0% { opacity: 0; }
+		97% { opacity: 0; }
+	}
+
+	&__contact {
+		align-self: center;
+		padding: $base-spacing;
+
+		@include mq("S") {
+			align-self: flex-end;
+			padding-right: $half-spacing;
+			padding-top: $double-spacing;
+			padding-bottom: $double-spacing;
+		}
+
+		@include mq("M") {
+			padding-right: $base-spacing;
+		}
+
+		li:not(:first-child) {
+			margin-left: $base-spacing;
+
+			/* @include mq("S") { 
+				margin-left: $base-spacing;
+			} */
+
+			@include mq("M") { 
+				margin-left: $double-spacing;
+			}
+		}
+
+		a {
+			white-space: nowrap;
+			font-size: 1.12rem;
+
+			@include mq("M") { 
+				font-size: 1.25rem;
+			}
+		}
+	}
+
+	&__newsletter {
+		background: rgb(63, 63, 63);
+		padding: $base-spacing $half-spacing;
+
+		h6 {
+			font-size: 1em;
+			font-weight: bold;
+			margin-bottom: 0;
+		}
+		
+		@include mq("M") {
+			padding: $base-spacing;
+
+			p, h6 {
+				display: inline-block;
+			}
+
+			p::before {
+				content: "\002013";
+				padding: 0 .25em;
+			}
+		}
+
+		.btn {
+			color: $color-info;
+			background-color: $color-white;
+			background-image: none;
+			border: 1px solid $color-darkbackground;
+			font-weight: bold;
+			height: rem(46px);
+			width: 100%;
+
+			@include mq("M") {
+				width: calc(100% - 2px);
+				margin-top: .6rem;
+			}
+
+			&:focus, &:hover {
+				color: $color-text;
+				background-color: $color-white;
+				border-color: $color-text;
+			}
+		}
+	}
+
+	&__links {
+		margin-top: $base-spacing;
+				
+		@include mq("S") {
+			column-count: 2;
+			column-gap: $base-spacing;
+			margin-top: $double-spacing;
+			margin-left: $half-spacing;
+			margin-right: $half-spacing;
+		}
+		
+		@media screen and (min-width: em(750px,16px)) {
+			column-count: 3;
+		}
+
+		@include mq("M") {
+			margin-left: $base-spacing;
+			margin-right: $double-spacing;
+		}
+
+		&-group {
+			break-inside: avoid;
+			border-top: 1px solid $color-light;
+
+			&:last-child {
+				border-bottom: 1px solid $color-light;
+			}
+			
+			@include mq("S") {
+				margin-bottom: $base-spacing;
+				border: 0;
+				&:last-child { border: 0; }
+			}
+		}
+
+		h6 {
+			font-size: 1em;
+			font-weight: bold;
+			margin: 0;
+			padding: 1em $half-spacing;
+			cursor: pointer;
+
+			@include mq("S") {
+				padding: 0;
+				cursor: default;
+			}
+		}
+
+		.m-panel {
+
+			&.is-closed {
+				height: 0;
+				overflow: hidden;
+			}
+
+			@include mq("S") {
+				overflow: visible !important;
+				height: auto !important;
+				display: block !important;
+				transform: none !important;
+			}
+		}
+
+		ul {
+			display: flex;
+			padding: 0 $base-spacing 1em;
+
+			@include mq("S") {
+				padding: 0;
+				display: inline-flex;
+			}
+		}
+
+		a {
+			display: block;
+			text-decoration: none;
+			margin: 0;
+			padding: .35em 0;
+
+			@include mq("S") {
+				padding: 0;
+				display: inline-block;
+			}
+		}
+	}
+	
+	&__address {
+		padding: $half-spacing $base-spacing $double-spacing;
+		font-size: rem(11px);
+		text-align: center;
+
+		a {
+			text-decoration: none;
+			font-weight: bold;
+			display: inline-block;
+			padding-top: .5em;
+		}
+
+		@include mq("M") {
+			font-size: 1em;
+			text-align: left;
+			padding: $double-spacing $base-spacing $base-spacing;
+		}
+	}
+	
+	&__social {
+		padding: $base-spacing $base-spacing 0;
+		flex-direction: row;
+		align-self: center;
+
+		a {
+			display: block;
+			text-decoration: none;
+			padding: .75em;
+
+			span {
+				display: none;
+			}
+		}
+
+		.a-icon {
+			font-size: 1.2em;
+			width: 1em;
+			height: 1em;
+			display: inline-block;
+			vertical-align: text-bottom;
+			transform: translateY(-1px);
+		}
+
+		@include mq("M") {
+			padding-top: 0;
+			padding-bottom: $double-spacing;
+			flex-direction: column;
+			align-self: flex-start;
+
+			a {
+				padding: .35em 0;
+
+				span {
+					display: inline;
+				}
+			}
+
+			.a-icon {
+				font-size: 1em;
+				margin-right: .75em;
+			}
+		}
+	}
+
+	.m-grid--wide {
+		background: #000000;
+		color: $color-light;
+
+		.m-grid__M6 {
+			justify-content: center;
+		}
+	}
+
+	&__legal {
+		justify-content: center;
+		font-size: rem(11px);
+
+		@include mq("S") {
+			font-size: inherit;
+		}
+
+		@include mq("M") {
+			justify-content: flex-start;
+		}
+
+		li:not(:first-child)::before {
+			content: "|";
+			padding: 0 1em;
+			margin: auto;
+		}
+
+		a {
+			white-space: nowrap;
+			color: inherit;
+			text-decoration: none;
+		}
+	}
+
+	&__partners {
+		justify-content: center;
+		transform: scale(.7);
+
+		@include mq("S") {
+			transform: none;
+		}
+
+		@include mq("M") {
+			padding-top: $base-spacing;
+			justify-content: flex-end;
+		}
+			
+		li:not(:first-child) {
+			margin-left: 2rem;
+		}
+		
+		li, img {
+			display: block;
+			height: 36px;
+		}
+	}
+}

@@ -1,66 +1,43 @@
-.a-styled-list {
-  margin: 0;
-  padding: 0;
-  padding-left: (map-get($spacings, 3) + map-get($spacings, 1));
-  color: inherit;
-  text-align: left;
-  list-style: initial;
-  list-style-type: initial;
+.a-list, %a-list {
+	background: transparent none;
+	list-style: none;
+	font-size: 1em;
+	font-family: inherit;
+	line-height: inherit;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
 
-  li {
-    padding-left: 5px;
-    font-size: 14px;
-    line-height: rem(24px);
-    color: inherit;
-
-    @include mq('S') {
-      font-size: $base-fontsize;
-    }
-  }
-
-  .o-car-version & {
-    opacity: .7;
-    @include fallback-with-fixed-color(color, $color-shade-very-dark, $color-shade-very-dark-fixed);
-  }
+	> li {
+		padding: 0;
+		margin: 0;
+	}
+	
+	&--inline, &--inlinehor {
+		display: inline-flex;
+	}
+	
+	&--hor, &--inlinehor {
+		flex-direction: row;
+	}
 }
 
-.a-list {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-top: 1em;
-  margin-bottom: 1em;
+.a-definition {
+	display: inline-flex;
+	margin-bottom: rem(10px);
+
+	@include mq("M") {
+		margin-bottom: rem(5px);
+	}
+
+	dt {
+		padding-right: rem(3px);
+		font-weight: bold;
+	}
+	
+	dd {
+		margin-left: 0;
+	}
 }
 
-.a-list > li {
-  position: relative;
-  padding-left: 40px;
-  margin-left: 0 !important; // sass-lint:disable-line no-important
-  min-height: 2em;
-  line-height: 1.7em;
-}
-
-.a-list--checked {
-  margin-bottom: 2em;
-}
-
-.a-list--checked > li * {
-  margin: 0;
-  padding: 0;
-  line-height: 1.7em;
-}
-
-.a-list--checked > li {
-  @include webfont-icon-after('check');
-}
-
-.a-list--checked > li::after {
-  display: block;
-  position: absolute;
-  left: 15px;
-  top: .51em;
-  font-size: 13px;
-  color: $color-brand-primary;
-}

@@ -3,6 +3,8 @@ const config = require('./scjssconfig.json');
 const routes = require('./routeconfig.json');
 const yaml = require('write-yaml');
 const term = require('terminal-kit').terminal;
+const fs = require('fs');
+const path = require('path');
 
 var progressBar, progress = 0;
 
@@ -39,13 +41,13 @@ const processFields = (e) => {
             if (e[p].hasOwnProperty('fields')) {
                 //f[p] = { id: e[p].id };
                 let val = e[p].value;
-                if(typeof val !== 'undefined') {
+                if (typeof val !== 'undefined') {
                     f[p] = e[p].value;
-                } 
+                }
                 // else {
                 //     f[p] = e[p].value;
                 // }
-                
+
             }
             else if (e[p].value.hasOwnProperty('linktype')) {
                 delete e[p].value.id;
@@ -137,6 +139,211 @@ module.exports = function (plop) {
             templateFile: 'plop-templates/component.sitecore.hbs',
             force: true
         }]
+    });
+
+    const CommonFieldTypes = {
+        "Single-Line Text": "SingleLineText",
+        "Multi-Line Text": "MultiLineText",
+        "Rich Text": "RichText",
+        "Treelist": "ContentList",
+        "Droptree": "ItemLink",
+        "General Link": "GeneralLink",
+        "Image": "Image",
+        "File": "File",
+        "Number": "Number",
+        "Checkbox": "Checkbox",
+        "Date": "Date",
+        "Datetime": "DateTime"
+    }
+
+    function scaffoldTemplateManifest(template) {
+        let fields = ``;
+        let inherits = ``;
+        let icon = ``;
+        if (!template || !template.fields) {
+            return '';
+        }
+        for (field of template.fields) {
+            if(!field.fromModel) {
+                if(CommonFieldTypes[field.type]) {
+                    icon = "applicationsv2/32x32/document_plain_yellow.png";
+                    fields += `\t\t\t\t\t\t\t{ id: '${field.id}', name: '${field.name}', type: CommonFieldTypes.${CommonFieldTypes[field.type]} },\n`;
+                }                
+            }
+            else {
+                icon = "apps/32x32/Umbrella.png";
+                inherits += `\t\t\t\t\t\t\t'${field.templateId}', // ${field.templateName} \n`;
+            }
+        }
+        const manifestTemplate = `// eslint-disable-next-line no-unused-vars
+        import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
+        
+        export default function(manifest) {
+          manifest.addTemplate({
+            name: '${template.Name}',
+            id: '${template.ID}',
+            icon: "${icon}",
+            fields: [
+${fields}\t\t\t\t\t\t],
+            inherits: [
+${inherits}\t\t\t\t\t\t],
+          });
+        }
+      `;
+
+        const templateManifestDefinitionsPath = 'sitecore/definitions/_templates';
+        const exportVarName = template.Name.replace(/[^\w]+/g, '');
+        const outputFilePath = path.join(
+            templateManifestDefinitionsPath,
+            `${exportVarName}.sitecore.js`
+        );
+
+        if (!fs.existsSync(templateManifestDefinitionsPath)) {
+            fs.mkdirSync(templateManifestDefinitionsPath);
+        }
+
+        if (fs.existsSync(outputFilePath)) {
+            //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
+        }
+
+        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+
+        return outputFilePath;
+    }
+
+    function scaffoldPlaceholdersManifest(placeholders) {
+        if(placeholders.length === 0) return;
+        let result = '';
+        for (placeholder of placeholders) {
+            result += `\t\t\t\t\t\t{ name: '${placeholder.name}', displayName: '${placeholder.displayName}', id: '${placeholder.id}' },\r`;
+        }
+        const manifestTemplate = `// eslint-disable-next-line no-unused-vars
+        import { Manifest } from '@sitecore-jss/sitecore-jss-manifest';
+        
+        /**
+         * Adding placeholders is optional but allows setting a user-friendly display name. Placeholder Settings
+         * items will be created for any placeholders explicitly added, or discovered in your routes and component definitions.
+         * Invoked by convention (*.sitecore.js) when \`jss manifest\` is run.
+         * @param {Manifest} manifest
+         */
+        export default function addPlaceholdersToManifest(manifest) {
+          manifest.addPlaceholder(
+${result}
+            // you can optionally pass a GUID or unique (app-wide) string as an ID
+            // this will inform the ID that is set when imported into Sitecore.
+            // If the ID is not set, an ID is created based on the placeholder name.
+          );
+        }        
+      `;
+
+      const placeholderManifestDefinitionsPath = 'sitecore/definitions';
+        const exportVarName = '_placeholders';
+        const outputFilePath = path.join(
+            placeholderManifestDefinitionsPath,
+            `${exportVarName}.sitecore.js`
+        );
+
+        if (!fs.existsSync(placeholderManifestDefinitionsPath)) {
+            fs.mkdirSync(placeholderManifestDefinitionsPath);
+        }
+
+        if (fs.existsSync(outputFilePath)) {
+            //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
+        }
+
+        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+
+        return outputFilePath;
+    }
+
+    function scaffoldComponentManifest(component) {
+        let fields = ``;
+        let placeholders = '';
+
+        if (!component || !component.fields) {
+            return '';
+        }
+        for (field of component.fields) {
+            fields += `\t\t\t\t\t\t\t{ id: '${field.id}', name: '${field.name}', type: ${field.type} },\n`;
+        }
+
+        for (placeholder of component.placeholders) {
+            placeholders += `\t\t\t\t\t\t\t'${placeholder.split('|')[0]}', // ${placeholder.split('|')[1]} \n`;
+        }
+
+        const manifestComponent = `// eslint-disable-next-line no-unused-vars
+        import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
+        
+        /**
+         * Adds the ${component.name} component to the disconnected manifest.
+         * This function is invoked by convention (*.sitecore.js) when 'jss manifest' is run.
+         * @param {Manifest} manifest Manifest instance to add components to
+         */
+        export default function(manifest) {
+          manifest.addComponent({
+            id: '${component.id}',  
+            name: '${component.name}',
+            icon: '${component.icon}',
+            displayName: '${component.displayName}',
+            fields: [
+${fields}           ],
+            placeholders: [
+${placeholders}           ]
+          });
+        }
+      `;
+
+        const componentManifestDefinitionsPath = 'sitecore/definitions/_components';
+        const exportVarName = component.name.replace(/[^\w]+/g, '');
+        const outputFilePath = path.join(
+            componentManifestDefinitionsPath,
+            `${exportVarName}.sitecore.js`
+        );
+
+        if (!fs.existsSync(componentManifestDefinitionsPath)) {
+            fs.mkdirSync(componentManifestDefinitionsPath);
+        }
+
+        if (fs.existsSync(outputFilePath)) {
+            //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
+        }
+
+        fs.writeFileSync(outputFilePath, manifestComponent, 'utf8');
+
+        return outputFilePath;
+    }
+
+    plop.setGenerator('Templates', {
+        description: 'Get Metadata from Sitecore',
+        prompts: [],
+        actions: function (data) {
+
+            var uri = `${config.sitecore.layoutServiceHost}/sitecore/api/layout/render/umbrella?item=/&sc_lang=en&sc_apikey=${config.sitecore.apiKey}`;
+
+            request(uri, { json: true }, (err, res, body) => {
+                if (err) { return console.log(`-error-${err}`); }
+
+                //task = thingsToDo.shift();
+                //progressBar.startItem(task);
+
+                let templates = body.sitecore.context.templates;
+                let placeholders = body.sitecore.context.placeholders;
+                let components = body.sitecore.context.renderings;
+                for (template of templates) {
+                    console.log(scaffoldTemplateManifest(template));
+                }
+                for (component of components) {
+                    console.log(scaffoldComponentManifest(component));
+                }
+
+                console.log(scaffoldPlaceholdersManifest(placeholders));
+
+                // Finish the task in...
+                //setTimeout(done.bind(null, task), 500 + Math.random() * 1200);
+            });
+
+            return [];
+        }
     });
 
     plop.setGenerator('Sync', {

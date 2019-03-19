@@ -30,3 +30,15 @@
 @include p-style;
 @include h-color--greyed-out;
 @include h-font-sizes;
+
+.a-text-info {
+	color: $color-info;
+}
+
+.a-text-small{
+	font-size: rem(10px);
+	
+	@media screen and (min-width: em(480px,16px)) {
+		font-size: rem(14px);
+	}
+}

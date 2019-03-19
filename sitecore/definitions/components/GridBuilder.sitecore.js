@@ -12,11 +12,25 @@ export default function(manifest) {
     icon: SitecoreIcon.DocumentTag,
     fields: [
       { name: 'heading', type: CommonFieldTypes.SingleLineText },
+      { name: 'columns', type: CommonFieldTypes.SingleLineText },
+      { name: 'placeholders', type: CommonFieldTypes.SingleLineText },
     ],
-    /*
-    If the component implementation uses <Placeholder> or withPlaceholder to expose a placeholder,
-    register it here, or components added to that placeholder will not be returned by Sitecore:
-    placeholders: ['exposed-placeholder-name']
-    */
+    placeholders: [
+      'jss-grid-0',
+      'jss-grid-1',
+      'jss-grid-2',
+      'jss-grid-3',
+      'jss-grid-4',
+      'jss-grid-5',
+      'jss-grid-6',
+      'jss-grid-7',
+      'jss-grid-8',
+      'jss-grid-9',
+      'jss-grid-10',
+      'jss-grid-11',
+      'page-structure-header',
+      'page-structure-body',
+      'page-structure-footer'
+    ]
   });
 }
