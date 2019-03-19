@@ -65,7 +65,7 @@ const getRouteNames = (route) => {
     }
     return arr;
 }
-const saveImage = (e) => {
+const saveFile = (e) => {
     let base64Image = e.base64.split(';base64,').pop();
     let dataPath = './data/gary';
     let mediaPath = `${e.mediaPath.split('/data/').pop()}.${e.extension}`;
@@ -115,8 +115,16 @@ const processFields = (e) => {
                 let mediaItm = {};
                 mediaItm['src'] = mediaPath;
                 mediaItm['alt'] = image.alt;
+                if(image.width) {
+                    mediaItm['width'] = image.width;
+                }
+                if(image.height) {
+                    mediaItm['height'] = image.height;
+                }                
                 f[p] = mediaItm;
-                console.log(mediaItm);
+                saveFile(e[p].value);
+                let item = e[p].value;
+                delete item.base64;                
             } else if (e[p].value.hasOwnProperty('linktype')) {
                 delete e[p].value.id;
                 f[p] = e[p].value;
@@ -419,7 +427,7 @@ function sync() {
         // process each language
         for (lang of route.lang) {
 
-            var uri = `${config.sitecore.layoutServiceHost}/sitecore/api/layout/render/jss?item=${currentRoute}&sc_lang=${lang}&sc_apikey=${config.sitecore.apiKey}`;
+            var uri = `${config.sitecore.layoutServiceHost}/sitecore/api/layout/render/umbrella?item=${currentRoute}&sc_lang=${lang}&sc_apikey=${config.sitecore.apiKey}`;
 
             request(uri, {
                 json: true
@@ -460,8 +468,8 @@ function sync() {
 */
 prog
     .version('1.0.0')
-    .description('Helper for Sitecore JSS sync actions')
-    .help('Commands for sync between Sitecore and the developer machine.')
+    .description('Umbrella for Sitecore JSS')
+    .help('Module sync between Sitecore and the developer machine.')
 
     .command('sync', 'Sync all data from Sitecore')
     .option('-t, --templates', 'Sync all the templates from Sitecore', prog.BOOL, false)
