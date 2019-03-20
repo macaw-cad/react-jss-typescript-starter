@@ -1,19 +1,36 @@
 # react-jss-typescript-starter
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is a starter project for a headless Sitecore 9.1 JSS app with server-side rendering running outside of the Sitecore Content Delivery server. It provides a Node Express based website that can run in a Docker container. It is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter as scaffolded using `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added.
+Welcome to the [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) project.
+See a running example of this starter at https://react-jss-typescript-starter-develop.azurewebstes.net.
+
+## Introduction
+
+With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com/), or JSS for short, Sitecore created an SDK to allow developers to use Sitecore as a headless CMS. Finally web-site developers are free to build a web-site using their own technology stack while utilizing the Sitecore platform.
+
+## react-jss-typescript-starter
+
+At Macaw Interactive we made choices with respect to the front-end development technology stack that we use and the way we build web applications:
+
+- ReactJS (using Redux where applicable)
+- TypeScript
+- GraphQL
+- Server-side rendering for SEO
+
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is a starter project for a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a Node Express based website all the required configuration to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter as scaffolded using `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added.
 
 Provided features:
 
 - JSS standard (well documented) development flow, but with some enhancements
-- JSS component scaffolding using Plop
-- data/routes sample Yaml export from Sitecore using Plop
-- Development workflow with separation JSS components (as container components)and presentational components (see [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0))
+- JSS component scaffolding using [Plop](https://plopjs.com/)
+- data/routes Sitecore Yaml import/export (tool to be announced)
+- Development workflow with separation of JSS components (as container components) and presentational components (see [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0))
 - Storybook for presentational components
-- Build task extended to build Node Express based web server with headless server-side rendering
-- The setup is using `sitecore-jss-proxy` that enables request proxying to Sitecore CD along with the http cookies to enable tracking, personalization and contact identification
+- Build tasks extended to build a headless Node Express based web server with support for server-side rendering
+- The setup is using `sitecore-jss-proxy` that enables request proxying to Sitecore CD along with the http cookies to enable tracking, personalization, contact identification and multivariate testing
 - Dockerfile to build Docker image for running front-end web server
+- Docker container completely configurable using environment variables
 
-Note that this setup is currently niet officially supported by Sitecore.
+Note that this setup using is currently niet officially supported by Sitecore.
 
 ## Get started with the current code base
 
