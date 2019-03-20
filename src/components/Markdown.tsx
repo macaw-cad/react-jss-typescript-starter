@@ -37,13 +37,28 @@ class Markdown extends React.Component<Props, State> {
                 xhtmlOut: true,
                 breaks: false,
                 langPrefix: 'language-',
-                linkify: false,
+                linkify: true,
                 typographer: false,
                 quotes: '“”‘’',
                 highlight: function (/*str, lang*/) { return ''; }
             }
         }
         var md = new Remarkable(markdownConfig);
+        md.core.ruler.enable([
+            'abbr'
+          ]);
+          md.block.ruler.enable([
+            'footnote',
+            'deflist'
+          ]);
+          md.inline.ruler.enable([
+            'footnote_inline',
+            'ins',
+            'mark',
+            'sub',
+            'sup'
+          ]);
+          
         return (
             <span className="o-markdown" dangerouslySetInnerHTML={{ __html: md.render(body) }}></span>
         )
