@@ -59,6 +59,7 @@ const port: number = 3001;
 app.use('/images', express.static(path.join(process.cwd(), Environment.isProduction? 'build/images' : '/public/images')));
 app.use('/icons', express.static(path.join(process.cwd(), Environment.isProduction? 'build/icons' : '/public/icons')));
 app.use('/partners', express.static(path.join(process.cwd(), Environment.isProduction? 'build/partners' : '/public/partners')));
+app.use('/documentation', express.static(path.join(process.cwd(), Environment.isProduction? 'build/documentation' : '/public/documentation')));
 
 app.use(compression());
 
