@@ -1,6 +1,5 @@
 import * as path from 'path';
 import express from 'express';
-import proxy from 'http-proxy-middleware';
 import compression from 'compression';  // compresses requests
 import scProxy from '@sitecore-jss/sitecore-jss-proxy';
 import { renderView, urlRouteParser } from '../server.bundle/server';
