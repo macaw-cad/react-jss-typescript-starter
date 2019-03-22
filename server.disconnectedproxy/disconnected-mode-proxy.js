@@ -44,6 +44,7 @@ const dictionaryService = createDisconnectedDictionaryService({
 });
 
 const app = Express();
+app.disable('etag'); // disable returning 304 - sitecore-jss-proxy throws error when receiving 304
 
 // attach the disconnected service mocking middleware to express
 app.use('/assets', Express.static(`${process.cwd()}/assets`));

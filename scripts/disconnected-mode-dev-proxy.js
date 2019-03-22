@@ -12,9 +12,15 @@
 const fs = require('fs');
 const path = require('path');
 const touch = require('touch');
+const Express = require('express');
+
 const { createDefaultDisconnectedServer } = require('@sitecore-jss/sitecore-jss-dev-tools');
 
+const app = Express();
+app.disable('etag'); // disable returning 304 - sitecore-jss-proxy throws error when receiving 304
+
 const proxyOptions = {
+  server: app,
   appRoot: path.join(__dirname, '..'),
   appName: process.env.REACT_APP_SITECORE_JSS_APP_NAME,
   watchPaths: ['./data'],
