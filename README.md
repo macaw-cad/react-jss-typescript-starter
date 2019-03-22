@@ -1,7 +1,8 @@
 # Umbrella for Sitecore JSS
 
-Welcome to the [Umbrella for Sitecore JSS](https://github.com/macaw-interactive/react-jss-typescript-starter) project.
-See a running example of this starter at https://react-jss-typescript-starter-develop.azurewebstes.net.
+Welcome to the [Umbrella for Sitecore JSS](https://github.com/macaw-interactive/react-jss-typescript-starter) project. **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using Sitecore as a headless CMS.
+
+See a running example of this starter at https://react-jss-typescript-starter-develop.azurewebsites.net.
 
 # The default branch
 
