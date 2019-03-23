@@ -1,7 +1,6 @@
 import React from 'react';
 import { select, text } from '@storybook/addon-knobs';
-import { CustomStyleParametersProps } from "../../../types/CustomStyle";
-import CustomStyle from "../../../containers/CustomStyle";
+import { CustomStyleParametersProps } from "../../../components/CustomStyle";
 import GridSection from '../../GridSection';
 import { storiesOf } from '@storybook/react';
 

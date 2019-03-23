@@ -6,8 +6,7 @@ const getDateLabel = (value: any, format?: any) => {
         format = {
             year: 'numeric',
             month: 'short',
-            day: '2-digit',
-            timeZone: 'UTC'
+            day: '2-digit'
         };
     }
     try {
@@ -16,7 +15,8 @@ const getDateLabel = (value: any, format?: any) => {
         // do nothing
     }
     if (date) {
-        return new Intl.DateTimeFormat(getNavigatorLanguage(), format).format(date);
+        var utc = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+        return new Intl.DateTimeFormat(getNavigatorLanguage(), format).format(utc);
     } else {
         return value;
     }
