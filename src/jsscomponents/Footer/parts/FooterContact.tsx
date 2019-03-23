@@ -11,10 +11,10 @@ class FooterContact extends React.Component<Props, State> {
         return (
             <ul className="o-footer__contact a-list a-list--hor">
                 <li>
-                    <a href="tel:+31 23 2060 600">+31 23 2060 600</a>
+                    <a href="https://github.com/macaw-interactive/react-jss-typescript-starter">Our Github Repo</a>
                 </li>
                 <li>
-                    <a href="mailto:info@macaw.nl">info@macaw.nl</a>
+                    <a href="mailto:gary.wenneker@macaw.nl">Contact</a>
                 </li>
             </ul>
         )

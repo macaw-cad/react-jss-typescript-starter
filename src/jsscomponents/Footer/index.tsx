@@ -7,7 +7,7 @@ import FooterNewsletter from './parts/FooterNewsletter';
 import FooterSocial from './parts/FooterSocial';
 import FooterAddress from './parts/FooterAddress';
 import FooterLegal from './parts/FooterLegal';
-import FooterPartners from './parts/FooterPartners';
+import FooterCommunity from './parts/FooterCommunity';
 
 interface Props {
 };
@@ -45,7 +45,7 @@ class Footer extends React.Component<Props, State> {
               <FooterLegal />
             </div>
             <div className="m-grid__M6">
-              <FooterPartners />
+              <FooterCommunity />
             </div>
           </div>
         </section>

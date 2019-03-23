@@ -53,7 +53,6 @@ class Hero extends React.Component<any> {
         <div className="o-hero__wrapper">		
           <ul className="o-hero__breadcrumb a-list a-list--hor">
             <li className="noselect">Welcome</li>
-            <li className="noselect"><a href="/documentation">Documentation</a></li>
             <li className="noselect"><a href="/styleguide">Styleguide</a></li>
             <li className="noselect"><a href="/graphql">GraphQL</a></li>
           </ul>

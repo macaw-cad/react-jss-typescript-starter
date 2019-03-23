@@ -11,105 +11,55 @@ class FooterLinks extends React.Component<Props, State> {
         return (
             <div className="o-footer__links h-mb-d">
                 <div className="o-footer__links-group">
-                    <h6 data-panel="footer-cases" data-accordeon="o-footer__links">Cases</h6>
+                    <h6 data-panel="footer-cases" data-accordeon="o-footer__links">Features</h6>
                     <div id="footer-cases" className="m-panel m-panel--inline is-closed">
                         <ul className="a-list">
                             <li>
-                                <a href="#">Intranet Eneco</a>
+                                <a href="https://jss.sitecore.com/features/why-jss">Why JSS</a>
                             </li>
                             <li>
-                                <a href="#">Priva dingen</a>
+                                <a href="https://jss.sitecore.com/features/why-sitecore">Why Sitecore</a>
                             </li>
                             <li>
-                                <a href="#">Enzo enzo</a>
+                                <a href="https://github.com/macaw-interactive/umbrella-for-sitecore-jss">Umbrella</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="o-footer__links-group">
-                    <h6 data-panel="footer-seo" data-accordeon="o-footer__links" className="">SEO Categorie</h6>
+                    <h6 data-panel="footer-seo" data-accordeon="o-footer__links" className="">Documentation</h6>
                     <div id="footer-seo" className="m-panel m-panel--inline is-closed">
                         <ul className="a-list">
                             <li>
-                                <a href="#">Sitecore Commerce</a>
+                                <a href="https://jss.sitecore.com/docs/getting-started/quick-start">Getting started</a>
                             </li>
                             <li>
-                                <a href="#">Xamarin</a>
+                                <a href="https://jss.sitecore.com/docs/fundamentals/architecture">Fundamentals</a>
                             </li>
                             <li>
-                                <a href="#">Sharepoint adoptie</a>
+                                <a href="https://jss.sitecore.com/docs/client-frameworks/react/react-overview">Client Frameworks</a>
                             </li>
                             <li>
-                                <a href="#">Marketing automation</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="o-footer__links-group">
-                    <h6 data-panel="footer-blogs" data-accordeon="o-footer__links">Blogs</h6>
-                    <div id="footer-blogs" className="m-panel m-panel--inline is-closed">
-                        <ul className="a-list">
-                            <li>
-                                <a href="#">Adoptie van Office 365</a>
+                                <a href="https://jss.sitecore.com/docs/techniques/mvc-integration/javascript-rendering">Techniques</a>
                             </li>
                             <li>
-                                <a href="#">Business Apps</a>
+                                <a href="https://jss.sitecore.com/release-notes">Release Notes</a>
                             </li>
                             <li>
-                                <a href="#">Online samenwerken met tools van IT</a>
-                            </li>
-                            <li>
-                                <a href="#">Samenwerken op e-commerce gebied</a>
-                            </li>
-                            <li>
-                                <a href="#">Schaduw IT</a>
+                                <a href="https://jss.sitecore.com/help">Faqs</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="o-footer__links-group">
-                    <h6 data-panel="footer-whitepapers" data-accordeon="o-footer__links">Whitepapers</h6>
-                    <div id="footer-whitepapers" className="m-panel m-panel--inline is-closed">
+                    <h6 data-panel="footer-seo" data-accordeon="o-footer__links" className="">Umbrella</h6>
+                    <div id="footer-seo" className="m-panel m-panel--inline is-closed">
                         <ul className="a-list">
                             <li>
-                                <a href="#">Employee empowerment</a>
+                                <a href="https://github.com/macaw-interactive/umbrella-for-sitecore-jss">Umbrella API</a>
                             </li>
                             <li>
-                                <a href="#">The Age of the Customer</a>
-                            </li>
-                            <li>
-                                <a href="#">Office 365 of Google Apps</a>
-                            </li>
-                            <li>
-                                <a href="#">Office 365 adoptie</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="o-footer__links-group">
-                    <h6 data-panel="footer-work" data-accordeon="o-footer__links">Werken bij</h6>
-                    <div id="footer-work" className="m-panel m-panel--inline is-closed">
-                        <ul className="a-list">
-                            <li>
-                                <a href="#">Technisch CRM Consultant</a>
-                            </li>
-                            <li>
-                                <a href="#">IT Traineeship Developer</a>
-                            </li>
-                            <li>
-                                <a href="#">Data &amp; Analytics Solution Consultant</a>
-                            </li>
-                            <li>
-                                <a href="#">Solution Architect</a>
-                            </li>
-                            <li>
-                                <a href="#">BI Specialist</a>
-                            </li>
-                            <li>
-                                <a href="#">Azure Cloud Engineer</a>
-                            </li>
-                            <li>
-                                <a href="#"><strong>Nog 20 vacatures</strong></a>
+                                <a href="https://github.com/macaw-interactive/react-jss-typescript-starter">React JSS TypeScript starter</a>
                             </li>
                         </ul>
                     </div>
