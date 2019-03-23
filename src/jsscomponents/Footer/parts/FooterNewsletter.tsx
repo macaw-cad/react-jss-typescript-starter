@@ -10,10 +10,8 @@ class FooterNewsletter extends React.Component<Props, State> {
     render() {
         return (
             <div className="o-footer__newsletter">
-                <h6>Aanmelden nieuwsbrief</h6>
-                <p>blijf op de hoogte van alle business</p>
-                <div className="m-wffm-forms">
-                </div>
+                <h6>Check our Umbrella for Sitecore JSS</h6>
+                <p><a href="https://github.com/macaw-interactive/umbrella-for-sitecore-jss">click here</a></p>
             </div>
         )
     }

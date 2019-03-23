@@ -7,17 +7,6 @@ class HeaderDesktopMenu extends React.Component<any, any> {
                 <nav className="o-header__menu">
                     <ul className="a-list a-list--hor">
                         <li>
-                            <a href="/" data-panel="nav-inspiratie">Documentation</a>
-                            <div id="nav-inspiratie" className="o-header__submenu m-panel is-closed">
-                                <ul className="a-list a-list--hor">
-                                    <li className="is-selected"><a href="cases.html">Cases</a></li>
-                                    <li className="is-selected"><a href="blogs.html">Blogs</a></li>
-                                    <li className="is-selected"><a href="whitepapers.html">Whitepapers</a></li>
-                                    <li className="is-selected"><a href="evenementen.html">Evenementen</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li>
                             <a href="/styleguide" data-panel="nav-expertise">Styleguide</a>
                             <div id="nav-expertise" className="o-header__submenu m-panel is-closed">
                                 <ul className="a-list a-list--hor">

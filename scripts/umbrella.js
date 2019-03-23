@@ -67,7 +67,7 @@ const getRouteNames = (route) => {
 }
 const saveFile = (e) => {
     let base64Image = e.base64.split(';base64,').pop();
-    let dataPath = './data/gary';
+    let dataPath = './data';
     let mediaPath = `${e.mediaPath.split('/data/').pop()}.${e.extension}`;
     const outputFilePath = path.join(
         process.cwd(),
@@ -187,7 +187,7 @@ const processPlaceholderManifests = (e) => {
     getMetaData().then(data => {
         if(data) {
             console.log(chalk.white(`Processing metadata for`), chalk.blue(`placeholders`));
-            scaffoldPlaceholdersManifest(data.renderings);
+            scaffoldPlaceholdersManifest(data.placeholders);
         } else {
             console.log(chalk.red(`No route data found for placeholders.`));
         } 
@@ -263,7 +263,7 @@ ${inherits}\t\t\t\t\t\t],
     }
   `;
 
-    const templateManifestDefinitionsPath = 'sitecore/definitions/_templates';
+    const templateManifestDefinitionsPath = 'sitecore/definitions/templates';
     const exportVarName = template.Name.replace(/[^\w]+/g, '');
     const outputFilePath = path.join(
         templateManifestDefinitionsPath,
@@ -309,7 +309,7 @@ ${result}
   `;
 
     const placeholderManifestDefinitionsPath = 'sitecore/definitions';
-    const exportVarName = '_placeholders';
+    const exportVarName = 'placeholders';
     const outputFilePath = path.join(
         placeholderManifestDefinitionsPath,
         `${exportVarName}.sitecore.js`
@@ -365,7 +365,7 @@ ${placeholders}           ]
     }
   `;
 
-    const componentManifestDefinitionsPath = 'sitecore/definitions/_components';
+    const componentManifestDefinitionsPath = 'sitecore/definitions/components';
     const exportVarName = component.name.replace(/[^\w]+/g, '');
     const outputFilePath = path.join(
         componentManifestDefinitionsPath,
@@ -444,7 +444,7 @@ function sync() {
                     };
                     data.fields = processFields(body.sitecore.route.fields);
                     data.placeholders = processPlaceHolders(body.sitecore.route.placeholders);
-                    yaml.sync(`./_data/routes${currentRoute}/${body.sitecore.route.itemLanguage}.yml`, data);
+                    yaml.sync(`./data/routes${currentRoute}/${body.sitecore.route.itemLanguage}.yml`, data);
                 } else {
                     console.log(chalk.red(`No route found for ${currentRoute}.`));
                 }
@@ -469,8 +469,26 @@ function sync() {
 prog
     .version('1.0.0')
     .description('Umbrella for Sitecore JSS')
-    .help('Module sync between Sitecore and the developer machine.')
+    .help(`
+        __.|.__ 
+    .n887.d8'qb'""-. 
+  .d88' .888  q8b. '. 
+ d8P'  .8888   .88b. \\                                                                                             
+d88_._ d8888_.._9888 _\\                                                                                            
+  '   '    |    '   '    ____  ____  ___      ___  _______    _______    _______  ___      ___            __       
+           |            (""  _||_ ""||"" \\    /"" ||   _  ""\\/""     \\  /""    ""||""|    |"" |         /""""\\      
+           |            |   (  ) : | \\   \\  //   |(. |_)  :)|:        |(: ______)||  |    ||  |         /    \\     
+           |            (:  |  | . ) /\\\\  \\/.    ||:     \\/ |_____/   ) \\/    |  |:  |    |:  |        /' /\\  \\    
+           |             \\\\ \\__/ // |: \\.        |(|  _  \\\\  //      /  // ___)_  \\  |___  \\  |___    //  __'  \\   
+           |             /\\\\ __ //\\ |.  \\    /:  ||: |_)  :)|:  __   \\ (:     ""|( \\_|:  \\( \\_|:  \\  /   /  \\\\  \\  
+         '='            (__________)|___|\\__/|___|(_______/ |__|  \\___) \\_______) \\_______)\\_______)(___/    \\___) 
+      
+     
+    Module sync between Sitecore and the developer machine.
+    
+    WARNING: YOUR LOCAL DATA WILL BE OVERWRITTEN. MOMENTARILY THERE'S NO CHECK FOR EXISTING ITEMS. MAKE SURE YOU HAVE A BACKUP!
 
+    `)
     .command('sync', 'Sync all data from Sitecore')
     .option('-t, --templates', 'Sync all the templates from Sitecore', prog.BOOL, false)
     .option('-p, --placeholders', 'Sync all the placeholders from Sitecore', prog.BOOL, false)
