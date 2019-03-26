@@ -120,7 +120,7 @@ All other default JSS based scripts are available as well.
 
 Run the NodeJS Express based web server with server side rendering in development mode:
 
-Disconnected: `npm run serve:disconnected` or its short-hand `npm run server`
+Disconnected: `npm run serve:disconnected` or its short-hand `npm run serve`
 
 Connected: `npm run serve:connected`
 
@@ -137,7 +137,18 @@ Build the NodeJS Express web server application supporting server-side rendering
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode is the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
 
-### Debugging the solution
+## Debugging
+
+One of the most important things in development is the ability to debug your code in a good way. This starter provides all the required configurations for Visual Studio Code to do debugging to the max!
+
+### Debugging the client-side code
+
+Although debugging if provided in Chrome through the developer tools, it is also possible to do client-side code debugging in Visual Studio Code. To do this install the `Debugger for Chrome` extension first.
+
+To start client-side debugging start the `Client [3000]` debugging configuration.
+
+
+### Debugging the server-side rendering
 
 When debugging the server-side code it might be useful to run just the the front-end in connected or disconnected mode:
 
@@ -146,7 +157,19 @@ When debugging the server-side code it might be useful to run just the the front
 
 The web server can then be started using the provided debug configurations `Server:disconnected [3001]` and `Server:connected [3001]`. 
 
-### Ports in use
+### Debugging the Sitecore disconnected mode proxy
+
+For development the script `scripts/disconnected-mode-dev-proxy.js` is used. This script can be debugged in Visual Studio Code by executing the `SC disconnected [3042]` configuration.
+
+### Debugging the webback server bundle build
+
+The webpack server-bundle build can be debugged in Visual Studio Code by executing the `server.bundle Webpack` configuration.
+
+### Debugging docker build & run scripts
+
+The script `scripts/docker-do.js` can be used to build and run the docker image. his script can be debugged in Visual Studio Code by executing the `docker-do build` and `docker-do run` configurations.
+
+## Ports in use
 
 Sometimes when doing development and stopping a running process a port remains still in use. I have this sometimes
 when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
