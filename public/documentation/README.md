@@ -1,8 +1,65 @@
 # Umbrella for Sitecore JSS
 
+
+            __.|.__ 
+        .n887.d8'qb'""-.
+      .d88' .888  q8b. '. 
+     d8P'  .8888   .88b. \
+    d88_._ d8888_.._9888 _\
+      '   '    |    '   '____  ____  ___      ___  _______    _______    _______  ___      ___            __
+               |        (""  _||_ ""||"" \    /"" ||   _  ""\/""     \  /""    ""||""|    |"" |         /""""\
+               |        |   (  ) : | \   \  //   |(. |_)  :)|:        |(: ______)||  |    ||  |         /    \
+               |        (:  |  | . ) /\\  \/.    ||:     \/ |_____/   ) \/    |  |:  |    |:  |        /' /\  \
+               |         \\ \__/ // |: \.        |(|  _  \\  //      /  // ___)_  \  |___  \  |___    //  __'  \
+               |         /\\ __ //\ |.  \    /:  ||: |_)  :)|:  __   \ (:     ""|( \_|:  \( \_|:  \  /   /  \\  \
+             '='        (__________)|___|\__/|___|(_______/ |__|  \___) \_______) \_______)\_______)(___/    \___)
+  
+
+
+
 With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com/), or JSS for short, Sitecore created an SDK to allow developers to use Sitecore as a headless CMS. Finally website developers are free to build a website using their own technology stack while utilizing the Sitecore platform.
 
 **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
+
+## Table of Contents
+
+- [Umbrella for Sitecore JSS](#umbrella-for-sitecore-jss)
+  - [Table of Contents](#table-of-contents)
+  - [The react-jss-typescript-starter starter kit](#the-react-jss-typescript-starter-starter-kit)
+  - [Get started with the current code base](#get-started-with-the-current-code-base)
+  - [Development with server-side rendering](#development-with-server-side-rendering)
+  - [Configuring the NodeJS Express web server](#configuring-the-nodejs-express-web-server)
+  - [Development scripts](#development-scripts)
+    - [Daily development](#daily-development)
+    - [Check if app is working with server-side rendering](#check-if-app-is-working-with-server-side-rendering)
+    - [Build the artifacts for deployment to Sitecore](#build-the-artifacts-for-deployment-to-sitecore)
+    - [Build web server application](#build-web-server-application)
+  - [Umbrella](#umbrella)
+    - [Umbrella.PanTau](#umbrellapantau)
+      - [Example output:](#example-output)
+    - [Umbrella Sync Script](#umbrella-sync-script)
+      - [Usage](#usage)
+      - [Options](#options)
+    - [Installation](#installation)
+    - [API](#api)
+      - [Placeholders](#placeholders)
+      - [Templates](#templates)
+      - [Components](#components)
+      - [Content and Media](#content-and-media)
+  - [Ports](#ports)
+    - [Ports in use](#ports-in-use)
+  - [Debugging](#debugging)
+    - [Debugging the client-side code](#debugging-the-client-side-code)
+    - [Debugging the server-side rendering](#debugging-the-server-side-rendering)
+    - [Debugging the Sitecore disconnected mode proxy](#debugging-the-sitecore-disconnected-mode-proxy)
+    - [Debugging the webback server bundle build](#debugging-the-webback-server-bundle-build)
+    - [Debugging docker build & run scripts](#debugging-docker-build--run-scripts)
+  - [Docker](#docker)
+  - [Deployment of solution in a Docker container on Azure](#deployment-of-solution-in-a-docker-container-on-azure)
+  - [The Azure pipeline Yaml file](#the-azure-pipeline-yaml-file)
+  - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
+  - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
+  - [References](#references)
 
 ## The react-jss-typescript-starter starter kit
 
@@ -77,7 +134,7 @@ There is also another approach that can be started with the command `npm run ser
 The NodeJS Express web server can be configured through [environment variables](#node_config) as described below.
 In `npm run serve:disconnected` (or the shorthand `npm run serve`) and `npm run serve:connected` we use `nodemon` which watches for code changes. Nodemon is configured through the `server/nodemon.json` configuration file.
 
-## <a name="node_config"></a>Configuring the NodeJS Express web server
+## Configuring the NodeJS Express web server
 
 The NodeJS Express web server is completely configured through environment variables. This enables running the web server in a Docker container, where the running image for dev, test, acceptation and production can be configured through environment variables (or App Settings in case of a deployment to Azure Web Apps for Containers).
 
@@ -150,6 +207,160 @@ Build the NodeJS Express web server application supporting server-side rendering
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode is the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
 
+## Umbrella
+
+### Umbrella.PanTau
+
+The Umbrella.PanTau project adds an extra JSS endpoint: `/sitecore/api/layout/render/umbrella` to your environment. This endpoint is used by the [Umbrella Sync Script][umbrellascript] to extract data from your Sitecore JSS environment.
+
+#### Example output:
+
+```json
+{
+  "sitecore": {
+    "context": {
+      "visitorIdentificationTimestamp": 636889392519235300,
+      "pageEditing": false,
+      "site": {
+        "name": "react-jss-typescript-starter"
+      },
+      "pageState": "normal",
+      "language": "en",
+      "placeholders": [
+        {
+          "id": "4cd956d4-a36e-5c78-ab14-3b56f66cb503",
+          "name": "footer-address",
+          "displayName": "footer-address"
+        },
+        {
+          "id": "c23b835f-a290-5b95-b5d5-e2dbf3ca499e",
+          "name": "jss-main",
+          "displayName": "Main"
+        }
+      ],
+      "templates": [
+        {
+          "BaseIDs": [
+            "b36ba9fd-0dc0-49c8-bea2-e55d70e6af28"
+          ],
+          "CustomValues": null,
+          "FullName": "Project/react-jss-typescript-starter/App Route",
+          "Icon": "Apps/16x16/routes.png",
+          "ID": "4e63ea9e-0174-505b-9e6e-82136191959e",
+          "Name": "App Route",
+          "StandardValueHolderId": "4c235921-3a2f-5f3e-bb91-fc62415c88cf",
+          "fields": [
+            {
+              "id": "d10dc31e-cf38-567f-98d8-655fee342a54",
+              "name": "pageTitle",
+              "defaultValue": "",
+              "type": "Single-Line Text",
+              "typeKey": "single-line text",
+              "icon": "",
+              "isShared": false,
+              "inherited": false,
+              "templateId": "4e63ea9e-0174-505b-9e6e-82136191959e",
+              "templateName": "App Route"
+            }
+          ]
+        }
+      ],
+      "renderings": [
+        {
+          "id": "08f9daac-db92-575a-873b-b53cce7de290",
+          "name": "ContentBlock",
+          "displayName": "Content Block",
+          "icon": "Office/16x16/document_tag.png",
+          "fields": [
+            {
+              "id": "037fe404-dd19-4bf7-8e30-4dadf68b27b0",
+              "name": "componentName",
+              "type": "CommonFieldTypes.SingleLineText"
+            }
+          ],
+          "placeholders": [
+            "{C23B835F-A290-5B95-B5D5-E2DBF3CA499E}|jss-main",
+            "{11448A04-F955-5B19-A54A-9E0EC07641AF}|jss-reuse-example"
+          ]
+        }
+      ]
+    },
+    "route": {
+      "name": "styleguide",
+      "displayName": "styleguide",
+      "fields": {
+        "pageTitle": {
+          "value": "Styleguide | Sitecore JSS"
+        }
+      },
+      "databaseName": "master",
+      "deviceId": "fe5d7fdf-89c0-4d99-9aa3-b5fbd009c9f3",
+      "itemId": "ed4692a0-7439-59c4-8451-7a55c061158c",
+      "itemLanguage": "en",
+      "itemVersion": 1,
+      "layoutId": "1e09f9fe-4092-5183-9bd2-6a75c1815c59",
+      "templateId": "4e63ea9e-0174-505b-9e6e-82136191959e",
+      "templateName": "App Route",
+      "placeholders": {
+        "jss-main": [
+        ]
+      }
+    }
+  }
+}
+```
+
+### Umbrella Sync Script
+
+The Umbrella Sync Script is a NodeJS script and has to be executed from the root of your JSS project folder:
+
+```bash
+node .\scripts\umbrella.js
+```
+
+#### Usage
+
+```bash
+node .\scripts\umbrella.js sync
+```
+
+#### Options
+
+| Switch | Action | 
+| --- | --- |
+|-t, --templates     | Sync all the templates from Sitecore                 |
+|-p, --placeholders  | Sync all the placeholders from Sitecore              |
+|-m, --manifests     | Sync all the component manifests from Sitecore       |
+|-c, --content       | Sync all the content from your Sitecore JSS website  |
+
+### Installation
+
+> Documentation and sources may change
+
+```bash
+git clone https://github.com/macaw-interactive/umbrella-for-sitecore-jss
+```
+
+### API
+
+The Umbrella endpoint will output extra data used by the Umbrella NodeJS script. The Umbrella NodeJS script will export data to several sections in your local JSS application.
+
+#### Placeholders
+
+Exports all available placeholders from your JSS Sitecore environment to `<app root>/sitecore/definitions/placeholders.sitecore.js`.
+
+#### Templates
+
+Exports all available templates from your JSS Sitecore environment to `<app root>/sitecore/definitions/templates`.
+
+#### Components
+
+Exports all available components from your JSS Sitecore environment to `<app root>/sitecore/definitions/components`.
+
+#### Content and Media
+
+This will export the content of your routes (pages) to your local JSS development environment and saves it in the `<app root>/data/routes` folder. During the export the script will check for image fields and wil save them to the `<app root>/data/media` folder.
+
 ## Ports
 
 When doing development the following ports are used:
@@ -198,7 +409,7 @@ The webpack server-bundle build can be debugged in Visual Studio Code by executi
 
 The script `scripts/docker-do.js` can be used to build and run the docker image. This script can be debugged in Visual Studio Code by executing the `docker-do build` and `docker-do run` debug configurations.
 
-# Docker
+## Docker
 
 The starter kit contains scripts to build and run a Docker image containing the complete solution. This Docker image can be run locally or be deployed to a Docker container registry.
 
@@ -242,7 +453,7 @@ All output of the running container is provided in the terminal window. Note tha
 
 The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production).
 
-# Deployment of solution in a Docker container on Azure
+## Deployment of solution in a Docker container on Azure
 
 Any change on the `develop` and `master` branches of the `https://github.com/macaw-interactive/react-jss-typescript-starter` repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
 
@@ -311,7 +522,7 @@ The build will result in a Docker image pushed to the specified Azure container 
 
 Deploy image from the Azure container registry to an zure Web App for Containers as described in the article https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image. 
 
-# References
+## References
 
 - [JSS Documentation](https://jss.sitecore.com/docs)
 
