@@ -18,5 +18,5 @@ The documentation can be found at [./public/documentation/README.md](./public/do
 
 # Authors
 
-- Gary Wanneker, Macaw - MVP Sitecore
+- Gary Wenneker, Macaw - MVP Sitecore
 - Serge van den Oever, Macaw
