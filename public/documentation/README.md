@@ -257,7 +257,10 @@ The following `azure-pipeline.yml` file drives the build of the Docker image and
 
 ```yaml
 trigger:
-- $(branch)
+  branches:
+    include:
+    - master
+    - develop
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -281,7 +284,7 @@ This Azure pipeline configuration file uses the following environment variables:
 | dockerId | The name of the Azure container registry | |
 | dockerPassword | The password to log in the Azure container registry | |
 
-##
+## Configure the Azure build pipeline
 
 The starter is hosted in a Git repository on Github. Github is bought by Microsoft, and now Github provides integration with Azure and its pipelines for build and deploy. This integration can be enabled through the [Azure Pipelines app](https://github.com/marketplace/azure-pipelines) at the Github marketplace.
 
@@ -303,6 +306,10 @@ Within the project execute the following steps:
 9. run the build
 
 The build will result in a Docker image pushed to the specified Azure container registry with either the tag `$(imageName):develop` or `$(imageName):master`.
+
+## Deploy image to Azure Web Apps for Containers
+
+Deploy image from the Azure container registry to an zure Web App for Containers as described in the article https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image. 
 
 # References
 

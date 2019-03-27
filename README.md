@@ -1,6 +1,8 @@
 # Umbrella for Sitecore JSS
 
-[![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/macaw-interactive.react-jss-typescript-starter?branchName=develop)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=develop)
+[![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=master)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=master)
+
+[![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=develop)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=develop)
 
 Welcome to the [Umbrella for Sitecore JSS](https://github.com/macaw-interactive/react-jss-typescript-starter) project. **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using Sitecore as a headless CMS.
 
