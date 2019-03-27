@@ -4,20 +4,20 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- develop
+  branches:
+    include:
+    - master
+    - develop
 
 pool:
   vmImage: 'Ubuntu-16.04'
-
-variables:
-  imageName: 'react-jss-typescript-starter'
 
 steps:
 - checkout: self
   submodules: true
   
 - script: |
-    docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
+    docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) .
     docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
-    docker push $(dockerId).azurecr.io/$(imageName)
+    docker push $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) 
   displayName: 'docker build'

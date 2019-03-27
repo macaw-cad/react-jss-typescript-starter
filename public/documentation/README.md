@@ -1,37 +1,38 @@
 # Umbrella for Sitecore JSS
 
-With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com/), or JSS for short, Sitecore created an SDK to allow developers to use Sitecore as a headless CMS. Finally web-site developers are free to build a web-site using their own technology stack while utilizing the Sitecore platform.
+With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com/), or JSS for short, Sitecore created an SDK to allow developers to use Sitecore as a headless CMS. Finally website developers are free to build a website using their own technology stack while utilizing the Sitecore platform.
 
-**Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using Sitecore as a headless CMS.
+**Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
 
 ## The react-jss-typescript-starter starter kit
 
-At Macaw Interactive we made choices with respect to the front-end development technology stack that we use and the way we build web applications:
+At Macaw Interactive we made choices with respect to the front-end development technology stack that we use, and the way we build web applications. Our primary front-end technology stach consists of:
 
 - ReactJS (using Redux where applicable)
 - TypeScript
 - GraphQL
 - Server-side rendering for SEO
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS**, a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter as scaffolded using `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added.
+For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
+
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision ansd tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added.
 
 Provided features:
 
-- JSS standard (well documented) development flow, but with some enhancements
-- JSS component scaffolding using [Plop](https://plopjs.com/)
-- data/routes Sitecore Yaml import/export (tool to be announced)
-- Development workflow with separation of JSS components (as container components) and presentational components (see [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0))
-- Storybook for presentational components
-- Build tasks extended to build a headless NodeJS Express based web server with support for server-side rendering
-- The setup is using `sitecore-jss-proxy` that enables request proxying to Sitecore CD along with the http cookies to enable tracking, personalization, contact identification and multivariate testing
-- Dockerfile to build Docker image for running front-end web server
+- supports the (well documented) JSS standard development flow, but with many enhancements
+- JSS component scaffolding using [Plop](https://plopjs.com/), a powerfull scaffolding tool
+- data/routes Sitecore Yaml import/export using the [Umbrella](https://github.com/macaw-interactive/umbrella-for-sitecore-jss) tool
+- code structure with separation of JSS components (as container components) and presentational components (see [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0))
+- [Storybook](https://storybook.js.org/) for presentational components
+- build tasks extended to build a headless NodeJS Express based web server with support for server-side rendering
+- the web server is using `sitecore-jss-proxy` that enables request proxying to a Sitecore CD along with the http cookies to enable tracking, personalization, contact identification and multivariate testing
+- Dockerfile to build a Docker image for running the NodeJS Express based front-end web server
 - Docker container completely configurable using environment variables
-
-Note that this setup using is currently niet officially supported by Sitecore.
+- extensive documentation
 
 ## Get started with the current code base
 
-You can fork or clone this repo and work from there or download the zip file with all the code. If you want to start from scratch remove the .git folder, create a new Git repository (the example code below uses Github) and execute the following commands:
+Fork or clone this repo and work from there, or download the zip file with all the code. If you want to start from scratch remove the .git folder, create a new Git repository (the example code below uses Github) and execute the following commands:
 
 ```
 git init
@@ -66,15 +67,16 @@ The above deployment process is slow and requires a Sitecore server to deploy to
 
 There is also another approach that can be started with the command `npm run serve:connected`. The app is now served using a NodeJS Express based web server in development mode with the following features:
 
-1. Provides server-side rendering without creating a production build and costly deployments to Sitecore first
-2. JavaScript bundle required for running the web-server (including all code for the React components) is rebuilt on each code change
-3. The NodeJS Express web server is restarted on each rebuild of the server bundle (uses `nodemon`)
-4. The development build bundle contains sourcemaps for easy debugging of the server-side code
-5. The server-side rendering of the code can be debugged directly from Visual Studio Code
-6. The server-side rendering can also be done in disconnected mode using `npm run serve:disconnected`
+- provides server-side rendering without creating a production build and costly deployments to Sitecore first
+- JavaScript bundle required for running the web server (including all code for the React components) is rebuilt on each code change
+- the NodeJS Express web server is restarted on each rebuild of the server bundle (uses `nodemon`)
+- the development build bundle contains sourcemaps for easy debugging of the server-side code
+- the server-side rendering of the code can be debugged directly from Visual Studio Code
+- the server-side rendering can also be done in disconnected mode using `npm run serve:disconnected`
 
 The NodeJS Express web server can be configured through [environment variables](#node_config) as described below.
-In `npm run serve` we use `nodemon` which watches for code changes. Nodemon is configured through [nodemon.json](./server/nodemon.json).
+In `npm run serve:disconnected` (or the shorthand `npm run serve`) and `npm run serve:connected` we use `nodemon` which watches for code changes. Nodemon is configured through the `server/nodemon.json` configuration file.
+
 ## <a name="node_config"></a>Configuring the NodeJS Express web server
 
 The NodeJS Express web server is completely configured through environment variables. This enables running the web server in a Docker container, where the running image for dev, test, acceptation and production can be configured through environment variables (or App Settings in case of a deployment to Azure Web Apps for Containers).
@@ -90,21 +92,28 @@ The environment variables can be used in NodeJS server code using `process.env.<
 | `REACT_APP_ENVIRONMENT` | `window.app.environment` | Current environment, in development set to `Development` |
 | `REACT_APP_ENVIRONMENTCONNECTIONS` | `window.app.environmentConnections` | Summary of environment connections, in development set to `ScDisconnected` in disconnected mode, and to `ScConnected` in connected mode |
 | `REACT_APP_ADDITIONALSETTINGS` | `window.app.<setting>` | Additional application settings, in development set to `,ignore:0` to make `index.html` valid |
-| `REACT_APP_SITECORE_JSS_APP_NAME` | `window.app.sitecoreJssAppName` | Sitecore app name. |
+| `REACT_APP_SITECORE_JSS_APP_NAME` | `window.app.sitecoreJssAppName` | Sitecore app name |
 | `REACT_APP_SITECORE_API_KEY` | `window.app.sitecoreApiKey` | The Sitecore SSC API key your app uses |
-| `REACT_APP_SITECORE_API_HOST` | `window.app.sitecoreApiHost` | Sitecore instance host name (should be HTTPS in production) when connected, http://localhost:3042 is disconnected. |
-| `REACT_APP_SITECORE_DEFAULT_LANGUAGE` | `window.app.sitecoreDefaultLanguage` | Default language to use. |
-| `SITECORE_ENABLE_DEBUG` | `window.app.sitecoreEnableDebug` | Writes verbose request info to stdout for debugging. Defaults to `false`. |
-| `REACT_APP_SITECORE_CONNECTED` | `window.app.sitecoreConnected` | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'`. |
-| `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | N.A. | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in the file `server/config.ts`. |
+| `REACT_APP_SITECORE_API_HOST` | `window.app.sitecoreApiHost` | Sitecore instance host name (should be HTTPS in production) when connected, http://localhost:3042 is disconnected |
+| `REACT_APP_SITECORE_DEFAULT_LANGUAGE` | `window.app.sitecoreDefaultLanguage` | Default language to use |
+| `SITECORE_ENABLE_DEBUG` | `window.app.sitecoreEnableDebug` | Writes verbose request info to stdout for debugging. Defaults to `false` |
+| `REACT_APP_SITECORE_CONNECTED` | `window.app.sitecoreConnected` | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'` |
+| `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | N.A. | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in the file `server/config.ts` |
 
-During development npm commands like `npm start`, `npm run start:disconnected`, `npm run start:connected`, `npm run serve`, `npm run serve:disconnected` and `npm run serve:connected` autogenerate the required `.env.disconnected` and `.env.connected` environment configuration files that configure the above variables based on the `scjssconfig.json` file as generated by the command `jss setup`. 
+In development we use the following npm commands:
 
-For production the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. These values are automatically replaced on serving the `index.html` file from the web-server.  
+- `npm run start:disconnected` (shorthand `npm start`)
+- `npm run start:connected`
+- `npm run serve:disconnected` (shorthand `npm run serve`)
+- `npm run serve:connected` 
+
+These commands autogenerate the required environment variable configuration files `.env.disconnected` and `.env.connected`. The values of the environment variables are based on the values as defined in the `scjssconfig.json` file. The `scjssconfig.json` configuration file is generated by the command `jss setup`. 
+
+In the production build the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. The resulting `##VARNAME##` values can be replaced during the production build in for example the Azure DevOps build pipeline. All `##VARNAME##` values remaining in `build/index.html` are replaced on runtime when serving the `build/index.html` file from the web server. The replacement values are based on the configured enviroment variables.  
 
 ## Development scripts
 
-The JSS React Starter Application is a highly oppinionated starter and is configured for TypeScript based development.
+There are many development scripts that can be found in `package.json`. The most important development scripts are described below.
 
 ### Daily development
 
@@ -124,9 +133,13 @@ Disconnected: `npm run serve:disconnected` or its short-hand `npm run serve`
 
 Connected: `npm run serve:connected`
 
+### Build the artifacts for deployment to Sitecore
+
 Build web server and production mode server bundle for deployment to Sitecore:
 
 ```npm run build```
+
+The resulting code can be deployed to Sitecore using the command `jss deploy app` as descvrined in the [documentation](https://jss.sitecore.com/docs/getting-started/app-deployment).
 
 ### Build web server application
 
@@ -137,6 +150,22 @@ Build the NodeJS Express web server application supporting server-side rendering
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode is the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
 
+## Ports
+
+When doing development the following ports are used:
+
+- http://localhost:3000: client-side rendered web-site using the create react app development server
+- http://localhost:3001: the server-side rendered web-site servered by the NodeJS Express based web server
+- http://localhost:3042: the disconnected mode Sitecore proxy
+
+### Ports in use
+
+Sometimes when doing development and stopping a running process a port remains still in use. I have this sometimes
+when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
+kill the process using the (Windows only) command:
+
+`kill-ip.bat 3042`
+
 ## Debugging
 
 One of the most important things in development is the ability to debug your code in a good way. This starter provides all the required configurations for Visual Studio Code to do debugging to the max!
@@ -145,7 +174,7 @@ One of the most important things in development is the ability to debug your cod
 
 Although debugging if provided in Chrome through the developer tools, it is also possible to do client-side code debugging in Visual Studio Code. To do this install the `Debugger for Chrome` extension first.
 
-To start client-side debugging start the `Client [3000]` debugging configuration.
+To start client-side debugging start the `Client [3000]` debug configuration.
 
 
 ### Debugging the server-side rendering
@@ -159,66 +188,121 @@ The web server can then be started using the provided debug configurations `Serv
 
 ### Debugging the Sitecore disconnected mode proxy
 
-For development the script `scripts/disconnected-mode-dev-proxy.js` is used. This script can be debugged in Visual Studio Code by executing the `SC disconnected [3042]` configuration.
+In development the script `scripts/disconnected-mode-dev-proxy.js` provides the Sitecore disconnected mode proxy. This script can be debugged in Visual Studio Code by executing the `SC disconnected [3042]` debug configuration.
 
 ### Debugging the webback server bundle build
 
-The webpack server-bundle build can be debugged in Visual Studio Code by executing the `server.bundle Webpack` configuration.
+The webpack server-bundle build can be debugged in Visual Studio Code by executing the `server.bundle Webpack` debug configuration.
 
 ### Debugging docker build & run scripts
 
-The script `scripts/docker-do.js` can be used to build and run the docker image. his script can be debugged in Visual Studio Code by executing the `docker-do build` and `docker-do run` configurations.
-
-## Ports in use
-
-Sometimes when doing development and stopping a running process a port remains still in use. I have this sometimes
-when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
-kill the process using the (Windows only) command:
-
-`kill-ip.bat 3042`
+The script `scripts/docker-do.js` can be used to build and run the docker image. This script can be debugged in Visual Studio Code by executing the `docker-do build` and `docker-do run` debug configurations.
 
 # Docker
 
-The solution contains scripts to build and run a Docker image containing the app locally.
+The starter kit contains scripts to build and run a Docker image containing the complete solution. This Docker image can be run locally or be deployed to a Docker container registry.
+
 The `Dockerfile` used to build the Docker image can be found at `Docker/Dockerfile`. The
 Dockerfile is a multi-stage Dockerfile that builds the production version of the solution and
 creates an image containing the solution.
 
 The resulting Docker image has the following features:
 
-- Uses Nginx as a reverse proxy (config file: `Docker/nginx.config)
-- Uses PM2 as a process manager to utilize all available cores and restart on crashing (config file: `Docker/process.yml`)
-- Contains an SSH server that connects to the web-based SSH client of Azure App Services when deployed on an Azure Web App for Containers
+- uses [Nginx](https://www.nginx.com/) as a reverse proxy (config file: `Docker/nginx.config)
+- uses [PM2](http://pm2.keymetrics.io/) as a process manager to utilize all available cores and restart on crashing (config file: `Docker/process.yml`)
+- contains an SSH server that connects to the web-based SSH client of Azure App Services when deployed on an Azure Web App for Containers
 
 The script `Docker/init.sh` is executed when the Docker container starts running.
 
 The configuration files in the `Docker` folder are used on a Linux system. These files could be in DOS
 format and must be converted to unix format. This can be done using the command:
 
-`scripts/docker-do.js prepare`
+`node scripts/docker-do.js prepare`
 
-This command only has to be executed if there are issues due to CRLF instead of LF as line endings (see bottom right when opening in Visual Studio Code).
+This command only has to be executed if there are issues due to CRLF instead of LF as line endings (see bottom right when opening file in Visual Studio Code).
  
-To build the Docker image:
+To build the Docker image execute the command:
 
-`scripts/docker-do.js build`
+`node scripts/docker-do.js build`
 
-To run the Docker image locally:
+To run the Docker image locally execute the command:
 
-`scripts/docker-do.js run [--port <portnumber>] [--disconnected] [--debug]`
+`node scripts/docker-do.js run [--port <portnumber>] [--disconnected] [--debug]`
 
 The default port is 8888, so the website will be available on `http://localhost:8888`.
 
-The `run` script does two things:
+The `run` command does the following things:
 
-- Kill a running previous container if needed
-- Expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
-- Start the server application with server-side rendering on `http://localhost:8888`
-- Run disconnected from Sitecore when `--disconnected` is specified. In this case the `data` folder is used.
+- kill a running previous container if needed
+- expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
+- start the NodeJS Express based web server with server-side rendering on `http://localhost:8888`
+- run disconnected from Sitecore when `--disconnected` is specified. In this case the `data` folder is used
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`.
 
-The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production) 
+The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production).
+
+# Deployment of solution in a Docker container on Azure
+
+Any change on the `develop` and `master` branches of the `https://github.com/macaw-interactive/react-jss-typescript-starter` repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
+
+- `develop` branch deployed to `https://react-jss-typescript-starter-develop.azurewebsites.net`
+- `master` branch deployed to `https://react-jss-typescript-starter.azurewebsites.net`
+
+The resulting web site is configured in disconnected mode, so no Sitecore server or license is required to run the web site.
+
+## The Azure pipeline Yaml file
+
+The following `azure-pipeline.yml` file drives the build of the Docker image and the deployment of the image to the Azure container registry:
+
+```yaml
+trigger:
+- $(branch)
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- checkout: self
+  submodules: true
+  
+- script: |
+    docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
+    docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)
+  displayName: 'docker build'
+```
+
+This Azure pipeline configuration file uses the following environment variables:
+
+| Variable | Purpose | Example
+| === | === | === |
+| imageName | The name to tag the Docker image with | For example `react-jss-typescript-starter` |
+| dockerId | The name of the Azure container registry | |
+| dockerPassword | The password to log in the Azure container registry | |
+
+##
+
+The starter is hosted in a Git repository on Github. Github is bought by Microsoft, and now Github provides integration with Azure and its pipelines for build and deploy. This integration can be enabled through the [Azure Pipelines app](https://github.com/marketplace/azure-pipelines) at the Github marketplace.
+
+After setting up and configuring the Azure Pipelines app for your Github account move over to https://dev.azure.com. In the new configured Azure DevOps organization you can setup new projects. See the [documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops) for more details.
+
+Within the project execute the following steps:
+
+1. select `Pipelines` and create a new build pipeline
+   ![Create build pipeline](./create-build-pipeline-1.png)
+2. select the location of the code repository, in our case GitHub
+   ![Select repo location](./create-build-pipeline-2.png)
+3. select the repository to use
+4. the `azure-pipeline.yml` file will be automatically picked up
+5. select `Run` to save it (why? - why can't I specify a name?) - cancel the build, we need to set variables!!
+6. select the pipelines, select the new created pipeline, select the dots menu to access the menu and rename the pipeline
+   ![Rename pipeline](./rename-build-pipeline.png)
+7. select the new created pipeline, select `Edit`, select the dots menu to reach the variable definition screen
+8. configure the above described variables
+9. run the build
+
+The build will result in a Docker image pushed to the specified Azure container registry with either the tag `$(imageName):develop` or `$(imageName):master`.
 
 # References
 
