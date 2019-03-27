@@ -278,8 +278,8 @@ steps:
 
 This Azure pipeline configuration file uses the following environment variables:
 
-| Variable | Purpose | Example
-| === | === | === |
+| Variable | Purpose | Example |
+| --- | --- | --- |
 | imageName | The name to tag the Docker image with | For example `react-jss-typescript-starter` |
 | dockerId | The name of the Azure container registry | |
 | dockerPassword | The password to log in the Azure container registry | |
