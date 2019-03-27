@@ -18,8 +18,9 @@ interface MarkdownConfig {
 }
 
 interface Props {
-    body: string,
-    config?: MarkdownConfig
+    body: string;
+    config?: MarkdownConfig;
+    imgBaseUrl: string;
 };
 
 interface State {
@@ -58,9 +59,14 @@ class Markdown extends React.Component<Props, State> {
             'sub',
             'sup'
           ]);
-          
+        
+        let html = md.render(body);
+        if (this.props.imgBaseUrl) {
+            html = html.replace(/<img src="\.\//g, `<img style="max-width: 100%" src="${this.props.imgBaseUrl}/`);
+        }
+
         return (
-            <span className="o-markdown" dangerouslySetInnerHTML={{ __html: md.render(body) }}></span>
+            <span className="o-markdown" dangerouslySetInnerHTML={{ __html: html }}></span>
         )
     }
 };

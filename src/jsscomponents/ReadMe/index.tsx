@@ -22,7 +22,7 @@ class ReadMe extends React.Component<ReadMeProps, ReadMeState> {
         const { text } = this.state;
 
         return (
-            <Markdown body={text} />         
+            <Markdown body={text} imgBaseUrl='/documentation'/>         
         )
     }
 };
