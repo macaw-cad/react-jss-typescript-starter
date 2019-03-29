@@ -375,7 +375,7 @@ Sometimes when doing development and stopping a running process a port remains s
 when developing disconnected where a dummy layout service is running on port 3042. If this happens to you, you can
 kill the process using the (Windows only) command:
 
-`kill-ip.bat 3042`
+`scripts/kill-ip.bat 3042`
 
 ## Debugging
 
