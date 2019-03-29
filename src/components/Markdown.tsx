@@ -1,5 +1,6 @@
 import * as React from 'react';
 var Remarkable = require('remarkable');
+var hljs = require('highlightjs');
 
 interface MarkdownConfig {
     html: boolean,        // Enable HTML tags in source
@@ -14,7 +15,7 @@ interface MarkdownConfig {
     quotes: string,
     // Highlighter function. Should return escaped HTML,
     // or '' if the source string is not changed
-    highlight: () => string;
+    highlight: (str: string, lang: string) => string;
 }
 
 interface Props {
@@ -41,7 +42,19 @@ class Markdown extends React.Component<Props, State> {
                 linkify: true,
                 typographer: false,
                 quotes: '“”‘’',
-                highlight: function (/*str, lang*/) { return ''; }
+                highlight: function (str, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        try {
+                            return hljs.highlight(lang, str).value;
+                        } catch (err) {}
+                    }
+            
+                    try {
+                        return hljs.highlightAuto(str).value;
+                    } catch (err) {}
+            
+                    return ''; // use external default escaping
+                }
             }
         }
         var md = new Remarkable(markdownConfig);

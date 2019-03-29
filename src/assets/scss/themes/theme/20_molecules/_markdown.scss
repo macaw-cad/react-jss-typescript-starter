@@ -21,8 +21,14 @@
         padding: 2px 2px;
     }
 
+    // pre { 
+    //     background-color: black;
+    //     color: white;
+    // }
+
     pre > code {
         padding: 7px 14px;
         display: block;
+        background-color: transparent;
     }
 }
