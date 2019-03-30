@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Jockey+One|PT+Sans');
+
+html, body {
+    font-family: 'PT Sans', sans-serif;
+}
+
+@for $i from 1 through 6 {
+    h#{$i} {
+        font-family: 'Jockey One', sans-serif;
+    }
+  }
+
+  .o-sitecore-logo {
+      fill: #000000;
+  }
