@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Placeholder, VisitorIdentification } from '@sitecore-jss/sitecore-jss-react';
 import { NavLink } from 'react-router-dom';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Helmet from 'react-helmet';
 
 // Using bootstrap is completely optional. It's used here to provide a clean layout for samples,
@@ -57,7 +57,7 @@ let Navigation = ({ t, i18n }) => (
 // the component state updated when i18n state (e.g. current language) changes
 // SvdO, TODO: compilation issue
 // @ts-ignore
-Navigation = withNamespaces()(Navigation);
+Navigation = withTranslation()(Navigation);
 
 const ref = React.createRef();
 

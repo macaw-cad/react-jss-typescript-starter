@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import fetchBackend from 'i18next-fetch-backend';
-import { reactI18nextModule } from 'react-i18next';
+import { initReactI18next  } from 'react-i18next';
 import { getSitecoreDictionaryServiceRoute } from './AppGlobals';
 
 /**
@@ -35,7 +35,7 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
         translation: dictionary,
       };
 
-      i18n.use(reactI18nextModule).init(options, (error) => {
+      i18n.use(initReactI18next ).init(options, (error) => {
         if (error) reject(error);
         resolve();
       });
@@ -62,7 +62,7 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
 
       i18n
         .use(fetchBackend)
-        .use(reactI18nextModule)
+        .use(initReactI18next )
         .init(options, (error) => {
           if (error) reject(error);
 
