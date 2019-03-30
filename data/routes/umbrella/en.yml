@@ -1,23 +1,9 @@
 id: umbrella-page
 fields:
-  pageTitle: Umbrella
+  pageTitle: Umbrella for Sitecore JSS
 placeholders:
   jss-main:
-  - componentName: GridBuilder
+  - componentName: MarkdownViewer
     fields:
-      columns: '2,10'
-    placeholders:
-      jss-grid-0:
-      - componentName: ImageTeaser
-        fields:
-          image:
-            src: /data/media/img/jss_logo.png
-            alt: Sitecore Logo
-          link: 
-            href: https://www.sitecore.com
-            text: Link to Sitecore
-          title: Hello there
-      jss-grid-1:
-      - componentName: Navigation
-
-  
+      baseUrl: /documentation
+      fileName: README.md

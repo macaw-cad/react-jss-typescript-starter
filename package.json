@@ -59,6 +59,7 @@
     "dotenv-expand": "^4.2.0",
     "env-cmd": "^8.0.2",
     "express": "~4.16.4",
+    "github-markdown-css": "^3.0.1",
     "graphql": "~14.0.2",
     "graphql-tag": "~2.10.0",
     "highlightjs": "^9.12.0",

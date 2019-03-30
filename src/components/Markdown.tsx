@@ -1,4 +1,5 @@
 import * as React from 'react';
+import 'github-markdown-css';
 var Remarkable = require('remarkable');
 var hljs = require('highlightjs');
 
@@ -21,7 +22,7 @@ interface MarkdownConfig {
 interface Props {
     body: string;
     config?: MarkdownConfig;
-    imgBaseUrl: string;
+    imgBaseUrl?: string;
 };
 
 interface State {
@@ -79,7 +80,7 @@ class Markdown extends React.Component<Props, State> {
         }
 
         return (
-            <span className="o-markdown" dangerouslySetInnerHTML={{ __html: html }}></span>
+            <span className="markdown-body" dangerouslySetInnerHTML={{ __html: html }}></span>
         )
     }
 };
