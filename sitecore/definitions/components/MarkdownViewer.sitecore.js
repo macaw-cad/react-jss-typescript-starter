@@ -12,8 +12,7 @@ export default function(manifest) {
     icon: SitecoreIcon.DocumentTag,
     fields: [
       { name: 'body', type: CommonFieldTypes.MultiLineText },
-      { name: 'baseUrl', type: CommonFieldTypes.SingleLineText },
-      { name: 'fileName', type: CommonFieldTypes.SingleLineText },
+      { name: 'url', type: CommonFieldTypes.SingleLineText },
     ],
     /*
     If the component implementation uses <Placeholder> or withPlaceholder to expose a placeholder,

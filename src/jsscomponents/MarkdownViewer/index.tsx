@@ -3,8 +3,7 @@ import Markdown from '../../components/Markdown';
 
 type MarkdownViewerFields = {
     body: { value: string };
-    baseUrl: { value: string };
-    fileName: { value: string };
+    url: { value: string };
 }
 type MarkdownViewerProps = {
     fields: MarkdownViewerFields;
@@ -22,7 +21,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
             if (props.fields.body) {
                 this.state = { text: props.fields.body.value };
             }
-            else if (props.fields.baseUrl && props.fields.fileName) {
+            else if (props.fields.url) {
                 this.state = { text: 'Loading' };
             }
             else {
@@ -34,8 +33,8 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
     }
 
     componentDidMount() {
-        if (this.props.fields && this.props.fields.baseUrl && this.props.fields.fileName) {
-            const markdownDocumentUrl = `${this.props.fields.baseUrl.value}/${this.props.fields.fileName.value}`;
+        if (this.props.fields && this.props.fields.url) {
+            const markdownDocumentUrl = this.props.fields.url.value;
             fetch(markdownDocumentUrl, { cache: 'reload' }) // don't cache
                 .then(response => response.text())
                 .then(text => this.setState({ text }));
@@ -44,7 +43,10 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
 
     render() {
         const { text } = this.state;
-        const imgBaseUrl = (this.props.fields && this.props.fields.baseUrl) ? this.props.fields.baseUrl.value : '/';
+        const imgBaseUrl = this.props.fields.url ? 
+            this.props.fields.url.value.substring(0, this.props.fields.url.value.lastIndexOf("/")) :
+            './'; //if markdown defined in body we leave urls starting with ./ the same
+
         return (
             <Markdown body={text} imgBaseUrl={imgBaseUrl}/>         
         )
