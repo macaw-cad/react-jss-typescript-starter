@@ -20,10 +20,15 @@ fields:
 # root placeholder names are defined in the package.json config section (required for Sitecore deployment)
 placeholders:
   jss-main:
+  - componentName: Hero
+    fields:
+      umbrella:
+        src: /data/media/img/umbrella.jpg
+        alt: Umbrella for Sitecore JSS
   - componentName: MarkdownViewer
     fields:
+      margin: 350px 0 0 0
       body: |
-        # Welcome to Umbrella for Sitecore JSS
         Thanks for using Umbrella for Sitecore JSS. Here are some resources to get you started:
 
         ### [JSS Documentation](https://jss.sitecore.net)
