@@ -23,7 +23,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
             if (props.fields.body && props.fields.body.value.trim() !== '') {
                 this.state = { text: props.fields.body.value, margin: margin };
             }
-            else if (props.fields.url) {
+            else if (props.fields.url && props.fields.url.value.trim() !== '') {
                 this.state = { text: 'Loading', margin: margin };
             }
             else {
@@ -35,7 +35,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
     }
 
     componentDidMount() {
-        if (this.props.fields && this.props.fields.url) {
+        if (this.props.fields && this.props.fields.url && this.props.fields.url.value.trim() !== '') {
             const markdownDocumentUrl = this.props.fields.url.value;
             fetch(markdownDocumentUrl, { cache: 'reload' }) // don't cache
                 .then(response => response.text())
