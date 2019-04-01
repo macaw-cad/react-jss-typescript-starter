@@ -16,21 +16,21 @@ type MarkdownViewerState = {
 };
 
 class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewerState> {
-    state: Readonly<MarkdownViewerState> = { text: 'Loading', margin: '' };
     constructor(props: MarkdownViewerProps) {
         super(props);
+        const margin = props.fields.margin? props.fields.margin.value : '';
         if (props.fields) {
             if (props.fields.body && props.fields.body.value.trim() !== '') {
-                this.state = { text: props.fields.body.value };
+                this.state = { text: props.fields.body.value, margin: margin };
             }
             else if (props.fields.url) {
-                this.state = { text: 'Loading', margin: props.fields.margin.value };
+                this.state = { text: 'Loading', margin: margin };
             }
             else {
-                this.state = { text: 'No Markdown text specified', margin: props.fields.margin.value };
+                this.state = { text: 'No Markdown text specified', margin: margin };
             }
         } else {
-            this.state = { text: 'No Markdown text specified', margin: '' };
+            this.state = { text: 'No Markdown text specified', margin: margin };
         }
     }
 
