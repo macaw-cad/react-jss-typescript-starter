@@ -13,6 +13,7 @@ export default function(manifest) {
     fields: [
       { name: 'body', type: CommonFieldTypes.MultiLineText },
       { name: 'url', type: CommonFieldTypes.SingleLineText },
+      { name: 'margin', type: CommonFieldTypes.SingleLineText },
     ],
     /*
     If the component implementation uses <Placeholder> or withPlaceholder to expose a placeholder,
