@@ -162,7 +162,7 @@
     "build:manifest": "npm run build:manifest:en",
     "build:client": "cross-env-shell PUBLIC_URL=$npm_package_config_sitecoreDistPath \"react-scripts build\"",
     "build:client:postbuild": "cpy build/documentation/README.md build/documentation/README.md.txt",
-    "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server.bundle/server.bundle.webpack.config.js\"",
+    "build:serverbundle": "cross-env-shell NODE_ENV=production \"webpack --mode production --config server.bundle/server.bundle.webpack.config.js\" && node scripts/env-prefix-serverbundle.js",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "run-build:disconnected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
     "run-build:connected": "cross-env-shell NODE_ENV=production npm-run-all --parallel run-build:server:connected",

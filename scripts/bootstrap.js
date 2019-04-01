@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 
+const fs = require('fs');
+const path = require('path');
 const envGenerator = require('./generate-env');
 
 /*
@@ -12,14 +14,17 @@ const envGenerator = require('./generate-env');
 
 const disconnected = process.argv.some((arg) => arg === '--disconnected');
 
-/*
-  CONFIG GENERATION
-  Generates the /src/temp/config.js file which contains runtime configuration
-  that the app can import and use.
-*/
-
 const configOverride = { };
-envGenerator(configOverride, disconnected);
+const envSettings = envGenerator(configOverride, disconnected);
+let dotEnvContent = '';
+for(var propertyName in envSettings) {
+  dotEnvContent += `${propertyName}=${envSettings[propertyName]}\n`;
+}
+
+dotEnvContent += 'BROWSER=Chrome\n';
+const filename = disconnected ? '.env.disconnected' : '.env.connected';
+console.log(`Writing ${filename}`);
+fs.writeFileSync(filename, dotEnvContent, { encoding: 'utf8' });
 
 /*
   COMPONENT FACTORY GENERATION

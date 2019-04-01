@@ -20,7 +20,7 @@ module.exports = (app) => {
 
     // when in connected mode we want to proxy Sitecore paths off to Sitecore
 
-    app.use(proxy('/sitecore', { target: process.env.REACT_APP_SITECORE_API_HOST }));
+    app.use(proxy('/sitecore', { target: 'http://react-jss-typescript-starter.dev.local' /*process.env.REACT_APP_SITECORE_API_HOST*/ }));
     // media items
     app.use(proxy('/-', { target: process.env.REACT_APP_SITECORE_API_HOST }));
     // visitor identification

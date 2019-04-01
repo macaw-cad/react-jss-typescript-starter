@@ -50,27 +50,32 @@ export function getSitecoreLayoutServiceRoute(): string {
 }
 
 export function getSitecoreDictionaryServiceRoute(): string {
-    let sitecoreJssAppName, sitecoreApiKey;
+    let sitecoreApiHost, sitecoreJssAppName, sitecoreApiKey;
     if (Environment.isServer) {
+        sitecoreApiHost = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST;
         sitecoreJssAppName = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
         sitecoreApiKey = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY;
     } else {
         const globalData = getGlobalData();
+        sitecoreApiHost = '';
         sitecoreJssAppName = globalData.sitecoreJssAppName;
         sitecoreApiKey = globalData.sitecoreApiKey;
     }
-    return `/sitecore/api/jss/dictionary/${sitecoreJssAppName}/{{lng}}?sc_apikey=${sitecoreApiKey}`;
+    return `${sitecoreApiHost}/sitecore/api/jss/dictionary/${sitecoreJssAppName}/{{lng}}?sc_apikey=${sitecoreApiKey}`;
 }
 
 export function getSitecoreGraphqlEndpoint(): string {
-    let sitecoreJssAppName, sitecoreApiKey;
+    let sitecoreApiHost, sitecoreJssAppName, sitecoreApiKey;
     if (Environment.isServer) {
+        sitecoreApiHost = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST;
         sitecoreJssAppName = Environment.reactAppProcessEnv.REACT_APP_SITECORE_JSS_APP_NAME;
         sitecoreApiKey = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY;
     } else {
         const globalData = getGlobalData();
+        sitecoreApiHost = '';
         sitecoreJssAppName = globalData.sitecoreJssAppName;
         sitecoreApiKey = globalData.sitecoreApiKey;
     }
-    return `/api/${sitecoreJssAppName}?sc_apikey=${sitecoreApiKey}`;
+    const url = `${sitecoreApiHost}/api/${sitecoreJssAppName}?sc_apikey=${sitecoreApiKey}`;
+    return url;
 }

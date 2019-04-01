@@ -18,7 +18,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
     constructor(props: MarkdownViewerProps) {
         super(props);
         if (props.fields) {
-            if (props.fields.body) {
+            if (props.fields.body && props.fields.body.value.trim() !== '') {
                 this.state = { text: props.fields.body.value };
             }
             else if (props.fields.url) {
