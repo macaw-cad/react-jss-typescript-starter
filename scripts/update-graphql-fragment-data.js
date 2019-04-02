@@ -2,7 +2,6 @@
 
 import fetch from 'isomorphic-fetch';
 import fs from 'fs';
-import generateConfig from './generate-config';
 
 // Apollo Client supports caching GraphQL responses, which can greatly reduce network traffic needs.
 // In order to work correctly with interfaces in GraphQL, it needs to know some basic information about
@@ -11,24 +10,9 @@ import generateConfig from './generate-config';
 //
 // The `jss graphql:update` command should be executed when Sitecore templates related to the site are altered.
 
-generateConfig();
-
-let jssConfig;
-
-try {
-  // eslint-disable-next-line global-require
-  jssConfig = require('../src/temp/config').default;
-} catch (e) {
-  console.error(
-    'Unable to require JSS config. Ensure `jss setup` has been run, and the app has been started at least once after setup.'
-  );
-  console.error(e);
-  process.exit(1);
-}
-
-console.log(`Updating GraphQL fragment type data from ${jssConfig.graphQLEndpoint}...`);
-
-fetch(jssConfig.graphQLEndpoint, {
+const graphqlEndpoint =  `/api/${process.env.REACT_APP_SITECORE_JSS_APP_NAME}?sc_apikey=${process.env.REACT_APP_SITECORE_API_KEY}`;
+console.log(`Updating GraphQL fragment type data from ${graphqlEndpoint}...`);
+fetch(graphqlEndpoint, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({

@@ -8,16 +8,18 @@ const reactApp = require('babel-preset-react-app');
 
 module.exports = {
   mode: 'production',
-  devtool: process.env.NODE_ENV !== 'production'? 'inline-source-map' : '',
-  entry: path.resolve(__dirname, './index.ts'),
+  devtool: process.env.NODE_ENV !== 'production' ? 'inline-source-map' : '',
+  entry: {
+    'index': path.resolve(__dirname, './index.ts'),
+  },
   target: 'node',
   output: {
     path: path.resolve(__dirname, '.'),
-    filename: '../build.server/index.js',
+    filename: '../build.server/[name].js',
     libraryTarget: 'this',
   },
   optimization: {
-    minimize: process.env.NODE_ENV !== 'production'? false : true,
+    minimize: process.env.NODE_ENV !== 'production' ? false : true,
   },
   module: {
     rules: [
@@ -71,11 +73,12 @@ module.exports = {
     ],
   },
   plugins: [
-     new webpack.NormalModuleReplacementPlugin(
-         /\/iconv-loader$/, require.resolve('node-noop')
-     )
+    new webpack.NormalModuleReplacementPlugin(
+      /\/iconv-loader$/, require.resolve('node-noop')
+    )
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
-};
+}
+

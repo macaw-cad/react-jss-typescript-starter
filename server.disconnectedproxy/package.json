@@ -1,0 +1,22 @@
+{
+  "name": "server.disconnectedproxy",
+  "version": "1.0.0",
+  "description": "The implementation of the disconnected server proxy",
+  "main": "disconnected-mode-proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Sitecore",
+    "disconnected",
+    "JSS"
+  ],
+  "author": "Serge van den Oever [Macaw]",
+  "license": "MIT",
+  "dependencies": {
+    "@sitecore-jss/sitecore-jss-dev-tools": "^11.0.2",
+    "@sitecore-jss/sitecore-jss-proxy": "^11.0.2",
+    "chalk": "^2.4.2",
+    "express": "^4.16.4"
+  }
+}

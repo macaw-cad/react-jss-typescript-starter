@@ -10,6 +10,7 @@
       "baseUrl": ".",
       "noImplicitAny": false,
       "jsx": "react",
+      "resolveJsonModule": true,
       "paths": {
           "*": [
               "../node_modules/*",
@@ -19,5 +20,13 @@
   },
   "include": [
       "."
+  ],
+  "typeRoots": [
+    "../src/types",
+    "../node_modules/@types"
+  ], 
+  "types": [
+    "node",
+    "react-app-env"
   ]
 }

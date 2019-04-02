@@ -22,45 +22,40 @@ placeholders:
   jss-main:
   - componentName: Hero
     fields:
-      heading: Serge's hero component!
-  - componentName: ContentBlock
+      umbrella:
+        src: /data/media/img/umbrella.jpg
+        alt: Umbrella for Sitecore JSS
+  - componentName: MarkdownViewer
     fields:
-      heading: Welcome to Sitecore JSS
-      # to author content in YAML, use _multi-line values_ (prefixed with | + endline)
-      # as long as the same indent is preserved at the beginning of each line, no escaping
-      # is required at all in the value, making it easy to read
-      content: |
-          <p>Thanks for using JSS. Here are some resources to get you started:</p>
+      margin: 350px 0 0 0
+      body: |
+        Thanks for using Umbrella for Sitecore JSS. Here are some resources to get you started:
 
-          <h3><a href="https://jss.sitecore.net" rel="noopener noreferrer">Documentation</a></h3>
-          <p>The official JSS documentation can help you with any JSS task from getting started to advanced techniques.</p>
+        ### [JSS Documentation](https://jss.sitecore.net)
+        The official JSS documentation can help you with any JSS task from getting started to advanced techniques.
 
-          <h3><a href="/styleguide">Styleguide</a></h3>
-          <p>The JSS styleguide is a living example of how to use JSS, hosted right in this app.
-          It demonstrates most of the common patterns that JSS implementations may need to use,
-          as well as useful architectural patterns.</p>
+        ### [Umbrella](/umbrella)
+        Umbrella for Sitecore JSS is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
+        
+        ### [Styleguide](/styleguide)
+        The JSS styleguide is a living example of how to use JSS, hosted right in this app.
+        It demonstrates most of the common patterns that JSS implementations may need to use,
+        as well as useful architectural patterns.
 
-          <h3><a href="/graphql">GraphQL</a></h3>
-          <p>JSS features integration with the Sitecore GraphQL API to enable fetching non-route data from Sitecore - or from other internal backends as an API aggregator or proxy.
-          This route is a living example of how to use an integrate with GraphQL data in a JSS app.</p>
+        ### [GraphQL](/graphql)
+        JSS features integration with the Sitecore GraphQL API to enable fetching non-route data from Sitecore - or from other internal backends as an API aggregator or proxy.
+        This route is a living example of how to use an integrate with GraphQL data in a JSS app.
 
-          <div class="alert alert-dark">
-            <h4>This app is a boilerplate</h4>
-            <p>The JSS samples are a boilerplate, not a library. That means that any code in this app is meant for you to own and customize to your own requirements.</p>
-            <p>Want to get change the lint settings? Do it. Want to read manifest data from a MongoDB database? Go for it. This app is yours.</p>
-          </div>
+        ## This app is a boilerplate
+        The JSS samples are a boilerplate, not a library. That means that any code in this app is meant for you to own and customize to your own requirements.
+        
+        Want to get change the lint settings? Do it. Want to read manifest data from a MongoDB database? Go for it. This app is yours.
 
-          <div class="alert alert-dark">
-            <h4>How to start with an empty app</h4>
-            <p>To remove all of the default sample content (the Styleguide and GraphQL routes) and start out with an empty JSS app:</p>
-            <ol>
-              <li>Delete <code>/src/components/Styleguide*</code> and <code>/src/components/GraphQL*</code></li>
-              <li>Delete <code>/sitecore/definitions/components/Styleguide*</code>, <code>/sitecore/definitions/templates/Styleguide*</code>, and <code>/sitecore/definitions/components/GraphQL*</code></li>
-              <li>Delete <code>/data/component-content/Styleguide</code></li>
-              <li>Delete <code>/data/content/Styleguide</code></li>
-              <li>Delete <code>/data/routes/styleguide</code> and <code>/data/routes/graphql</code></li>
-              <li>Delete <code>/data/dictionary/*.yml</code></li>
-            </ol>
-          </div>
-
-
+        ## How to start with an empty app
+        To remove all of the default sample content (the Umbrella, Styleguide and GraphQL routes) and start out with an empty JSS app:
+        - Delete `/src/jsscomponents/Styleguide*` and `/src/components/GraphQL*`
+        - Delete `/sitecore/definitions/components/Styleguide*`, `/sitecore/definitions/templates/Styleguide*`, and `/sitecore/definitions/components/GraphQL*`
+        - Delete `/data/component-content/Styleguide`
+        - Delete `/data/content/Styleguide`
+        - Delete `/data/routes/styleguide` and `/data/routes/graphql`
+        - Delete `/data/dictionary/*.yml`

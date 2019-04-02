@@ -1,0 +1,112 @@
+// sass-lint:disable no-css-comments
+
+/**
+* Media query mixin.
+*
+* It’s not great practice to define solid breakpoints up-front, preferring to
+* modify your design when it needs it, rather than assuming you’ll want a
+* change at ‘mobile’. As such, this is primarely to be used by the default grid
+* that is used for general page layout
+*
+* We define some broad $breakpoints in our vars file that are picked up here
+* for use in a simple media query mixin. Our options are:
+*
+* mobile-first:
+*
+* S
+* M
+* L
+*
+* desktop-first:
+*
+* S-max
+* M-max
+* L-max
+*
+* Not using a media query will, naturally, serve styles to all devices.
+*
+*	@include mq(L){
+*		[styles here]
+*	}
+*
+*/
+@mixin mq($media-query) {
+  @each $breakpoint-name, $breakpoint-px in $breakpoints {
+    @if $breakpoint-name == $media-query {
+      @media only screen and (min-width: $breakpoint-px) {
+        @content;
+      }
+    }
+    // max-width versions, 'desktop first'
+    @if $breakpoint-name + '-max' == $media-query {
+      @media only screen and (max-width: $breakpoint-px) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin placeholder {
+  // sass-lint:disable-block no-vendor-prefixes
+
+  ::-webkit-input-placeholder {
+    @content;
+  }
+
+  :-moz-placeholder {
+    @content;
+  }
+
+  ::-moz-placeholder {
+    @content;
+  }
+
+  :-ms-input-placeholder {
+    @content;
+  }
+}
+
+@mixin headings {
+  $headings: (
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6' );
+
+  @each $heading in $headings {
+    .#{$heading} {
+      @content;
+    }
+  }
+}
+
+@mixin ie-and-edge {
+  // IE 10+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @content;
+  }
+
+  // Edge only
+  @supports (-ms-ime-align: auto) {
+    @content;
+  }
+}
+
+@mixin safari {
+  @supports (-webkit-marquee-repetition: infinite) and (object-fit: fill) {
+    @content;
+  }
+}
+
+@mixin hover-on-touch-devices {
+  @media (hover: none) {
+    @content;
+  }
+}
+
+@mixin fallback-with-fixed-color($property, $value, $fallback-value) {
+  #{$property}: $fallback-value;
+  #{$property}: $value;
+}

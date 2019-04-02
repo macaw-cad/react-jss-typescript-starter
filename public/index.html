@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-
-    <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/rootvars.css"></link>
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -22,7 +20,47 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+<!-- 
+      The script block below configures the Client Portal SPA through the use of .env settings.
+      Because comments in the script block are not stripped during minification, the documentation
+      on the script block is in this HTML comment.
 
+      window.app = {
+        sitecoreJssAppName: "%REACT_APP_SITECORE_JSS_APP_NAME%",
+        sitecoreApiKey: "%REACT_APP_SITECORE_API_KEY%",
+        sitecoreApiHost: "%REACT_APP_SITECORE_API_HOST%",
+        sitecoreDefaultLanguage: "%REACT_APP_SITECORE_DEFAULT_LANGUAGE%",
+        sitecoreEnableDebug: "%REACT_APP_SITECORE_ENABLE_DEBUG%",          // "true" or "false"
+        sitecoreConnected: "%REACT_APP_SITECORE_CONNECTED%",              // "true" or "false"
+
+        appName: "%REACT_APP_NAME%", // Name of the app
+        instrumentationKey: "%REACT_APP_APPINSIGHTS_KEY%", // Application Insights instrumentation key
+        buildVersion: "%REACT_APP_BUILDVERSION%", // The build version
+        environment: "%REACT_APP_ENVIRONMENT%",   // The deploy environment: dev, test, acc, prod
+        environmentConnections: "%REACT_APP_ENVIRONMENTCONNECTIONS%", // what connections does this environment have: scConnected, scDisconnected, ...
+        %REACT_APP_ADDITIONALSETTINGS%            // Addition settings to be injected here, MUST start with a ','
+        // Example for %REACT_APP_ADDITIONALSETTINGS%:
+        // ,mockDataFlags:{thingy:true,otherthingy:true}
+        // ,mockDataAllFlags: true /* enable all mock data flags */
+      };
+    -->
+    <script>
+      window.app = {
+        sitecoreJssAppName: "%REACT_APP_SITECORE_JSS_APP_NAME%",        
+        sitecoreApiKey: "%REACT_APP_SITECORE_API_KEY%",
+        sitecoreApiHost: "%REACT_APP_SITECORE_API_HOST%",
+        sitecoreDefaultLanguage: "%REACT_APP_SITECORE_DEFAULT_LANGUAGE%",
+        sitecoreEnableDebug: "%REACT_APP_SITECORE_ENABLE_DEBUG%",
+        sitecoreConnected: "%REACT_APP_SITECORE_CONNECTED%",  
+
+        appName: "%REACT_APP_NAME%",
+        instrumentationKey: "%REACT_APP_APPINSIGHTS_KEY%",
+        buildVersion: "%REACT_APP_BUILDVERSION%",
+        environment: "%REACT_APP_ENVIRONMENT%",
+        environmentConnections: "%REACT_APP_ENVIRONMENTCONNECTIONS%"
+        %REACT_APP_ADDITIONALSETTINGS%
+      };
+    </script>
     <script type="application/json" id="__JSS_STATE__">null</script>
 
     <!--

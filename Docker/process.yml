@@ -1,0 +1,9 @@
+apps:
+  - script   : 'build.server/index.js'
+    name     : 'Web server'
+    exec_mode: 'cluster_mode'
+    cwd      : '/app'
+    instances: 'max'
+  - script   : 'server.disconnectedproxy/disconnected-mode-proxy.js'
+    name     : 'Sitecore disconnected mode proxy'
+    cwd      : '/app'
