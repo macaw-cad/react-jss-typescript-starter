@@ -20,4 +20,42 @@ fields:
 # root placeholder names are defined in the package.json config section (required for Sitecore deployment)
 placeholders:
   jss-main:
-  - componentName: ReadMe
+  - componentName: Hero
+    fields:
+      umbrella:
+        src: /data/media/img/umbrella.jpg
+        alt: Umbrella for Sitecore JSS
+  - componentName: MarkdownViewer
+    fields:
+      margin: 350px 0 0 0
+      body: |
+        Thanks for using Umbrella for Sitecore JSS. Here are some resources to get you started:
+
+        ### [JSS Documentation](https://jss.sitecore.net)
+        The official JSS documentation can help you with any JSS task from getting started to advanced techniques.
+
+        ### [Umbrella](/umbrella)
+        Umbrella for Sitecore JSS is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
+        
+        ### [Styleguide](/styleguide)
+        The JSS styleguide is a living example of how to use JSS, hosted right in this app.
+        It demonstrates most of the common patterns that JSS implementations may need to use,
+        as well as useful architectural patterns.
+
+        ### [GraphQL](/graphql)
+        JSS features integration with the Sitecore GraphQL API to enable fetching non-route data from Sitecore - or from other internal backends as an API aggregator or proxy.
+        This route is a living example of how to use an integrate with GraphQL data in a JSS app.
+
+        ## This app is a boilerplate
+        The JSS samples are a boilerplate, not a library. That means that any code in this app is meant for you to own and customize to your own requirements.
+        
+        Want to get change the lint settings? Do it. Want to read manifest data from a MongoDB database? Go for it. This app is yours.
+
+        ## How to start with an empty app
+        To remove all of the default sample content (the Umbrella, Styleguide and GraphQL routes) and start out with an empty JSS app:
+        - Delete `/src/jsscomponents/Styleguide*` and `/src/components/GraphQL*`
+        - Delete `/sitecore/definitions/components/Styleguide*`, `/sitecore/definitions/templates/Styleguide*`, and `/sitecore/definitions/components/GraphQL*`
+        - Delete `/data/component-content/Styleguide`
+        - Delete `/data/content/Styleguide`
+        - Delete `/data/routes/styleguide` and `/data/routes/graphql`
+        - Delete `/data/dictionary/*.yml`

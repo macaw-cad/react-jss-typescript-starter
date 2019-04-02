@@ -29,7 +29,7 @@ prog
   .description('Helper for Docker related actions')
   .help('Commands for building and running Docker images on the developer machine.')
 
-  .command('prepare', 'Prepare for building the Docker image (convert config files to unix format)')
+  .command('build', 'Build the Docker image locally')
   .action(function (args, options, logger) {
     const dockerDir = path.resolve(__dirname, '../Docker');
     logger.info(`Directory with Docker configuration files to convert from Windows to Linux format: ${dockerDir}`);
@@ -42,10 +42,6 @@ prog
       });
         // Linux is not really happy with files in DOS format, make sure they are in unix format
       d2u.process(['init.sh', 'sshd_config', 'nginx.config', 'process.yml']);
-  })
-
-  .command('build', 'Build the Docker image locally')
-  .action(function (args, options, logger) {
     logger.info(`Creating Docker image for app '${packageJsonConfig.name}'`);
     const docker = execFile(
       'docker',

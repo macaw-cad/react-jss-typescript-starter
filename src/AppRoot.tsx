@@ -10,8 +10,9 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 import { StaticRouter } from 'react-router';
 
-import "./index.scss";
-import "./assets/css/highlightjs_github.css";
+import './assets/css/app.css';
+import './assets/css/highlightjs_github.css';
+import './assets/sass/index.scss';
 
 // This is the main JSX entry point of the app invoked by the renderer (server or client rendering).
 // By default the app's normal rendering is delegated to <RouteHandler> that handles the loading of JSS route data.

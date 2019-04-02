@@ -2,18 +2,18 @@
 import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
 
 /**
- * Adds the Hero component to the disconnected manifest.
- * This function is invoked by convention (*.sitecore.js) when 'jss manifest' is run.
+ * Adds the ContentBlock component to the disconnected manifest.
+ * This function is invoked by convention (*.sitecore.js) when `jss manifest` is run.
  * @param {Manifest} manifest Manifest instance to add components to
  */
 export default function(manifest) {
   manifest.addComponent({
     name: 'Hero',
-    icon: SitecoreIcon.DocumentTag,
+    displayName: 'Umbrella',
+    // totally optional, but fun
+    icon: SitecoreIcon.Image,
     fields: [
-      { name: 'heading', type: CommonFieldTypes.SingleLineText },
-      { name: 'heroImage', type: CommonFieldTypes.Image },
+      { name: 'umbrella', type: CommonFieldTypes.Image },
     ],
-    placeholders: ['hero-image']
   });
 }

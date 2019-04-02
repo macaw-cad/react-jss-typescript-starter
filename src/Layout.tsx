@@ -1,19 +1,14 @@
 import * as React from 'react';
 import { Placeholder, VisitorIdentification } from '@sitecore-jss/sitecore-jss-react';
 import { NavLink } from 'react-router-dom';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Helmet from 'react-helmet';
 
-import './rootvars.css';
 // Using bootstrap is completely optional. It's used here to provide a clean layout for samples,
 // without needing extra CSS in the sample app. Remove it in package.json as well if it's removed here.
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/css/app.css';
-import logo from './assets/images/sitecore.svg';
-import Header from './jsscomponents/Header';
-import Hero from './jsscomponents/Hero';
-import Footer from './jsscomponents/Footer';
-import Logger from './components/helpers/Logger';
+import SitecoreLogo from './components/SitecoreLogo';
 
 /*
   APP LAYOUT
@@ -29,18 +24,24 @@ let Navigation = ({ t, i18n }) => (
   <div className="header-area sticky d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom">
     <h5 className="my-0 mr-md-auto font-weight-normal">
       <NavLink to="/" className="text-dark">
-        <img src={logo} alt="Sitecore" />
+        <SitecoreLogo />
       </NavLink>
     </h5>
     <nav className="my-2 my-md-0 mr-md-3">
-      <a
+      {/* <a
         className="p-2 text-dark"
         href="https://jss.sitecore.net"
         target="_blank"
         rel="noopener noreferrer"
       >
-        {t('Documentation')}
-      </a>
+        {t('JSS Documentation')}
+      </a> */}
+      <NavLink to="/" className="p-2 text-dark">
+        {t('Welcome')}
+      </NavLink>
+      <NavLink to="/umbrella" className="p-2 text-dark">
+        {t('Umbrella')}
+      </NavLink>
       <NavLink to="/styleguide" className="p-2 text-dark">
         {t('Styleguide')}
       </NavLink>
@@ -48,7 +49,6 @@ let Navigation = ({ t, i18n }) => (
         {t('GraphQL')}
       </NavLink>
     </nav>
-    <section>test section</section>
   </div>
 );
 
@@ -57,7 +57,7 @@ let Navigation = ({ t, i18n }) => (
 // the component state updated when i18n state (e.g. current language) changes
 // SvdO, TODO: compilation issue
 // @ts-ignore
-Navigation = withNamespaces()(Navigation);
+Navigation = withTranslation()(Navigation);
 
 const ref = React.createRef();
 
@@ -83,23 +83,18 @@ class Layout extends React.Component<any, any> {
       */}
         <VisitorIdentification />
 
-        {/* 
+  {/* 
       // @ts-ignore */}
-        <Header ref={ref} />
-        <Hero {...this.props} refs={ref} />
+        <Navigation />
 
         {/* root placeholder for the app, which we add components to using route data */}
         <div className="container">
           <Placeholder name="jss-main" rendering={this.props.route} />
         </div>
 
-        <Footer />
-
       </React.Fragment>
     )
   }
 }
-
-
 
 export default Layout;

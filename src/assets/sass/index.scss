@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Jockey+One|PT+Sans');
+@import '../sass/mixins';
+@import '../sass/grid';
+@import '../sass/hero';
+
+html, body {
+    font-family: 'PT Sans', sans-serif;
+}
+
+@for $i from 1 through 6 {
+    h#{$i} {
+        font-family: 'Jockey One', sans-serif;
+    }
+  }
+
+  .markdown-body { // fix because the origonal markdown styling has a bigger size.
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 300;
+        line-height: 1.2;
+      }
+  }
+
+  .o-sitecore-logo {
+      fill: #000000;
+  }

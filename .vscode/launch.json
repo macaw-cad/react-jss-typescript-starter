@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Sitecore Node",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "port": 14242
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Launch via NPM",

@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 "use strict";
 
-const fs = require('fs');
-const path = require('path');
 const packageConfig = require('../package.json');
 
 /* eslint-disable no-console */
@@ -34,30 +32,26 @@ module.exports = function envGenerator(configOverrides, disconnected) {
   // and finally config passed in the configOverrides param wins.
   const config = Object.assign(defaultConfig, scjssConfig, packageJson, configOverrides);
 
-  const content = makeContent(config, disconnected);
-  const filename = disconnected ? '.env.disconnected' : '.env.connected';
-  console.log(`Writing ${filename}`);
-  fs.writeFileSync(filename, content, { encoding: 'utf8' });
+  const env = envSettings(config, disconnected);
+  return env;
 };
 
-function makeContent(config, disconnected) {
-  // console.log(config);
-  return `
-REACT_APP_NAME=${config.jssAppName}
-REACT_APP_APPINSIGHTS_KEY=${config.azureAppInsightsKey}
-REACT_APP_BUILDVERSION=DevBuild
-REACT_APP_ENVIRONMENT=Development
-REACT_APP_ENVIRONMENTCONNECTIONS=${(disconnected ? 'ScDisconnected' : 'ScConnected')}
-REACT_APP_ADDITIONALSETTINGS=,ignore:0
-REACT_APP_SITECORE_JSS_APP_NAME=${config.jssAppName}
-REACT_APP_SITECORE_API_KEY=${config.sitecoreApiKey}
-REACT_APP_SITECORE_API_HOST=${(disconnected ? 'http://localhost:3042' : config.sitecoreApiHost)}
-REACT_APP_SITECORE_DEFAULT_LANGUAGE=${config.defaultLanguage}
-REACT_APP_SITECORE_ENABLE_DEBUG=true
-REACT_APP_SITECORE_CONNECTED=${(disconnected? false : true)}
-REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=
-BROWSER=Chrome
-`
+function envSettings(config, disconnected) {
+  return {
+    REACT_APP_NAME: config.jssAppName,
+    REACT_APP_APPINSIGHTS_KEY: config.azureAppInsightsKey,
+    REACT_APP_BUILDVERSION: 'DevBuild',
+    REACT_APP_ENVIRONMENT: 'Development',
+    REACT_APP_ENVIRONMENTCONNECTIONS: disconnected ? 'ScDisconnected' : 'ScConnected',
+    REACT_APP_ADDITIONALSETTINGS: ',ignore:0',
+    REACT_APP_SITECORE_JSS_APP_NAME: config.jssAppName,
+    REACT_APP_SITECORE_API_KEY: config.sitecoreApiKey,
+    REACT_APP_SITECORE_API_HOST: disconnected ? 'http://localhost:3042' : config.sitecoreApiHost,
+    REACT_APP_SITECORE_DEFAULT_LANGUAGE: config.defaultLanguage,
+    REACT_APP_SITECORE_ENABLE_DEBUG: 'true',
+    REACT_APP_SITECORE_CONNECTED: disconnected? 'false' : 'true',
+    REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES: ''
+  }
 }
 
 function transformScJssConfig() {
