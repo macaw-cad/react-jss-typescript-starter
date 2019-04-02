@@ -57,7 +57,7 @@ export function getSitecoreDictionaryServiceRoute(): string {
         sitecoreApiKey = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY;
     } else {
         const globalData = getGlobalData();
-        sitecoreApiHost = '';
+        sitecoreApiHost = ''; // use proxy on current domain, to prevent CORS issues
         sitecoreJssAppName = globalData.sitecoreJssAppName;
         sitecoreApiKey = globalData.sitecoreApiKey;
     }
@@ -72,7 +72,7 @@ export function getSitecoreGraphqlEndpoint(): string {
         sitecoreApiKey = Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY;
     } else {
         const globalData = getGlobalData();
-        sitecoreApiHost = '';
+        sitecoreApiHost = globalData.sitecoreApiHost;
         sitecoreJssAppName = globalData.sitecoreJssAppName;
         sitecoreApiKey = globalData.sitecoreApiKey;
     }
