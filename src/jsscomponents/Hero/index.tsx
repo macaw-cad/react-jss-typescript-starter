@@ -14,8 +14,6 @@ const Hero: React.FunctionComponent<Props> = (props) => {
             <picture>
             <Image
             field={props.fields.umbrella}
-            srcSet={[{ mw: 300 }, { mw: 100 }]}
-            sizes="(min-width: 960px) 300px, 100px"
             className="img-fluid"
           />
             </picture>

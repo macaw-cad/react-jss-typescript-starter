@@ -23,7 +23,7 @@ module.exports = function (plop) {
         },
         {
             type: 'add',
-            path: 'sitecore/definitions/components/{{properCase name}}.sitecore.ts',
+            path: 'sitecore/definitions/components/{{properCase name}}.sitecore.js',
             templateFile: 'plop-templates/component.sitecore.hbs',
             force: true
         }]
