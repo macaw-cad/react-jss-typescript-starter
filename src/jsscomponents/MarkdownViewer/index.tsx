@@ -48,7 +48,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
         const { text, margin } = this.state;
         const imgBaseUrl = this.props.fields.url ? 
             this.props.fields.url.value.substring(0, this.props.fields.url.value.lastIndexOf("/")) :
-            `${Environment.homeUrl}/`; //if markdown defined in body we leave urls starting with ./ the same
+            `./`; //if markdown defined in body we leave urls starting with ./ the same
 
         return (
             <div style={{ margin: margin}}><Markdown body={text} imgBaseUrl={imgBaseUrl}/></div>         
