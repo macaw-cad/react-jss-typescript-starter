@@ -20,7 +20,6 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
         };
     }
     render() {
-        console.log('ok')
         const { smallColumns, largeColumns, extraLargeColumns, parameters, rendering } = this.props;
         if (parameters && (parameters.className !== undefined)) {
             this.setState({
