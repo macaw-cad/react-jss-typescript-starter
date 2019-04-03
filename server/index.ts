@@ -55,8 +55,8 @@ const config: ProxyConfig = getSitecoreProxyConfiguration();
 const app = express();
 const port: number = 3001;
 
-// serve static files from public folder
-app.use('/documentation', express.static(path.join(process.cwd(), Environment.isProduction? 'build/documentation' : '/public/documentation')));
+// Example of serve static files from public folder
+// app.use('/xyz', express.static(path.join(process.cwd(), Environment.isProduction? 'build/xyz' : '/public/xyz')));
 
 app.use(compression());
 
