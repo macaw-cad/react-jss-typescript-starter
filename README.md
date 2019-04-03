@@ -532,14 +532,14 @@ After setting up and configuring the Azure Pipelines app for your Github account
 Within the project execute the following steps:
 
 1. select `Pipelines` and create a new build pipeline
-   ![Create build pipeline]./documentation/create-build-pipeline-1.png)
+   ![Create build pipeline](./documentation/create-build-pipeline-1.png)
 2. select the location of the code repository, in our case GitHub
-   ![Select repo location]./documentation/create-build-pipeline-2.png)
+   ![Select repo location](./documentation/create-build-pipeline-2.png)
 3. select the repository to use
 4. the `azure-pipeline.yml` file will be automatically picked up
 5. select `Run` to save it (why? - why can't I specify a name?) - cancel the build, we need to set variables!!
 6. select the pipelines, select the new created pipeline, select the dots menu to access the menu and rename the pipeline
-   ![Rename pipeline]./documentation/rename-build-pipeline.png)
+   ![Rename pipeline](./documentation/rename-build-pipeline.png)
 7. select the new created pipeline, select `Edit`, select the dots menu to reach the variable definition screen
 8. configure the above described variables
 9. run the build
