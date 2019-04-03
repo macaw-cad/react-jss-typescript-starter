@@ -32,9 +32,11 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
 **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
 
 ## Quickstart
+For those who know how to clone a repo and don't forget to do the `npm i`, these are the most important commands to get started with development. No Sitecore installed on your machine
 
 | Command | Runs on | What is does |
 | --- | --- | --- |
+| `jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
 | `npm run start:disconnected ` | http://localhost:3000 | Client side only development, disconnected from sitecore |
 | `npm run start:connected ` | http://localhost:3000 | Client side only development, connected to sitecore |
 | `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
@@ -46,6 +48,9 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
 ## Table of Contents
 
 - [Umbrella for Sitecore JSS](#umbrella-for-sitecore-jss)
+  - [The default branch](#the-default-branch)
+  - [Introduction](#introduction)
+  - [Quickstart](#quickstart)
   - [Table of Contents](#table-of-contents)
   - [The react-jss-typescript-starter starter kit](#the-react-jss-typescript-starter-starter-kit)
   - [Get started with the current code base](#get-started-with-the-current-code-base)
@@ -82,6 +87,7 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
   - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
   - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
   - [References](#references)
+- [Authors](#authors)
 
 ## The react-jss-typescript-starter starter kit
 
