@@ -14,7 +14,7 @@ pool:
 
 steps:
 - checkout: self
-  submodules: true
+  submodules: false
   
 - script: |
     docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) .
