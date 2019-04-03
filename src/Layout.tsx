@@ -88,7 +88,7 @@ class Layout extends React.Component<any, any> {
         <Navigation />
 
         {/* root placeholder for the app, which we add components to using route data */}
-        <div className="container">
+        <div>
           <Placeholder name="jss-main" rendering={this.props.route} />
         </div>
 
