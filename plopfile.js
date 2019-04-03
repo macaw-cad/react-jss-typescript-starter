@@ -17,7 +17,7 @@ module.exports = function (plop) {
         }],
         actions: [{
             type: 'add',
-            path: 'src/components/{{properCase name}}/index.tsx',
+            path: 'src/jsscomponents/{{properCase name}}/index.tsx',
             templateFile: 'plop-templates/component.hbs',
             force: true
         },

@@ -1,14 +1,11 @@
 .o-hero {
-    height: rem(292px);
+    //height: rem(292px);
     width: 100%;
 	display: flex;
     flex-direction: column;
-    float: left;
-    left: 0;
-    top: 80px;
 	z-index: 1;
-	position: absolute;
-	margin-bottom: 4em;
+	position: relative;
+	margin-bottom: 1em;
 	overflow: hidden;
 	background-color: grey;
     
@@ -31,6 +28,11 @@
 		width: 100%;
 		max-width: $max-content-width;
 		margin: 0 auto .5rem;
+
+		h1, div, span {
+			margin-left: .5em;
+			margin-right: 1em;
+		}
 
 		@include mq("S") {
 			margin-bottom: 1.5rem;
