@@ -37,13 +37,14 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
 | Command | Runs on | What is does |
 | --- | --- | --- |
 | `jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
-| `npm run start:disconnected ` | http://localhost:3000 | Client side only development, disconnected from sitecore |
-| `npm run start:connected ` | http://localhost:3000 | Client side only development, connected to sitecore |
+| `npm run start:disconnected` | http://localhost:3000 | Client side only development, disconnected from sitecore |
+| `npm run start:connected` | http://localhost:3000 | Client side only development, connected to sitecore |
+| `npm run start:storybook` | http://localhost:9001 | Use storybook for out-of-context component development |
 | `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
 | `npm run serve:connected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, connected to sitecore |
 | `node scripts/docker-do.js build` | N.A. | Build a local Docker image |
-| `node scripts/docker-do.js run` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
-| `node scripts/docker-do.js run --disconnected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `node scripts/docker-do.js run --disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
+| `node scripts/docker-do.js run` | http://localhost:8888 | run the local Docker image connected to Sitecore |
 
 ## Table of Contents
 
@@ -53,6 +54,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
   - [Quickstart](#quickstart)
   - [Table of Contents](#table-of-contents)
   - [The react-jss-typescript-starter starter kit](#the-react-jss-typescript-starter-starter-kit)
+  - [Why did you build this starter kit?](#why-did-you-build-this-starter-kit)
   - [Get started with the current code base](#get-started-with-the-current-code-base)
   - [Development with server-side rendering](#development-with-server-side-rendering)
   - [Configuring the NodeJS Express web server](#configuring-the-nodejs-express-web-server)
@@ -86,6 +88,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
   - [The Azure pipeline Yaml file](#the-azure-pipeline-yaml-file)
   - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
   - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
+  - [Writing documentation](#writing-documentation)
   - [References](#references)
 - [Authors](#authors)
 
@@ -100,7 +103,7 @@ At Macaw Interactive we made choices with respect to the front-end development t
 
 For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision ansd tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added.
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added tyo the toolset.
 
 Provided features:
 
@@ -114,6 +117,9 @@ Provided features:
 - Dockerfile to build a Docker image for running the NodeJS Express based front-end web server
 - Docker container completely configurable using environment variables
 - extensive documentation
+
+## Why did you build this starter kit?
+This is our way of giving back to the community, and a great way to show our customers and potential new employees our vision on Sitecore development. 
 
 ## Get started with the current code base
 
@@ -224,7 +230,7 @@ Build web server and production mode server bundle for deployment to Sitecore:
 
 ```npm run build```
 
-The resulting code can be deployed to Sitecore using the command `jss deploy app` as descvrined in the [documentation](https://jss.sitecore.com/docs/getting-started/app-deployment).
+The resulting code can be deployed to Sitecore using the command `jss deploy app` as described in the [documentation](https://jss.sitecore.com/docs/getting-started/app-deployment).
 
 ### Build web server application
 
@@ -233,7 +239,7 @@ Build the NodeJS Express web server application supporting server-side rendering
 - For development: `npm run build-server:development` (contains source-map)
 - For production: `npm run build-server:production` (minified)
 
-Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode is the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
+Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode if the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
 
 ## Umbrella
 
@@ -547,8 +553,10 @@ Within the project execute the following steps:
 The build will result in a Docker image pushed to the specified Azure container registry with either the tag `$(imageName):develop` or `$(imageName):master`.
 
 ## Deploy image to Azure Web Apps for Containers
-
 Deploy image from the Azure container registry to an zure Web App for Containers as described in the article https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image. 
+
+## Writing documentation
+Within the website published from this repository we load the `README.md` file as available in the `develop` branch. This is in general the latest version of the documentation. The raw version of this file is requested through a service called jsDeliver. This service makes it possible to read a raw file from GitHub with the correct mime-type `text/markdown`. The raw version of the file is cached on a CDN. This cached version can be purged with the command `npm run purge:readme`. 
 
 ## References
 
