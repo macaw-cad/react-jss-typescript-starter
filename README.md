@@ -569,5 +569,5 @@ See the following blog posts:
 
 # Authors
 
-- Gary Wenneker, Macaw - MVP Sitecore
-- Serge van den Oever, Macaw
+- Gary Wenneker, Macaw - MVP Sitecore - [weblog](https://gary.wenneker.org/)
+- Serge van den Oever, Macaw - [weblog](http://www.sergevandenoever.nl)
