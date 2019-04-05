@@ -16,7 +16,7 @@ if (!/^[A-Z][A-Za-z0-9-]+$/.test(componentName)) {
   throw 'Component name should start with an uppercase letter and contain only letters and numbers.';
 }
 
-const componentRootPath = 'src/components';
+const componentRootPath = 'src/jsscomponents';
 const componentPath = path.join(__dirname, `../sitecore/definitions/components/${ componentName }.sitecore.js`);
 
 console.log(`Transforming: ${componentPath}`);
@@ -36,7 +36,7 @@ fs.readFile(componentPath, 'utf8', (err, file) => {
   }
   console.log('Found fields: ', fields);
 
-  const interfaceName = _.capitalize(_.camelCase(componentName));
+  const interfaceName = _.camelCase(componentName);
   const propFileContent = `
   export interface ${interfaceName}Properties {
     fields: {
