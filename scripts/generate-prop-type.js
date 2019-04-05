@@ -36,7 +36,7 @@ fs.readFile(componentPath, 'utf8', (err, file) => {
   }
   console.log('Found fields: ', fields);
 
-  const interfaceName = _.camelCase(componentName);
+  const interfaceName = _.upperFirst(_.camelCase(componentName))  ;
   const propFileContent = `
   export interface ${interfaceName}Properties {
     fields: {
