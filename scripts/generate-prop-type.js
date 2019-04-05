@@ -36,9 +36,9 @@ fs.readFile(componentPath, 'utf8', (err, file) => {
   }
   console.log('Found fields: ', fields);
 
-  const interfaceName = _.upperFirst(_.camelCase(componentName))  ;
+  const interfaceName = _.upperFirst(_.camelCase(componentName)) + 'Properties';
   const propFileContent = `
-  export interface ${interfaceName}Properties {
+  export interface ${interfaceName} {
     fields: {
       ${ fields.map(field => `${field.name}: ${getType(field.type)}; // CommonFieldTypes: ${field.type}`).join('\n') }
     }
@@ -46,7 +46,7 @@ fs.readFile(componentPath, 'utf8', (err, file) => {
   `;
   console.log(propFileContent);
   const outputDirectoryPath = path.join(componentRootPath, componentName);
-  const outputFilePath = path.join(outputDirectoryPath, 'props.ts');
+  const outputFilePath = path.join(outputDirectoryPath, interfaceName + '.ts');
   fs.writeFileSync(outputFilePath, propFileContent, 'utf8');
   return outputFilePath;
 });
