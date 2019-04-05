@@ -1,22 +1,12 @@
-/*
-  Component Scaffolding Script
-  This is a script that enables scaffolding a new JSS component using `jss scaffold <componentname>`.
-  Edit this script if you wish to use your own conventions for component storage in your JSS app.
-*/
-
 /* eslint-disable no-throw-literal,no-console */
 
 const fs = require('fs');
 const path = require('path');
-const chalk = require('chalk');
 
-/*
-  SCAFFOLDING SCRIPT
-*/
 const componentName = process.argv[2];
 
 if (!componentName) {
-  throw 'Component name was not passed. Usage: jss scaffold <ComponentName>';
+  throw 'Component name was not passed.';
 }
 
 if (!/^[A-Z][A-Za-z0-9-]+$/.test(componentName)) {
