@@ -3,14 +3,13 @@
 const fs = require('fs');
 const _ = require('lodash');
 const path = require('path');
-const chalk = require('chalk');
 const manifest = require('@sitecore-jss/sitecore-jss-manifest');
 const CommonFieldTypes = manifest.CommonFieldTypes;
 
 const componentName = process.argv[2];
 
 if (!componentName) {
-  throw 'Component name was not passed. Usage: jss scaffold <ComponentName>';
+  throw 'Component name was not passed.';
 }
 
 if (!/^[A-Z][A-Za-z0-9-]+$/.test(componentName)) {
@@ -18,7 +17,6 @@ if (!/^[A-Z][A-Za-z0-9-]+$/.test(componentName)) {
 }
 
 const componentRootPath = 'src/components';
-
 const componentPath = path.join(__dirname, `../sitecore/definitions/components/${ componentName }.sitecore.js`);
 
 console.log(`Transforming: ${componentPath}`);
@@ -33,7 +31,9 @@ fs.readFile(componentPath, 'utf8', (err, file) => {
     addComponent: (component) => result = component
   });
   const fields = result.fields;
-
+  if (!fields) {
+    return;
+  }
   console.log('Found fields: ', fields);
 
   const interfaceName = _.capitalize(_.camelCase(componentName));
