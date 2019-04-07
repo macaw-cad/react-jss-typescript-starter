@@ -40,7 +40,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
         const { text } = this.state;
         const url = getFieldValue(this.props.fields, 'url');
 
-        const imgBaseUrl = url ? url.value.substring(0, url.lastIndexOf("/")) : './';
+        const imgBaseUrl = url ? url.substring(0, url.lastIndexOf("/")) : './';
         return (
             <Markdown body={text} imgBaseUrl={imgBaseUrl}/>         
         )
