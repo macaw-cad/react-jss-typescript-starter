@@ -2,16 +2,16 @@
 import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
 
 /**
- * Adds the {{ properCase name }} component to the disconnected manifest.
+ * Adds the MarkdownViewer component to the disconnected manifest.
  * This function is invoked by convention (*.sitecore.ts) when 'jss manifest' is run.
- * @param {Manifest} manifest Manifest instance to add components to
  */
-export default function(manifest: Manifestx) {
+export default function(manifest: Manifest) {
   manifest.addComponent({
-    name: '{{ properCase name }}',
+    name: 'MarkdownViewer',
     icon: SitecoreIcon.DocumentTag,
     fields: [
-      { name: 'heading', type: CommonFieldTypes.SingleLineText },
+      { name: 'body', type: CommonFieldTypes.MultiLineText },
+      { name: 'url', type: CommonFieldTypes.SingleLineText }
     ],
     /*
     If the component implementation uses <Placeholder> or withPlaceholder to expose a placeholder,
