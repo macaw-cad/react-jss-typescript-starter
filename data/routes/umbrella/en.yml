@@ -8,7 +8,7 @@ placeholders:
       jss-grid-section:
         - componentName: Hero
           fields:
-            image:
+            umbrella:
               src: /data/media/img/umbrella.jpg
               alt: Umbrella for Sitecore JSS
         - componentName: GridColumns
@@ -18,4 +18,5 @@ placeholders:
             jss-grid-column-2:
               - componentName: MarkdownViewer
                 fields:
+                  margin: 0 0 0 0
                   url: https://cdn.jsdelivr.net/gh/macaw-interactive/react-jss-typescript-starter@develop/README.md

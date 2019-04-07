@@ -7,7 +7,7 @@ placeholders:
       jss-grid-section:
         - componentName: Hero
           fields:
-            image:
+            umbrella:
               src: /data/media/img/umbrella.jpg
               alt: Umbrella for Sitecore JSS
         - componentName: GridColumns
