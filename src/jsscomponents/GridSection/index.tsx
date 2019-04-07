@@ -1,12 +1,14 @@
 import * as React from 'react';
 import SectionTitle from './GridSectionTitle';
-import { Placeholder, withPlaceholder, withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
+import { getFieldValue, withPlaceholder, withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
 
 const GridSectionComponent: React.StatelessComponent<any> = (props) => {
+    const title = getFieldValue(props.fields, 'title');
+    const headingLevel = getFieldValue(props.fields, 'headingLevel');
     return (
         <section className={`m-section`}>
-                { props && props.fields['title'] && props.fields.title.value ? 
-                    <SectionTitle title={props.fields.title.value} heading={props.fields.heading.value} /> : null
+                { title && 
+                    <SectionTitle title={title} headingLevel={headingLevel} />
                 }
                 {props.sectionPlaceholder}
             </section>
