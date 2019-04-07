@@ -7,9 +7,8 @@ import GraphQLClientFactory from './lib/GraphQLClientFactory';
 import i18ninit from './i18n';
 import { getSitecoreGraphqlEndpoint } from './AppGlobals';
 import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss-react';
-
+import latestHMR from './HMR';
 /* eslint-disable no-underscore-dangle */
-
 if (window && window.location && window.location.search === '?prestine') {
     // Return the content for index.html similar as loading index.html from filesystem.
     // Can be used in development mode for server-side rendering to get the index.html.
