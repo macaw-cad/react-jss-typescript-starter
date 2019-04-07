@@ -21,11 +21,12 @@ fields:
 placeholders:
   jss-main:
   - componentName: GridSection
+    fields:
     placeholders:
       jss-grid-section:
         - componentName: Hero
           fields:
-            umbrella:
+            image:
               src: /data/media/img/umbrella.jpg
               alt: Umbrella for Sitecore JSS
         - componentName: GridColumns
@@ -35,7 +36,6 @@ placeholders:
             jss-grid-column-2:
               - componentName: MarkdownViewer
                 fields:
-                  margin: 0 0 0 0
                   body: |
                     Thanks for using Umbrella for Sitecore JSS. Here are some resources to get you started:
 

@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { Image } from '@sitecore-jss/sitecore-jss-react';
 
-interface HeroFields {
-    umbrella: any;
+type HeroFields = {
+  image: { value: { src: string, alt: string } };
 }
-interface Props {
-    fields: HeroFields
-}
-const Hero: React.FunctionComponent<Props> = (props) => {
+type HeroProps = {
+  fields: HeroFields;
+};
+
+const Hero: React.FunctionComponent<HeroProps> = (props) => {
     return (
         <div id="hero" className="o-hero h-ph h-pv-d">	
           <div className="o-hero__image">          
             <picture>
             <Image
-            field={props.fields.umbrella}
+            field={props.fields.image}
             className="img-fluid"
           />
             </picture>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Placeholder, withPlaceholder, withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
+import { withPlaceholder, withSitecoreContext, getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 import { joinClasses } from '../../utils/Filters';
 
 interface GridColumnsProps {
@@ -10,6 +10,10 @@ interface GridColumnsProps {
     rendering?: any;
     parameters?: any;
     fields?: any;
+}
+
+interface GridColumnsFields {
+    columns: { value: string };
 }
 
 class GridColumnsComponent extends React.Component<GridColumnsProps> {
@@ -26,19 +30,8 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
                 className: parameters.className.concat(" m-grid")
             });
         }
-        let columns: Array<string> = [];
-        if (
-            this.props &&
-            this.props.fields &&
-            this.props.fields.columns &&
-            this.props.fields.columns.value) {
-            if(this.props.fields.columns.value.indexOf(',') > -1) {
-                columns = this.props.fields.columns.value.split(',');
-            } else
-            {
-                columns = ['12'];
-            }
-        }
+        const columnsString = getFieldValue(this.props.fields, 'columns');
+        const columns = columnsString.indexOf(',') > -1 ? columnsString.split(',') : ['12'];
 
         return (
             <div className='m-grid'>
@@ -48,9 +41,9 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
                         (smallColumns !== undefined && smallColumns[index])
                             ? `m-grid__S${smallColumns[index]}` : undefined,
                         (largeColumns !== undefined && largeColumns[index])
-                            ? `m-grid__L${largeColumns[index]}` : "",
+                            ? `m-grid__L${largeColumns[index]}` : '',
                         (extraLargeColumns !== undefined && extraLargeColumns[index])
-                            ? `m-grid__XL${extraLargeColumns[index]}` : "",
+                            ? `m-grid__XL${extraLargeColumns[index]}` : '',
                     );
                     return (
                         <div key={index} className={GridColumnClassName}>
