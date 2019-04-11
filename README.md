@@ -90,7 +90,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
   - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
   - [Writing documentation](#writing-documentation)
   - [FAQ](#faq)
-      - [Page not found when starting `npm run serve:disconnected`](#page-not-found-when-starting-npm-run-servedisconnected)
+      - [Page not found when starting development in disconnected mode](#page-not-found-when-starting-development-in-disconnected-mode)
       - [Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?](#why-do-npm-run-servedisconnected-and-npm-run-serveconnected-start-the-client-side-rendering)
       - [What is the role of the `src/HMR.ts` file?](#what-is-the-role-of-the-srchmrts-file)
       - [Why is there no automatic reload for SSR?](#why-is-there-no-automatic-reload-for-ssr)
@@ -128,7 +128,16 @@ This is our way of giving back to the community, and a great way to show our cus
 
 ## Get started with the current code base
 
-Fork or clone this repo and work from there, or download the zip file with all the code. If you want to start from scratch remove the .git folder, create a new Git repository (the example code below uses Github) and execute the following commands:
+Clone this repo and work from there, or download the zip file with all the code. If you want to start from scratch remove the .git folder. In the example below we clone the `develop` branch because it is now the most up-to-date branch. The `--depth=1` option ensures that we clone the minimal amount of commits because we remove the `.git` folder anyway.
+
+```
+git clone --depth=0 --branch=develop https://github.com/macaw-interactive/react-jss-typescript-starter.git jss
+cd jss
+```
+
+Next step is to delete the `.git` folder with `del /S /Q /F .git` (Windows) or `rm -rf .git` (other systems). 
+
+Now create a new Git repository (the example code below uses Github) and execute the following commands:
 
 ```
 git init
@@ -145,9 +154,34 @@ git remote set-url origin https://github.com/<yourname>/<yourrepo>.git
 git push -u origin master
 ```
 
-Start working from here. 
+Install all required libraries and tools:
 
-The first command to execute next is `jss setup` to create the `scjssconfig.json` file locally. This file is user-specific and is ignored from source-control. Based on the `scjssconfig.json` the development npm scripts create the files `.env.connected` and `.env.disconnected` when needed. These files contain the environment variables with all configuration information. Note that these files are excluded from source control as well (see the `.gitignore` file). 
+```
+npm install
+```
+
+Now determine a name for your JSS app, for example: `jss-myapp`. Rename the file `sitecore/config/react-jss-typescript-starter.config` to `jss-myapp.config` and make the required changes as described [here](https://jss.sitecore.com/docs/getting-started/app-deployment#step-1-configure-your-apps-site-and-host-name):
+
+- In the file `sitecore/config/jss-myapp.config`Replace all occurences of `react-jss-typescript-starter` with `jss-myapp`
+- In the file `package.json`:
+  - replace all occurences of `react-jss-typescript-starter` with `jss-myapp`
+  - modify the `description` and `url` paths to suit your needs
+
+The first command to execute next is `jss setup` to create the `scjssconfig.json` file locally. This file is user-specific and is ignored from source-control. The file will look something like:
+
+```json
+{
+  "sitecore": {
+    "instancePath": "c:\\inetpub\\wwwroot\\sc910.sc",
+    "apiKey": "{57231674-4CC9-48AA-AFF0-190DB9D68FE1}",
+    "deploySecret": "yourdeploymentsecretmagicnumber",
+    "deployUrl": "http://react-jss-typescript-starter.dev.local/sitecore/api/jss/import",
+    "layoutServiceHost": "http://react-jss-typescript-starter.dev.local"
+  }
+}
+```
+
+Based on the `scjssconfig.json` the development npm scripts create the files `.env.connected` and `.env.disconnected` when needed. These files contain the environment variables with all configuration information. Note that these files are excluded from source control as well (see the `.gitignore` file). 
 
 ## Development with server-side rendering
 
@@ -565,8 +599,8 @@ Within the website published from this repository we load the `README.md` file a
 
 ## FAQ
 
-#### Page not found when starting `npm run serve:disconnected`
-Most of the time when you start the server-side rendering using `npm run serve:disconnected` you will get the following error:
+#### Page not found when starting development in disconnected mode
+Most of the time when you start the client-side rendering using `npm run start:disconnected` (or the shorthand `npm start`) or server-side rendering using `npm run serve:disconnected` (or the short hand `npm run serve`) you will get the following error on the automatically started browser on the url `http://localhost:3000`:
 
 ```
 Page not found
@@ -575,7 +609,8 @@ This page does not exist.
 Site: 
 Language:
 ```
-The reason is a timing issue. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on http://localhost:3001.
+
+The reason is a timing issue. The front-end tries to render before the disconnected mode proxy is up and running on `http://localhost:3042`. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on `http://localhost:3001`.
 
 #### Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?
 With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url `http://localhost:3000?prestine` provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  

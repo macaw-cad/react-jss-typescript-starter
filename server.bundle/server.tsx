@@ -1,4 +1,3 @@
-
 import serializeJavascript from 'serialize-javascript';
 import * as React from 'react';
 import { StaticRouter, matchPath } from 'react-router-dom';
@@ -13,10 +12,19 @@ import ApolloClient from 'apollo-client';
 import { RouteUrlParser } from '@sitecore-jss/sitecore-jss-proxy/types/RouteUrlParser';
 import { Environment } from '../src/Environment';
 import { getSitecoreGraphqlEndpoint } from '../src/AppGlobals';
+import * as fs from 'fs';
+import * as path from 'path';
 
-let indexTemplate; // index.html template file contents, imported on production, requested as http://localhost:3000?prestine in development
+// Load the index.html template file contents:
+// In development request from http://localhost:3000?prestine (Create React App development server must be running) 
+// In production this file can be read from the filesystem (../build/index.html)
+let indexTemplate;
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
-  indexTemplate = require('../build/index.html');
+  const indexHtmlFilePath = path.resolve(__dirname, '../build/index.html');
+  if (!fs.existsSync(indexHtmlFilePath)) {
+    throw new Error(`In production the 'index.html' file is expected at '${indexHtmlFilePath}' but is missing.`);
+  }
+  indexTemplate = fs.readFileSync(indexHtmlFilePath, 'utf8');
   [
     'REACT_APP_NAME',
     'REACT_APP_APPINSIGHTS_KEY',

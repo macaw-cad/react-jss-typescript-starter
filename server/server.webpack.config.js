@@ -7,7 +7,7 @@ const reactApp = require('babel-preset-react-app');
 // Invoked by build:server:development or build:server:production.
 
 module.exports = {
-  mode: 'production',
+  mode: process.env.NODE_ENV,
   devtool: process.env.NODE_ENV !== 'production' ? 'inline-source-map' : '',
   entry: {
     'index': path.resolve(__dirname, './index.ts'),
