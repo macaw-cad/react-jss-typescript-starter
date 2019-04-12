@@ -565,8 +565,8 @@ This Azure pipeline configuration file uses the following environment variables:
 | Variable | Purpose | Example |
 | --- | --- | --- |
 | imageName | The name to tag the Docker image with | For example `react-jss-typescript-starter` |
-| dockerId | The name of the Azure container registry | |
-| dockerPassword | The password to log in the Azure container registry | |
+| dockerId | The name of the Azure container registry | For example `jssumbrella` (without `azurecr.io`) |
+| dockerPassword | The password to log in the Azure container registry | See your Azure container registry under *Access keys* |
 
 ## Configure the Azure build pipeline
 

@@ -17,10 +17,10 @@ import * as path from 'path';
 
 // Load the index.html template file contents:
 // In development request from http://localhost:3000?prestine (Create React App development server must be running) 
-// In production this file can be read from the filesystem (../build/index.html)
+// In production this file can be read from the filesystem (./build/index.html)
 let indexTemplate;
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
-  const indexHtmlFilePath = path.resolve(__dirname, '../build/index.html');
+  const indexHtmlFilePath = path.resolve(__dirname, './build/index.html');
   if (!fs.existsSync(indexHtmlFilePath)) {
     throw new Error(`In production the 'index.html' file is expected at '${indexHtmlFilePath}' but is missing.`);
   }

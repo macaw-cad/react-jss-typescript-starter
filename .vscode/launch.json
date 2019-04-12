@@ -71,7 +71,8 @@
               "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
-            }
+            },
+            "timeout": 30000
         },
         {
             "type": "node",
@@ -96,7 +97,8 @@
               "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
-            }
+            },
+            "timeout": 30000
         },
         {
             "type": "node",
