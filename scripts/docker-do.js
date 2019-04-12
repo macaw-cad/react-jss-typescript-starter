@@ -151,24 +151,20 @@ prog
     })();
   })
 
-  .command('shell', 'Open a shell on the locally running Docker image')
+  .command('shell', 'Get command to open a shell on the locally running Docker image')
   .action(function (args, options, logger) {
     const appName = packageJsonConfig.name;
     const imageName = `${appName}:latest`;
-    logger.info(`Open interactive shell on Docker image '${imageName}'`);
+    logger.info(`Determining command to open interactive shell on Docker image '${imageName}'`);
     const simplifiedImageName = imageName.replace(':', '-');
 
     // docker ps -a -q  --filter "name=<simplifiedImageName>
     let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `name=${simplifiedImageName}`]);
     if (dockerId != '') {
       dockerId = ('' + dockerId).trim(); // can contain newline
-      logger.info(`Open interactive shell on running Docker container ${imageName} with id '${dockerId}'`);
-      try {
-        console.log(`Command: docker exec -it ${dockerId} /bin/sh`);
-        // execFileSync('docker', ['exec', '-it', dockerId, '/bin/sh']);
-      } catch (error) {
-        logger.error(`Error while opening interactive shell on Docker container with id ${dockerId}: ${error}`);
-      }
+      logger.info(`To open interactive shell on running Docker container ${imageName} with id '${dockerId}' execute the following command: docker exec -it ${dockerId} sh`);
+    } else {
+      logger.info(`Docker container ${imageName} is not running.`)
     }
   });
 
