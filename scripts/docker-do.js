@@ -95,11 +95,12 @@ prog
         logger.info(`Ngrok url: ${url} exposing the internal url ${layoutServiceHost} for consumption by locally running Docker container`);
       }
 
-      // docker ps -a -q  --filter ancestor=<image-name>
-      let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `ancestor=${imageName}`]);
+      // docker ps -a -q  --filter name=<simplifiedImageName>
+      const simplifiedImageName = imageName.replace(':', '-');
+      let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `name=${simplifiedImageName}`]);
       if (dockerId != '') {
         dockerId = ('' + dockerId).trim(); // can contain newline
-        logger.info(`Kill currently running Docker container ${imageName} with id '${dockerId}'`);
+        logger.info(`Kill currently running Docker container ${simplifiedImageName} with id '${dockerId}'`);
         try {
           execFileSync('docker', ['stop', dockerId]);
         } catch (error) {
@@ -122,6 +123,7 @@ prog
           `-e`, `REACT_APP_SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
           `-e`, `REACT_APP_SITECORE_CONNECTED=${(options.disconnected? 'false' : 'true')}`,
           `-p`, `${options.port}:3001`,
+          `--name`, simplifiedImageName,
           imageName
         ],
         { cwd: path.resolve(__dirname, '../Docker') }
@@ -154,9 +156,10 @@ prog
     const appName = packageJsonConfig.name;
     const imageName = `${appName}:latest`;
     logger.info(`Open interactive shell on Docker image '${imageName}'`);
+    const simplifiedImageName = imageName.replace(':', '-');
 
-    // docker ps -a -q  --filter ancestor=<image-name>
-    let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `ancestor=${imageName}`]);
+    // docker ps -a -q  --filter "name=<simplifiedImageName>
+    let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `name=${simplifiedImageName}`]);
     if (dockerId != '') {
       dockerId = ('' + dockerId).trim(); // can contain newline
       logger.info(`Open interactive shell on running Docker container ${imageName} with id '${dockerId}'`);
