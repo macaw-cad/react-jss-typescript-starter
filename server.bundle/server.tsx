@@ -20,7 +20,9 @@ import * as path from 'path';
 // In production this file can be read from the filesystem (./build/index.html)
 let indexTemplate;
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
-  const indexHtmlFilePath = path.resolve(__dirname, './build/index.html');
+  const indexHtmlFilePath = path.join(process.cwd(), 'build/index.html');
+  console.log(`indexHtmlFilePath: ${indexHtmlFilePath}`);
+
   if (!fs.existsSync(indexHtmlFilePath)) {
     throw new Error(`In production the 'index.html' file is expected at '${indexHtmlFilePath}' but is missing.`);
   }
