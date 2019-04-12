@@ -42,9 +42,10 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
 | `npm run start:storybook` | http://localhost:9001 | Use storybook for out-of-context component development |
 | `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
 | `npm run serve:connected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, connected to sitecore |
-| `node scripts/docker-do.js build` | N.A. | Build a local Docker image |
-| `node scripts/docker-do.js run --disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
-| `node scripts/docker-do.js run` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:build` | N.A. | Build a local Docker image |
+| `npm run docker:run:disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
+| `npm run docker:run:connected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:shell` | N.A. | show the command to execute a shell on the running Docker container |
 
 ## Table of Contents
 
@@ -84,7 +85,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
     - [Debugging the webback server bundle build](#debugging-the-webback-server-bundle-build)
     - [Debugging docker build & run scripts](#debugging-docker-build--run-scripts)
   - [Docker](#docker)
-  - [Deployment of solution in a Docker container on Azure](#deployment-of-solution-in-a-docker-container-on-azure)
+  - [Deployment the solution as a Docker container on Azure](#deployment-the-solution-as-a-docker-container-on-azure)
   - [The Azure pipeline Yaml file](#the-azure-pipeline-yaml-file)
   - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
   - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
@@ -498,40 +499,38 @@ The resulting Docker image has the following features:
 
 The script `Docker/init.sh` is executed when the Docker container starts running.
 
-The configuration files in the `Docker` folder are used on a Linux system. These files could be in DOS
-format and must be converted to unix format. This can be done using the command:
+The configuration files in the `Docker` folder are used on a Linux system and must contains LF. These files could be in DOS format containing CRLF and must be converted to unix format. This is automatically done when the Docker image is built.
 
-`node scripts/docker-do.js prepare`
+| Command | Runs on | What is does |
+| --- | --- | --- |
+| `npm run docker:build` | N.A. | Build a local Docker image |
+| `npm run docker:run:disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
+| `npm run docker:run:connected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:shell` | N.A. | show the command to execute a shell on the running Docker container |
 
-This command only has to be executed if there are issues due to CRLF instead of LF as line endings (see bottom right when opening file in Visual Studio Code).
- 
-To build the Docker image execute the command:
-
-`node scripts/docker-do.js build`
-
-To run the Docker image locally execute the command:
+For more configuration like port number and debug mode call the script directly:
 
 `node scripts/docker-do.js run [--port <portnumber>] [--disconnected] [--debug]`
 
-The default port is 8888, so the website will be available on `http://localhost:8888`.
-
-The `run` command does the following things:
+The `docker:run` command does the following things:
 
 - kill a running previous container if needed
 - expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
-- start the NodeJS Express based web server with server-side rendering on `http://localhost:8888`
+- start the NodeJS Express based web server with server-side rendering on http://localhost:8888
 - run disconnected from Sitecore when `--disconnected` is specified. In this case the `data` folder is used
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`.
 
-The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production).
+The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (local, development, test, acceptation, production).
 
-## Deployment of solution in a Docker container on Azure
+## Deployment the solution as a Docker container on Azure
 
-Any change on the `develop` and `master` branches of the `https://github.com/macaw-interactive/react-jss-typescript-starter` repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
+Any change on the `develop` and `master` branches of the https://github.com/macaw-interactive/react-jss-typescript-starter repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
 
-- `develop` branch deployed to `https://react-jss-typescript-starter-develop.azurewebsites.net`
-- `master` branch deployed to `https://react-jss-typescript-starter.azurewebsites.net`
+| Branch | Deployed to |
+| --- | --- |
+| develop | https://react-jss-typescript-starter-develop.azurewebsites.net |
+| master | https://react-jss-typescript-starter.azurewebsites.net |
 
 The resulting web site is configured in disconnected mode, so no Sitecore server or license is required to run the web site.
 
@@ -600,7 +599,7 @@ Within the website published from this repository we load the `README.md` file a
 ## FAQ
 
 #### Page not found when starting development in disconnected mode
-Most of the time when you start the client-side rendering using `npm run start:disconnected` (or the shorthand `npm start`) or server-side rendering using `npm run serve:disconnected` (or the short hand `npm run serve`) you will get the following error on the automatically started browser on the url `http://localhost:3000`:
+Most of the time when you start the client-side rendering using `npm run start:disconnected` (or the shorthand `npm start`) or server-side rendering using `npm run serve:disconnected` (or the short hand `npm run serve`) you will get the following error on the automatically started browser on the url http://localhost:3000:
 
 ```
 Page not found
@@ -610,10 +609,10 @@ Site:
 Language:
 ```
 
-The reason is a timing issue. The front-end tries to render before the disconnected mode proxy is up and running on `http://localhost:3042`. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on `http://localhost:3001`.
+The reason is a timing issue. The front-end tries to render before the disconnected mode proxy is up and running on http://localhost:3042. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on http://localhost:3001.
 
 #### Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?
-With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url `http://localhost:3000?prestine` provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  
+With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url http://localhost:3000?prestine provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  
 
 #### What is the role of the `src/HMR.ts` file?
 In order to reload the client-side rendered app (on http://localhost:3000) in disconnected mode when a change is made to the contents of the `data` folder we need to trigger the Hot Module Reloading (HMR) functionality as provided by Create React App. By writing similar content to the following content to the `src/HMR.ts` file HMR is triggered:
@@ -634,8 +633,9 @@ When developing with server-side rendering (SSR) enabled (`npm run serve:connect
 
 See the following blog posts:
 
-- [Render Sitecore 9.1 JSS site using separate node server](https://www.sergevandenoever.nl/sitecore_jss_typescript_node/)
-- [Developing React components in TypeScript with Sitecore JSS 9.1](https://www.sergevandenoever.nl/sitecore_jss_typescript/)
+- [Umbrella for Sitecore JSS](http://www.sergevandenoever.nl/sitecore_jss_umbrella/)
+- [Render Sitecore 9.1 JSS site using separate node server](http://www.sergevandenoever.nl/sitecore_jss_typescript_node/)
+- [Developing React components in TypeScript with Sitecore JSS 9.1](http://www.sergevandenoever.nl/sitecore_jss_typescript/)
 
 # Authors
 
