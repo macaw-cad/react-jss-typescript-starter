@@ -62,9 +62,7 @@ Navigation = withTranslation()(Navigation);
 const ref = React.createRef();
 
 class Layout extends React.Component<any, any> {
-  componentDidMount() {
-  }
-  render() {
+  public render(): JSX.Element {
     return (
       <React.Fragment>
         {/* react-helmet enables setting <head> contents, like title and OG meta tags */}
@@ -93,7 +91,7 @@ class Layout extends React.Component<any, any> {
         </div>
 
       </React.Fragment>
-    )
+    );
   }
 }
 

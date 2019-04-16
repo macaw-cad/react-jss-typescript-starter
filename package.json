@@ -164,7 +164,7 @@
     "build:manifest": "npm run build:manifest:en",
     "build:client": "cross-env PUBLIC_URL=$npm_package_config_sitecoreDistPath react-scripts build",
     "build:serverbundle": "cross-env NODE_ENV=production webpack --config server.bundle/server.bundle.webpack.config.js && node scripts/env-prefix-serverbundle.js",
-    "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
+    "build:storybook": "build-storybook -c .storybook -o build.storybook -s ./public",
     "run-build:disconnected": "cross-env NODE_ENV=production npm-run-all --parallel run-build:server:disconnected run-build:server.disconnectedproxy",
     "run-build:connected": "cross-env NODE_ENV=production npm-run-all --parallel run-build:server:connected",
     "run-build:server:disconnected": "cross-env NODE_ENV=production env-cmd .env.disconnected node build.server/index.js",
@@ -179,10 +179,11 @@
     "docker:shell": "node scripts/docker-do.js shell",
     "scaffold": "node scripts/scaffold-component.js",
     "graphql:update": "node -r babel-register -r dotenv/config ./scripts/update-graphql-fragment-data.js dotenv_config_path=.env.connected",
+    "lint": "tslint -p ./",
     "test": "react-scripts test --env=jsdom",
     "eject-dont-do-this": "react-scripts eject",
     "purge:readme": "npx req https://purge.jsdelivr.net/gh/macaw-interactive/react-jss-typescript-starter@develop/README.md",
-    "clean": "rimraf build build.server sitecore/manifest sitecore/package .env.connected .env.disconnected"
+    "clean": "rimraf build build.server build.storybook sitecore/manifest sitecore/package .env.connected .env.disconnected"
   },
   "browserslist": [
     ">0.2%",

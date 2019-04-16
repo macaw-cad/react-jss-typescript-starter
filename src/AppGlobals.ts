@@ -34,15 +34,15 @@ REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES=
 */
 
 export function getSitecoreApiKey(): string | undefined {
-    return Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY : getGlobalData().sitecoreApiKey;
+    return Environment.isServer ? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_KEY : getGlobalData().sitecoreApiKey;
 }
 
 export function getSitecoreApiHost(): string | undefined {
-    return Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : getGlobalData().sitecoreApiHost;
+    return Environment.isServer ? Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : getGlobalData().sitecoreApiHost;
 }
 
 export function getSitecoreDefaultLanguage(): string | undefined {
-    return Environment.isServer? Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE : getGlobalData().sitecoreDefaultLanguage;
+    return Environment.isServer ? Environment.reactAppProcessEnv.REACT_APP_SITECORE_DEFAULT_LANGUAGE : getGlobalData().sitecoreDefaultLanguage;
 }
 
 export function getSitecoreLayoutServiceRoute(): string {

@@ -27,7 +27,7 @@ const proxyOptions = {
   language: process.env.REACT_APP_SITECORE_DEFAULT_LANGUAGE,
   port: 3042,
   onManifestUpdated: (manifest) => {
-    const contents = `// Auto-generated to force Hot Module Reloading\nexport default { "timestamp": "${(new Date()).toISOString()}"};`;
+    const contents = `// Auto-generated to force Hot Module Reloading\nexport default { 'timestamp': '${(new Date()).toISOString()}' };`;
     fs.writeFileSync(`${process.cwd()}/src/HMR.ts`, contents, { encoding: 'utf8' });
     console.log('Manifest data updated. Refresh the browser to see latest content!');
   },

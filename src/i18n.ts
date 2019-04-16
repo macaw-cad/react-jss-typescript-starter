@@ -10,7 +10,7 @@ import { getSitecoreDictionaryServiceRoute } from './AppGlobals';
  * @param {string} language Optional, the initial language. Only used for SSR; otherwise language set in RouteHandler.
  * @param {*} dictionary Optional, the dictionary to load. Only used for SSR; otherwise, the dictionary is loaded via JSS dictionary service.
  */
-export default function i18nInit(language?: string, dictionary?: any) { // SvdO, TODO: type of Dictionary?!
+export default function i18nInit(language?: string, dictionary?: any): Promise<void> { // SvdO, TODO: type of Dictionary?!
   return new Promise((resolve, reject) => {
     let options: i18n.InitOptions = {
       debug: false,
@@ -23,9 +23,8 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
       },
     };
 
-
     // TODO, SvdO: options does not support useCookie?! 
-    (options as any).useCookie=  false; // using URLs and Sitecore to store language context, don't need a cookie
+    (options as any).useCookie = false; // using URLs and Sitecore to store language context, don't need a cookie
 
     if (language && dictionary) {
       // if we got dictionary passed, that means we're in a SSR context with a server-provided dictionary
@@ -36,7 +35,9 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
       };
 
       i18n.use(initReactI18next ).init(options, (error) => {
-        if (error) reject(error);
+        if (error) {
+          reject(error);
+        }
         resolve();
       });
     } else {
@@ -64,7 +65,9 @@ export default function i18nInit(language?: string, dictionary?: any) { // SvdO,
         .use(fetchBackend)
         .use(initReactI18next )
         .init(options, (error) => {
-          if (error) reject(error);
+          if (error) { 
+            reject(error); 
+          }
 
           resolve();
         });

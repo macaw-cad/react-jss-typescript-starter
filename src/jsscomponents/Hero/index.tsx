@@ -3,7 +3,8 @@ import { Image } from '@sitecore-jss/sitecore-jss-react';
 
 type HeroFields = {
   image: { value: { src: string, alt: string } };
-}
+};
+
 type HeroProps = {
   fields: HeroFields;
 };
@@ -24,7 +25,7 @@ const Hero: React.FunctionComponent<HeroProps> = (props) => {
             <div className="o-hero__info a-text-small noselect">Thanks for using JSS. Here are some resources to get you started</div>		
           </div>	
         </div>
-      )
-}
+      );
+};
 
 export default Hero;

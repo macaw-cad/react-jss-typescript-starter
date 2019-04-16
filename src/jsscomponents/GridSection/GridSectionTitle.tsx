@@ -1,6 +1,6 @@
-import * as React from "react";
-import Heading from "../../components/Heading";
-import { HeadingLevel } from "../../components/HeadingLevel";
+import * as React from 'react';
+import Heading from '../../components/Heading';
+import { HeadingLevel } from '../../components/HeadingLevel';
 
 interface Props {
     title: string;

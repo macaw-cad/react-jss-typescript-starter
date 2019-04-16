@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
 /**
  * Implements a data fetcher using Axios - replace with your favorite
@@ -7,7 +7,7 @@ import axios from 'axios';
  * @param {string} url The URL to request; may include query string
  * @param {any} data Optional data to POST with the request.
  */
-export function dataFetcher(url, data) {
+export function dataFetcher<T>(url: string, data: any): AxiosPromise<T> {
   return axios({
     url,
     method: data ? 'POST' : 'GET',

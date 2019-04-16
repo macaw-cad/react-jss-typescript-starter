@@ -12,7 +12,7 @@ const Heading: React.SFC<HeadingProps> = ({ level, children, className }) => {
 
     return (
       React.createElement(
-       `${headingName}`,
+        `${headingName}`,
         {className},
         children,
       )

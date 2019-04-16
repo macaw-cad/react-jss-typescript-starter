@@ -22,7 +22,7 @@ const authors: Array<Author> = [
     { id: 3, firstName: 'Mikhail', lastName: 'Novikov' },
   ];
   
-  const posts: Array<Post> = [
+const posts: Array<Post> = [
     { id: 1, authorId: 1, title: 'Introduction to GraphQL', votes: 2 },
     { id: 2, authorId: 2, title: 'Welcome to Meteor', votes: 3 },
     { id: 3, authorId: 2, title: 'Advanced GraphQL', votes: 1 },
@@ -31,12 +31,12 @@ const authors: Array<Author> = [
 
 const resolvers = {
     Query: {
-      posts() {
+      posts(): Array<Post> {
         return posts;
       },
     },
     Mutation: {
-      upvotePost(_, { postId }) {
+      upvotePost(_, { postId }): Post {
         const post = find(posts, { id: postId });
         if (!post) {
           throw new Error(`Couldn't find post with id ${postId}`);
@@ -46,15 +46,15 @@ const resolvers = {
       },
     },
     Author: {
-      posts(author) {
+      posts(author): Array<Post> {
         return filter(posts, { authorId: author.id });
       },
     },
     Post: {
-      author(post) {
+      author(post): string[] {
         return find(authors, { id: post.authorId });
       },
     },
   };
   
-  export default resolvers;
+export default resolvers;
