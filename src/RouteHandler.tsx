@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import { Environment } from './Environment';
 import { getSitecoreDefaultLanguage, getSitecoreApiKey } from './AppGlobals';
 import { Route } from 'react-router';
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 // Dynamic route handler for Sitecore items.
 // Because JSS app routes are defined in Sitecore, traditional static React routing isn't enough -
@@ -26,7 +27,12 @@ type RouteHandlerState = {
   defaultLanguage: string;
 };
 
-let ssrInitialState: LayoutServiceData & LayoutServiceContextData | null = null;
+export type SsrState = LayoutServiceData & LayoutServiceContextData & {
+  viewBag: any;
+  APOLLO_STATE: NormalizedCacheObject;
+};
+
+let ssrInitialState: SsrState | null = null;
 
 export default class RouteHandler extends React.Component<RouteHandlerProps, RouteHandlerState> {
   public state: RouteHandlerState = {
@@ -203,7 +209,7 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
  * Setting this state will bypass initial route data fetch calls.
  * @param {object} ssrState
  */
-export function setServerSideRenderingState(ssrState: (LayoutServiceData & LayoutServiceContextData) | null): void {
+export function setServerSideRenderingState(ssrState: SsrState): void {
   ssrInitialState = ssrState;
 }
 

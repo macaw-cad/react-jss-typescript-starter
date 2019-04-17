@@ -1,8 +1,8 @@
 /* eslint-disable import/first */
 
 import 'isomorphic-fetch';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { ApolloClient, ApolloClientOptions } from 'apollo-client';
+import { InMemoryCache, IntrospectionFragmentMatcher, NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 /*
   INTROSPECTION DATA
@@ -33,10 +33,11 @@ import { BatchHttpLink } from 'apollo-link-batch-http';
 // the APQ link is _chained_ behind another link that performs the actual HTTP calls, so you can choose
 // APQ + batched, or APQ + http links for example.
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
+import { ApolloLink } from 'apollo-link';
 
-export default function(endpoint, ssr, initialCacheState) {
+export default function(endpoint: string, ssr: boolean, initialCacheState: NormalizedCacheObject): ApolloClient<NormalizedCacheObject> {
   /* HTTP link selection: default to batched + APQ */
-  const link = createPersistedQueryLink().concat(
+  const link: ApolloLink = createPersistedQueryLink().concat(
     new BatchHttpLink({ uri: endpoint, credentials: 'include' })
   );
 
@@ -46,10 +47,11 @@ export default function(endpoint, ssr, initialCacheState) {
     }),
   });
 
-  return new ApolloClient({
+  const options: ApolloClientOptions<NormalizedCacheObject> = {
     ssrMode: ssr,
     ssrForceFetchDelay: 100,
     link,
     cache: cache.restore(initialCacheState),
-  });
+  }
+  return new ApolloClient(options);
 }

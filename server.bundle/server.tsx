@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import GraphQLClientFactory from '../src/lib/GraphQLClientFactory';
 import i18ninit from '../src/i18n';
 import AppRoot, { routePatterns } from '../src/AppRoot';
-import { setServerSideRenderingState } from '../src/RouteHandler';
+import { setServerSideRenderingState, SsrState } from '../src/RouteHandler';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { RouteUrlParser } from '@sitecore-jss/sitecore-jss-proxy/types/RouteUrlParser';
@@ -14,6 +14,7 @@ import { Environment } from '../src/Environment';
 import { getSitecoreGraphqlEndpoint } from '../src/AppGlobals';
 import * as fs from 'fs';
 import * as path from 'path';
+import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss';
 
 // Load the index.html template file contents:
 // In development request from http://localhost:3000?prestine (Create React App development server must be running) 
@@ -82,7 +83,11 @@ export const appName: string = Environment.reactAppProcessEnv.REACT_APP_SITECORE
 export function renderView(callback: (error: Error | null, successData: {html: string } | null) => void, path: string, data: any, viewBag: any): void {
   try {
     // const state = parseServerData(data, viewBag);
-    let state: { viewBag: any; sitecore: any; APOLLO_STATE?: NormalizedCacheObject } = parseServerData(data, viewBag);
+    let state: SsrState = { 
+      ...parseServerData(data, viewBag), 
+      context: undefined, 
+      APOLLO_STATE: undefined 
+    };
 
     setServerSideRenderingState(state);
 
@@ -91,7 +96,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
       The Apollo Client needs to be initialized to make GraphQL available to the JSS app.
       Not using GraphQL? Remove this, and the ApolloContext from `AppRoot`.
     */
-    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(getSitecoreGraphqlEndpoint(), true);
+    const graphQLClient: ApolloClient<NormalizedCacheObject> = GraphQLClientFactory(getSitecoreGraphqlEndpoint(), true, {});
 
     /*
       App Rendering
@@ -224,7 +229,9 @@ function parseServerData(data: any, viewBag: any): { viewBag: any, sitecore: any
 
 function initializei18n(state): Promise<any> {
   // don't init i18n for not found routes
-  if (!state || !state.sitecore || !state.sitecore.context) return Promise.resolve();
+  if (!state || !state.sitecore || !state.sitecore.context) {
+    return Promise.resolve();
+  }
 
   return i18ninit(state.sitecore.context.language, state.viewBag.dictionary);
 }

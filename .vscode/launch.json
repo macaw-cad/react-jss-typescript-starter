@@ -58,7 +58,7 @@
                 "-r", "source-map-support/register"
             ],
             "args": [
-                "--disconnected"
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
             ],
             "env": {
                 "NODE_ENV": "development",
@@ -84,7 +84,7 @@
                 "-r", "source-map-support/register"
             ],
             "args": [
-                "--connected"
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
             ],
             "env": {
                 "NODE_ENV": "development",
