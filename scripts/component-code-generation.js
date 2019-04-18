@@ -35,28 +35,28 @@ function generateJssComponentPropsFromDefinition(componentName) {
     }
     console.log('Found fields: ', fields);
     const imports = [];
-    imports.push('import { ContentFieldValue } from \'@sitecore-jss/sitecore-jss-manifest\'');
+    imports.push('import { ContentFieldValue } from \'@sitecore-jss/sitecore-jss-manifest\';');
     if (fields.some(f => f.type === CommonFieldTypes.Image)) {
-      imports.push('import { ImageField } from \'@sitecore-jss/sitecore-jss-react/types/components/Image\'');
+      imports.push('import { ImageField } from \'@sitecore-jss/sitecore-jss-react/types/components/Image\';');
     }
     if (fields.some(f => f.type === CommonFieldTypes.GeneralLink)) {
-      imports.push('import { LinkField } from \'@sitecore-jss/sitecore-jss-react/types/components/Link\'');
+      imports.push('import { LinkField } from \'@sitecore-jss/sitecore-jss-react/types/components/Link\';');
     }
     if (fields.some(f => f.type === CommonFieldTypes.File)) {
-      imports.push('import { FileField } from \'@sitecore-jss/sitecore-jss-react/types/components/File\'');
+      imports.push('import { FileField } from \'@sitecore-jss/sitecore-jss-react/types/components/File\';');
     }
 
-    const camelCaseComponentName = _.upperFirst(_.camelCase(componentName));
-    const propFileContent = `
-  ${ imports.join('\n') }${imports.length ? '\n' : '' }
-  export interface ${camelCaseComponentName}Props {
-    fields: ${camelCaseComponentName}Fields
-  }
+    const camelCaseComponentName = _.upperFirst(_.camelCase(componentName)).replace(/\W/g, '');
+    const propFileContent = `// This file is generated. Regenerate using: node scripts/generate-view-model.js ${componentName}
+${ imports.join('\n') }${imports.length ? '\n' : '' }
+export interface ${camelCaseComponentName}Props {
+  fields: ${camelCaseComponentName}Fields;
+}
 
-  export interface ${camelCaseComponentName}Fields {
-  ${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldTypes: ${field.type}`).join('\n') }
-  }\n
-  `;
+export interface ${camelCaseComponentName}Fields {
+${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldTypes: ${field.type}`).join('\n') }
+}
+`;
     console.log(propFileContent);
     const outputDirectoryPath = path.join(componentRootPath, componentName);
     const outputFilePath = path.join(outputDirectoryPath, camelCaseComponentName + '.models.ts');
