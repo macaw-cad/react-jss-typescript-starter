@@ -57,10 +57,11 @@ export interface ${camelCaseComponentName}Fields {
 ${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldTypes: ${field.type}`).join('\n') }
 }
 `;
-    console.log(propFileContent);
+    // console.log(propFileContent);
     const outputDirectoryPath = path.join(componentRootPath, componentName);
     const outputFilePath = path.join(outputDirectoryPath, camelCaseComponentName + '.models.ts');
     fs.writeFileSync(outputFilePath, propFileContent, 'utf8');
+    console.log(`Written to ${outputFilePath}`);
     return outputFilePath;
   });
 }
