@@ -52,6 +52,6 @@ export default function(endpoint: string, ssr: boolean, initialCacheState: Norma
     ssrForceFetchDelay: 100,
     link,
     cache: cache.restore(initialCacheState),
-  }
+  };
   return new ApolloClient(options);
 }

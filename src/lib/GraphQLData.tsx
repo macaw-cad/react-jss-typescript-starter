@@ -3,7 +3,12 @@ import { graphql } from 'react-apollo';
 import {
   withSitecoreContext,
   resetExperienceEditorChromes,
+  SitecoreContext,
+  LayoutServiceContextData,
+  ComponentRendering,
 } from '@sitecore-jss/sitecore-jss-react';
+import { DocumentNode, ASTNode, OperationDefinitionNode, VariableDefinitionNode } from 'graphql';
+import { QueryOptions } from 'apollo-client';
 
 /**
  * Higher order component that abstracts common JSS + Apollo integration needs.
@@ -16,23 +21,38 @@ import {
  * @param {*} query The GraphQL AST to execute (should go through graphql-tag, no strings)
  * @param {*} configuration Values passed in are shipped to react-apollo configuration (https://www.apollographql.com/docs/react/basics/setup.html#graphql-config)
  */
-function GraphQLData(query, configuration = {}) {
-  return function wrapComponent(Component) {
-    class SitecoreRenderingWrapper extends React.Component {
-      static displayName = `JSSGraphQLComponent(${Component.displayName ||
+function GraphQLData(query: any, configuration: any): React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any> {
+  return function wrapComponent(Component: React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any>): any {
+    type SitecoreRenderingWrapperProps = {
+      sitecoreContext: {
+        pageEditing?: boolean;
+        language?: string;
+        pageState?: 'preview' | 'edit' | 'normal';
+        visitorIdentificationTimestamp?: number;
+        site?: {
+          name?: string;
+        };
+        itemId: string;
+      };
+      rendering: ComponentRendering;
+    };
+    class SitecoreRenderingWrapper extends React.Component<SitecoreRenderingWrapperProps> {
+      private static displayName: string = `JSSGraphQLComponent(${Component.displayName ||
         Component.name ||
         'Component'})`;
 
-      render() {
+      public render(): JSX.Element {
         if (!query) {
           throw new Error(
             'query was falsy in GraphQLData. It should be a GraphQL query from graphql-tag. Perhaps missing graphql-tag/loader?'
           );
         }
 
-        const newConfiguration = { ...configuration };
+        const newConfiguration: any = { ...configuration };
 
-        if (!newConfiguration.name) newConfiguration.name = 'data';
+        if (!newConfiguration.name) {
+          newConfiguration.name = 'data';
+        }
 
         // ensure variables object exists
         newConfiguration.options = newConfiguration.options || {};
@@ -44,7 +64,7 @@ function GraphQLData(query, configuration = {}) {
           newConfiguration.options.ssr = false;
         } else if (
           query.definitions.some(
-            (def) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
+            (def: OperationDefinitionNode) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
           )
         ) {
           // if the document includes any subscriptions, we also disable SSR as this hangs the SSR process
@@ -78,9 +98,9 @@ function GraphQLData(query, configuration = {}) {
           resultProps[newConfiguration.name] = innerQuery;
 
           // run a user-specified props function too if one exists
-          if (configuration.props)
+          if (configuration.props) {
             resultProps = Object.assign(resultProps, configuration.props(props));
-
+          }
           return resultProps;
         };
 
@@ -89,22 +109,24 @@ function GraphQLData(query, configuration = {}) {
       }
 
       // eslint-disable-next-line class-methods-use-this
-      componentDidUpdate() {
+      public componentDidUpdate(): void {
         resetExperienceEditorChromes();
       }
     }
 
+    // @ts-ignore
     return withSitecoreContext()(SitecoreRenderingWrapper);
   };
 }
 
-function extractVariableNames(query) {
-  const variableNames = {};
+function extractVariableNames(query: any): { [s: string]: boolean; } {
+  const variableNames: { [s: string]: boolean; } = {};
+  
   query.definitions
-    .map((def) => def.variableDefinitions)
-    .filter((def) => def)
-    .forEach((defs) =>
-      defs.forEach((def) => {
+    .map((def: OperationDefinitionNode) => def.variableDefinitions)
+    .filter((def: VariableDefinitionNode) => def)
+    .forEach((defs: ReadonlyArray<VariableDefinitionNode>) =>
+      defs.forEach((def: VariableDefinitionNode) => {
         if (def.kind && def.kind === 'VariableDefinition') {
           variableNames[def.variable.name.value] = true;
         }

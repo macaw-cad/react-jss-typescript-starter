@@ -30,14 +30,14 @@ type RouteHandlerState = {
 export type SsrState = LayoutServiceData & LayoutServiceContextData & {
   viewBag: any;
   APOLLO_STATE: NormalizedCacheObject;
-};
+} | null;
 
-let ssrInitialState: SsrState | null = null;
+let ssrInitialState: SsrState = null;
 
 export default class RouteHandler extends React.Component<RouteHandlerProps, RouteHandlerState> {
   public state: RouteHandlerState = {
     notFound: true,
-    routeData: ssrInitialState, // null when client-side rendering
+    routeData: ssrInitialState as LayoutServiceData, // null when client-side rendering
     defaultLanguage: getSitecoreDefaultLanguage() || 'en',
   };
   
