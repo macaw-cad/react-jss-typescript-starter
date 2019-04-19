@@ -6,7 +6,7 @@ import packageJson from '../../../package.json';
  * Adds the Styleguide-FieldUsage-ContentList component to the disconnected manifest.
  * This function is invoked by convention (*.sitecore.ts) when 'jss manifest' is run.
  */
-export default function(manifest: Manifest) {
+export default function(manifest: Manifest): void {
   manifest.addComponent({
     name: 'Styleguide-FieldUsage-ContentList',
     icon: SitecoreIcon.ListStyle_numbered,
