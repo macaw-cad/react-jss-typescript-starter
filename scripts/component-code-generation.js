@@ -27,17 +27,29 @@ function generateJssComponentPropsFromDefinition(componentName) {
       }
     });
     const code = eval(transform.outputText);
-    let result = null;
+
+    let resultComponentDefinition = null;
+    let resultRouteDefinition = null;
+    let resultTemplateDefinition = null;
     code({
-      addComponent: (component) => result = component
+      addComponent: (componentDefinition) => resultComponentDefinition = componentDefinition,
+      addRoute: (routeDefinition) => resultRouteDefinition = routeDefinition,
+      addRouteType: (templateDefinition) => resultTemplateDefinition = templateDefinition,
     });
-    const fields = result.fields;
-    if (!fields) {
-      return;
+    let fields = [];
+    if(resultComponentDefinition && resultComponentDefinition.fields) {
+      fields = fields.concat(resultComponentDefinition.fields);
     }
+    if (resultRouteDefinition && resultRouteDefinition.fields) {
+      fields = fields.concat(resultRouteDefinition.fields);
+    }
+    if (resultTemplateDefinition && resultTemplateDefinition.fields) {
+      fields = fields.concat(resultTemplateDefinition.fields);
+    }
+
     console.log('Found fields: ', fields);
     const imports = [];
-    imports.push('import { ContentFieldValue } from \'@sitecore-jss/sitecore-jss-manifest\';');
+    imports.push('import { Field } from \'@sitecore-jss/sitecore-jss\';');
     if (fields.some(f => f.type === CommonFieldTypes.Image)) {
       imports.push('import { ImageField } from \'@sitecore-jss/sitecore-jss-react/types/components/Image\';');
     }
@@ -49,20 +61,26 @@ function generateJssComponentPropsFromDefinition(componentName) {
     }
 
     const camelCaseComponentName = _.upperFirst(_.camelCase(componentName)).replace(/\W/g, '');
-    const propFileContent = `// This file is generated. Regenerate using: node scripts/generate-view-model.js ${componentName}
-${ imports.join('\n') }${imports.length ? '\n' : '' }
-export interface ${camelCaseComponentName}Props {
-  fields: ${camelCaseComponentName}Fields;
-}
+    let propFileContent = `// This file is generated. Regenerate using: node scripts/generate-view-model.js --component ${componentName}\n`;
+    if (imports.length > 0) {
+      propFileContent += imports.join('\n') + '\n';
+    }
+      
+    propFileContent += `export interface ${camelCaseComponentName}Props {\n`;
+    if (fields && fields.length > 0) {
+      propFileContent += `  fields: ${camelCaseComponentName}Fields;\n`;
+    }
+    propFileContent += '}\n';
 
-export interface ${camelCaseComponentName}Fields {
+    if (fields && fields.length > 0) {
+      propFileContent += `\nexport interface ${camelCaseComponentName}Fields {
 ${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldTypes: ${field.type}`).join('\n') }
-}
-`;
+}`;
+    }
     // console.log(propFileContent);
     const outputDirectoryPath = path.join(componentRootPath, componentName);
-    const outputFilePath = path.join(outputDirectoryPath, camelCaseComponentName + '.models.ts');
-    fs.writeFileSync(outputFilePath, propFileContent, 'utf8');
+    const outputFilePath = path.join(outputDirectoryPath, camelCaseComponentName + '.props.ts');
+    fs.writeFileSync(outputFilePath, propFileContent, { encoding:'utf8', flag:'w' });
     console.log(`Written to ${outputFilePath}`);
     return outputFilePath;
   });
