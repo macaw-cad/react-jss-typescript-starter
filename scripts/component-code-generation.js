@@ -22,7 +22,9 @@ function generateJssComponentPropsFromDefinition(componentName) {
       return;
     }
     let transform = ts.transpileModule(source, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS }
+      compilerOptions: {
+        module: ts.ModuleKind.CommonJS
+      }
     });
     const code = eval(transform.outputText);
     let result = null;
@@ -68,47 +70,33 @@ ${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldT
 
 function getType(sitecoreFieldType) {
   let tsType = '';
-  switch(sitecoreFieldType) {
-    case CommonFieldTypes.SingleLineText:
-      tsType = 'ContentFieldValue'
-      break;
-    case CommonFieldTypes.MultiLineText:
-      tsType = 'ContentFieldValue'
-      break;
-    case CommonFieldTypes.RichText:
-      tsType = 'string'
-      break;
-    case CommonFieldTypes.ContentList:
-      tsType = 'ContentFieldValue'
-      break;
+
+  switch (sitecoreFieldType) {
+    case CommonFieldTypes.DateTime:
+    case CommonFieldTypes.Date:
+    case CommonFieldTypes.Checkbox:
+    case CommonFieldTypes.Number:
     case CommonFieldTypes.ItemLink:
-      tsType = 'ContentFieldValue'
+    case CommonFieldTypes.ContentList:
+    case CommonFieldTypes.MultiLineText:
+    case CommonFieldTypes.SingleLineText:
+    case CommonFieldTypes.RichText:
+      tsType = 'Field';
       break;
     case CommonFieldTypes.GeneralLink:
-      tsType = 'LinkField'
+      tsType = 'LinkField';
       break;
     case CommonFieldTypes.Image:
-      tsType = 'ImageField'
+      tsType = 'ImageField';
       break;
     case CommonFieldTypes.File:
-      tsType = 'FileField'
-      break;
-    case CommonFieldTypes.Number:
-      tsType = 'ContentFieldValue'
-      break;
-    case CommonFieldTypes.Checkbox:
-      tsType = 'ContentFieldValue'
-      break;
-    case CommonFieldTypes.Date:
-      tsType = 'ContentFieldValue'
-      break;
-    case CommonFieldTypes.DateTime:
-      tsType = 'ContentFieldValue'
+      tsType = 'FileField';
       break;
     default:
-      tsType = 'ContentFieldValue'
+      tsType = 'Field';
       break;
   }
+
   return tsType;
 }
 

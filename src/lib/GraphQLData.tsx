@@ -7,8 +7,13 @@ import {
   LayoutServiceContextData,
   ComponentRendering,
 } from '@sitecore-jss/sitecore-jss-react';
-import { DocumentNode, ASTNode, OperationDefinitionNode, VariableDefinitionNode } from 'graphql';
+import { DocumentNode, ASTNode, OperationDefinitionNode, VariableDefinitionNode, DefinitionNode } from 'graphql';
 import { QueryOptions } from 'apollo-client';
+
+// Type of configuration not found yet
+type GraphQLDataConfiguration {
+  options: QueryOptions;
+};
 
 /**
  * Higher order component that abstracts common JSS + Apollo integration needs.
@@ -21,7 +26,7 @@ import { QueryOptions } from 'apollo-client';
  * @param {*} query The GraphQL AST to execute (should go through graphql-tag, no strings)
  * @param {*} configuration Values passed in are shipped to react-apollo configuration (https://www.apollographql.com/docs/react/basics/setup.html#graphql-config)
  */
-function GraphQLData(query: any, configuration: any): React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any> {
+function GraphQLData(query: DocumentNode, configuration: any): React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any> {
   return function wrapComponent(Component: React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any>): any {
     type SitecoreRenderingWrapperProps = {
       sitecoreContext: {
@@ -36,10 +41,9 @@ function GraphQLData(query: any, configuration: any): React.ComponentClass<any, 
       };
       rendering: ComponentRendering;
     };
+
     class SitecoreRenderingWrapper extends React.Component<SitecoreRenderingWrapperProps> {
-      private static displayName: string = `JSSGraphQLComponent(${Component.displayName ||
-        Component.name ||
-        'Component'})`;
+      public static displayName: string = `JSSGraphQLComponent(${Component.displayName || Component.name || 'Component'})`;
 
       public render(): JSX.Element {
         if (!query) {
@@ -64,7 +68,7 @@ function GraphQLData(query: any, configuration: any): React.ComponentClass<any, 
           newConfiguration.options.ssr = false;
         } else if (
           query.definitions.some(
-            (def: OperationDefinitionNode) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
+            (def: DefinitionNode) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
           )
         ) {
           // if the document includes any subscriptions, we also disable SSR as this hangs the SSR process
@@ -73,7 +77,7 @@ function GraphQLData(query: any, configuration: any): React.ComponentClass<any, 
         }
 
         // find all variable definitions in the GraphQL query, so we can send only ones we're using
-        const variableNames = extractVariableNames(query);
+        const variableNames: { [s: string]: boolean; } = extractVariableNames(query);
 
         // set the datasource variable, if we're using it
         if (variableNames.datasource && this.props.rendering && this.props.rendering.dataSource) {
@@ -114,7 +118,6 @@ function GraphQLData(query: any, configuration: any): React.ComponentClass<any, 
       }
     }
 
-    // @ts-ignore
     return withSitecoreContext()(SitecoreRenderingWrapper);
   };
 }
