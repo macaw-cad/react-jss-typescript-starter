@@ -76,7 +76,7 @@ function generateJssComponentPropsFromDefinition(componentName, componentDefinit
       propFileContent += imports.join('\n') + '\n';
     }
       
-    propFileContent += `export interface ${camelCaseComponentName}Props {\n`;
+    propFileContent += `export interface ${camelCaseComponentName}BaseProps {\n`;
     if (fields && fields.length > 0) {
       propFileContent += `  fields: ${camelCaseComponentName}Fields;\n`;
     }
