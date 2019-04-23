@@ -2,21 +2,24 @@
 "use strict";
 
 const fs = require('fs');
+const path = require('path');
 const prog = require('caporal');
 
 const componentCodeGeneration = require('./component-code-generation');
+
+const jsscomponentsPath = path.join(__dirname, '../src/jsscomponents');
+const componentDefinitionPath = path.join(__dirname, '../sitecore/definitions/components');
 
 prog
   .version('1.0.0')
   .description('Generate jsscomponent props')
   .option('--component <componentName>', 'The component definition in sitecore/definitions/components (without .sitecore.ts extension)', prog.STRING, undefined)
-  .option('--all', 'Generatefor all component definitions in sitecore/definitions/components', prog.BOOLEAN, false)
+  .option('--all', 'Generate for all component definitions in sitecore/definitions/components', prog.BOOLEAN, false)
   .action(function(args, options, logger) {
     let componentNames = [];
     if (options.all) {
 
-      const sitecoreDefinitionsComponentsPath = 'sitecore/definitions/components';
-      fs.readdirSync(sitecoreDefinitionsComponentsPath)
+      fs.readdirSync(componentDefinitionPath)
         .filter((componentDefinitionFileName) => componentDefinitionFileName.includes('.sitecore.ts'))
         .forEach((componentDefinitionFileName) => {
           const componentName = componentDefinitionFileName.replace('.sitecore.ts', '');
@@ -37,7 +40,7 @@ prog
 
     componentNames.forEach((componentName) => {
       logger.info(`--- Processing component definition '${componentName}'`);
-      componentCodeGeneration.generateJssComponentPropsFromDefinition(componentName);
+      componentCodeGeneration.generateJssComponentPropsFromDefinition(componentName, componentDefinitionPath, jsscomponentsPath);
       
     })
   });

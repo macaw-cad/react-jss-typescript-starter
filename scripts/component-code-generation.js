@@ -9,10 +9,9 @@ const manifest = require('@sitecore-jss/sitecore-jss-manifest');
 const CommonFieldTypes = manifest.CommonFieldTypes;
 const ts = require('typescript');
 
-const componentRootPath = 'src/jsscomponents';
 
-function generateJssComponentPropsFromDefinition(componentName) {
-  const componentPath = path.join(__dirname, `../sitecore/definitions/components/${ componentName }.sitecore.ts`);
+function generateJssComponentPropsFromDefinition(componentName, componentDefinitionPath, jsscomponentsPath) {
+  const componentPath = path.join(componentDefinitionPath, `${ componentName }.sitecore.ts`);
 
   console.log(`Transforming: ${componentPath}`);
 
@@ -21,11 +20,22 @@ function generateJssComponentPropsFromDefinition(componentName) {
       console.error(err);
       return;
     }
+    source = source.replace('../../../package.json', s => {
+      console.log(`s: ${s}`);
+      let fullPath = path.resolve(componentDefinitionPath, s);
+      fullPath = fullPath.replace(/\\/g, '\\\\');
+      console.log(`fullPath: ${fullPath}`);
+      return fullPath;
+    });
+
     let transform = ts.transpileModule(source, {
       compilerOptions: {
-        module: ts.ModuleKind.CommonJS
-      }
+        module: ts.ModuleKind.CommonJS,
+        resolveJsonModule: true
+      },
+      componentPath
     });
+
     const code = eval(transform.outputText);
 
     let resultComponentDefinition = null;
@@ -78,7 +88,7 @@ ${ fields.map(field => `  ${field.name}: ${getType(field.type)}; // CommonFieldT
 }`;
     }
     // console.log(propFileContent);
-    const outputDirectoryPath = path.join(componentRootPath, componentName);
+    const outputDirectoryPath = path.join(jsscomponentsPath, componentName);
     const outputFilePath = path.join(outputDirectoryPath, camelCaseComponentName + '.props.ts');
     fs.writeFileSync(outputFilePath, propFileContent, { encoding:'utf8', flag:'w' });
     console.log(`Written to ${outputFilePath}`);
