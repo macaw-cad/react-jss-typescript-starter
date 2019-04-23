@@ -19,7 +19,7 @@ export default function(manifest: Manifest): void {
         // Using 'source' is recommended to help content editors find the correct items to refer to,
         // unless they can refer to any item in the whole site.
         source: `dataSource=/sitecore/content/${
-          packageJson.config.appName
+          (packageJson && packageJson.config ? packageJson.config.appName : 'appName')
         }/Content/Styleguide/ContentListField`,
       },
       { name: 'localContentList', type: CommonFieldTypes.ContentList },
