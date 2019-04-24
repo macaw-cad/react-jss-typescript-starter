@@ -1,7 +1,9 @@
 import React from 'react';
-import { Placeholder, withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
+import { Placeholder, withSitecoreContext, SitecoreContext, ComponentRendering } from '@sitecore-jss/sitecore-jss-react';
 
-const GraphQLLayout = ({ sitecoreContext, rendering }) => {
+import { GraphQlLayoutBaseProps } from './GraphQlLayout.props';
+
+const GraphQLLayout = ({ sitecoreContext, rendering }: { sitecoreContext: any, rendering: ComponentRendering }): JSX.Element => {
   const disconnectedMode = sitecoreContext.itemId === 'available-in-connected-mode';
 
   return (

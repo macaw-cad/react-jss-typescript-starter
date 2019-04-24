@@ -1,12 +1,21 @@
 import React from 'react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
-const StyleguideComponentParams = (props) => {
+import { StyleguideComponentParamsBaseProps } from './StyleguideComponentParams.props';
+
+type StyleguideComponentParamsProps = StyleguideComponentParamsBaseProps & {
+  params: {
+    cssClass: string;
+    columns: string;
+    useCallToAction: 'false' | 'true';
+  }
+};
+
+const StyleguideComponentParams = (props: StyleguideComponentParamsProps): JSX.Element => {
   // props.params (i.e. props.params.cssClass without destructuring) contains the component's params
   const { cssClass, columns, useCallToAction } = props.params;
 
-  const columnsArray = columns && [...Array(parseInt(columns))];
-
+  const columnsArray = columns && columns.replace(/, +/g, ',').split(',').map(Number);
   return (
     <StyleguideSpecimen {...props} e2eId="styleguide-componentparams">
       <p className={cssClass}>

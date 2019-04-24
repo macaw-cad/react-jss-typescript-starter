@@ -7,7 +7,7 @@ import { getSitecoreProxyConfiguration } from './sitecoreProxyConfiguration';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
 import { Environment } from '../src/Environment';
 import * as dotenv from 'dotenv';
-import prog from 'caporal';
+import { getArgumentValues } from 'graphql/execution/values';
 
 const environmentVariables = [
   { name: 'REACT_APP_NAME', mandatory: true },
@@ -25,20 +25,20 @@ const environmentVariables = [
   { name: 'REACT_APP_SITECORE_CONNECTED', mandatory: true },
 ];
 
-function logEnvironmentVariables(logger: Logger): void {
-  logger.info('Running with following environment variable settings:');
-  logger.info('=====================================================');
+function logEnvironmentVariables(): void {
+  console.log('Running with following environment variable settings:');
+  console.log('=====================================================');
   environmentVariables.map(e => {
-    logger.info(`${e.name}=${process.env[e.name]}`);
+    console.log(`${e.name}=${process.env[e.name]}`);
   });
 }
 
-function validateEnvironmentVariables(logger: Logger): boolean {
+function validateEnvironmentVariables(): boolean {
   let valid = true;
   environmentVariables.map(e => {
     if (!process.env[e.name] && e.mandatory) {
       valid = false;
-      logger.error(`Missing mandatory environment variable ${e.name}`);
+      console.log(`Missing mandatory environment variable ${e.name}`);
     }
   });
   return valid;
@@ -81,7 +81,7 @@ function prepServer(expressInstance: express.Express, config: ProxyConfig, port:
   });
 }
 
-function runServer(logger: Logger): void {
+function runServer(): void {
   const config: ProxyConfig = getSitecoreProxyConfiguration();
   const app = express();
   const port: number = 3001;
@@ -115,25 +115,19 @@ function runServer(logger: Logger): void {
 
 // Externally set environment variables or pass --envCmd <path> 
 // with environment variable settings in env-cmd format.
-prog
-  .version('1.0.0')
-  .description('Application Express server with SSR')
-  .option('--envCmd <file>', 'File with environment settings to use in env-cmd format', prog.STRING, undefined)
-  .action(function(args, options, logger): void {
-    if (options.envCmd) {
-      loadEnvironmentVariables(options.envCmd);
-    }
+if (process.argv.length > 2) {
+  if (process.argv[2] === '--envCmd' && process.argv.length >= 3) {
+    // File with environment settings to use in env-cmd format'
+    const envCmdFilePath = process.argv[3];
+    loadEnvironmentVariables(envCmdFilePath);
+  }
+}
+if (!validateEnvironmentVariables()) {
+  console.log('[EXIT]');
+  process.exit(1);
+}
 
-    if (!validateEnvironmentVariables(logger)) {
-      logger.error('[EXIT]');
-      process.exit(1);
-    }
+logEnvironmentVariables();
+console.log(`Current working directory: ${process.cwd()}`);
 
-    logEnvironmentVariables(logger);
-    
-    logger.info(`Current working directory: ${process.cwd()}`);
-
-    runServer(logger);
-  });
- 
-prog.parse(process.argv);
+runServer();

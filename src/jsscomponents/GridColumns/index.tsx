@@ -2,22 +2,19 @@ import * as React from 'react';
 import { withPlaceholder, withSitecoreContext, getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 import { joinClasses } from '../../utils/Filters';
 
-interface GridColumnsProps {
+import { GridColumnsBaseProps } from './GridColumns.props';
+
+type GridColumnsProps = GridColumnsBaseProps & {
     smallColumns?: number[];
     columns: number[];
     largeColumns?: number[];
     extraLargeColumns?: number[];
     rendering?: any;
     parameters?: any;
-    fields?: any;
-}
-
-interface GridColumnsFields {
-    columns: { value: string };
 }
 
 class GridColumnsComponent extends React.Component<GridColumnsProps> {
-    constructor(props) {
+    constructor(props: GridColumnsProps) {
         super(props);
         this.state = {
             className: 'm-grid'
@@ -31,7 +28,7 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
                 className: parameters.className.concat(' m-grid')
             });
         }
-        const columnsString = getFieldValue(this.props.fields, 'columns');
+        const columnsString = getFieldValue(this.props.fields as any, 'columns');
         const columns = columnsString.indexOf(',') > -1 ? columnsString.split(',') : ['12'];
 
         return (

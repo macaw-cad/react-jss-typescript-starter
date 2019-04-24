@@ -1,12 +1,19 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, Link } from '@sitecore-jss/sitecore-jss-react';
 import { Link as RouterLink } from 'react-router-dom';
 import { loader as gqlLoader } from 'graphql.macro';
 import GraphQLData from '../../lib/GraphQLData';
+import { GraphQlConnectedDemoBaseProps } from './GraphQlConnectedDemo.props';
+import { ApolloQueryResult } from 'apollo-client';
+import { DocumentNode } from 'graphql';
 
-const ConnectedDemoQuery = gqlLoader('./query.graphql');
+const ConnectedDemoQuery: DocumentNode = gqlLoader('./query.graphql');
 
-const GraphQLConnectedDemo = (props) => {
+type GraphQlConnectedDemoProps = GraphQlConnectedDemoBaseProps & {
+  connectedQuery: ApolloQueryResult<any> & { error: string; datasource: any; contextItem: any };
+};
+
+const GraphQLConnectedDemo = (props: GraphQlConnectedDemoProps): JSX.Element => {
   const graphQLResult = props.connectedQuery;
 
   // Async loading and error handling

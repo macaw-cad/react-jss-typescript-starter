@@ -1,8 +1,23 @@
 import React from 'react';
 import { Text, Link } from '@sitecore-jss/sitecore-jss-react';
 import { Link as RouterLink } from 'react-router-dom';
+import { GraphQlIntegratedDemoBaseProps, GraphQlIntegratedDemoFields } from './GraphQlIntegratedDemo.props';
 
-const GraphQLIntegratedDemo = (props) => {
+type DataSource = GraphQlIntegratedDemoFields & {
+  name: string;
+  id: string;
+  sample1: any;
+  sample2: any;
+};
+
+interface GraphQlIntegratedDemoFieldsExtended extends GraphQlIntegratedDemoFields {
+  data: { datasource: DataSource, contextItem: any }; 
+}
+type GraphQlIntegratedDemoProps = GraphQlIntegratedDemoBaseProps & { 
+  fields: GraphQlIntegratedDemoFieldsExtended;
+};
+
+const GraphQLIntegratedDemo = (props: GraphQlIntegratedDemoProps): JSX.Element => {
   // Query results in integrated GraphQL replace the normal `fields` data
   // i.e. with { data, }
   const { datasource, contextItem } = props.fields.data;

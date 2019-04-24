@@ -9,9 +9,10 @@ import {
 } from '@sitecore-jss/sitecore-jss-react';
 import { DocumentNode, ASTNode, OperationDefinitionNode, VariableDefinitionNode, DefinitionNode } from 'graphql';
 import { QueryOptions } from 'apollo-client';
+import { any } from 'prop-types';
 
 // Type of configuration not found yet
-type GraphQLDataConfiguration {
+type GraphQLDataConfiguration = {
   options: QueryOptions;
 };
 
@@ -26,7 +27,7 @@ type GraphQLDataConfiguration {
  * @param {*} query The GraphQL AST to execute (should go through graphql-tag, no strings)
  * @param {*} configuration Values passed in are shipped to react-apollo configuration (https://www.apollographql.com/docs/react/basics/setup.html#graphql-config)
  */
-function GraphQLData(query: DocumentNode, configuration: any): React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any> {
+function GraphQLData(query: DocumentNode, configuration: any): (Component: React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any>) => any {
   return function wrapComponent(Component: React.ComponentClass<any, React.ComponentState> | React.StatelessComponent<any>): any {
     type SitecoreRenderingWrapperProps = {
       sitecoreContext: {

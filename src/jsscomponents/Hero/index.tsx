@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { Image } from '@sitecore-jss/sitecore-jss-react';
+import { HeroBaseProps } from './Hero.props';
 
-type HeroFields = {
-  image: { value: { src: string, alt: string } };
-};
-
-type HeroProps = {
-  fields: HeroFields;
-};
+type HeroProps = HeroBaseProps;
 
 const Hero: React.FunctionComponent<HeroProps> = (props) => {
     return (
