@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, RichText } from '@sitecore-jss/sitecore-jss-react';
 
 /**
  * Helper component that displays explanatory information and where to find the definitions
  * of styleguide specimens.
  */
-const StyleguideSpecimen = ({ fields: { heading, description }, children, rendering, e2eId }) => (
+const StyleguideSpecimen: React.FC<any> = ({ fields: { heading, description }, children, rendering, e2eId }) => (
   <div className="pt-3" id={`i${rendering.uid.replace(/[{}]/g, '')}`} data-e2e-id={e2eId}>
     <Text tag="h4" field={heading} />
     <RichText field={description} />

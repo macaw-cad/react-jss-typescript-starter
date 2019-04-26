@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
@@ -6,7 +6,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Demonstrates usage of a Text content field within JSS.
  * Text fields are HTML encoded by default.
  */
-const StyleguideFieldUsageText = (props) => (
+const StyleguideFieldUsageText: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-fieldusage-text">
     {/* Basic use of a text field. No wrapper. */}
     <Text field={props.fields.sample} />

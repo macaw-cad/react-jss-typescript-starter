@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
 /**
  * Demonstrates usage of a Number (decimal) content field within JSS.
  */
-const StyleguideFieldUsageText = (props) => {
+const StyleguideFieldUsageText: React.FC<any> = (props) => {
   const fieldValue = getFieldValue(props.fields, 'sample');
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text } from '@sitecore-jss/sitecore-jss-react';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Demonstrates using the dictionary functionality and defining route data in
  * multiple languages.
  */
-const StyleguideMultilingual = (props) => (
+const StyleguideMultilingual: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-multilingual">
     <Text field={props.fields.sample} encode={false} tag="p" />
 

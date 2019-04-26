@@ -89,7 +89,7 @@ function convertToItems(data: MergeFsResult, basePath: string, rootItemName: str
  * Converts a physical filesystem path into a relative Sitecore item path.
  * i.e. if physicalPath = /var/log and basePath = /var, this returns /log.
  */
-function convertPhsyicalPathToItemRelativePath(physicalPath: string, basePath: string) {
+function convertPhsyicalPathToItemRelativePath(physicalPath: string, basePath: string): string {
   const targetPathSeparator = '/';
 
   // normalize path separators to /

@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
 /**
  * Demonstrates usage of a General Link (hyperlink) content field within JSS.
  */
-const StyleguideFieldUsageLink = (props) => (
+const StyleguideFieldUsageLink: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-fieldusage-link">
     External link:&nbsp;
     <Link field={props.fields.externalLink} />

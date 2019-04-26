@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { withSitecoreContext, Text } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
@@ -8,7 +8,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * This technique builds on the Styleguide-SitecoreContext technique,
  * to also get the route level field data and make it editable.
  */
-const StyleguideRouteFields = (props) => (
+const StyleguideRouteFields: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-route-fields">
     <p>
       Route level <code>pageTitle</code> field:{' '}

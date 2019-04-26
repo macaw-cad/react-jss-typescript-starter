@@ -1,11 +1,14 @@
 import React from 'react';
-import { getFieldValue } from '@sitecore-jss/sitecore-jss-react';
+import { getFieldValue, Field } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
+import { StyleguideFieldUsageCheckboxBaseProps } from './StyleguideFieldUsageCheckbox.props';
+
+type StyleguideFieldUsageCheckboxProps = StyleguideFieldUsageCheckboxBaseProps;
 
 /**
  * Demonstrates usage of a Checkbox (boolean) content field within JSS.
  */
-const StyleguideFieldUsageCheckbox = (props) => (
+const StyleguideFieldUsageCheckbox: React.FC<StyleguideFieldUsageCheckboxProps> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-fieldusage-checkbox">
     {/* Checkbox fields do not have the ability to be inline edited, so they are directly accessed via their value: */}
     <ul>
@@ -13,7 +16,7 @@ const StyleguideFieldUsageCheckbox = (props) => (
         The getFieldValue helper allows safely extracting a field value that could be undefined,
         without needing to check that props.fields or props.fields.checkbox are traversable,
         and allowing the specification of an optional default value (default is undefined if unspecified).
-       */}
+      */}
       {props.fields &&
         props.fields.checkbox &&
         props.fields.checkbox.value && (
@@ -28,12 +31,12 @@ const StyleguideFieldUsageCheckbox = (props) => (
             <code>checkbox</code> is false
           </li>
         ))}
-      {getFieldValue(props.fields, 'checkbox2', false) && (
+      {getFieldValue(props.fields as unknown as { [name: string]: Field }, 'checkbox2', false) && (
         <li>
           <code>checkbox2</code> is true
         </li>
       )}
-      {!getFieldValue(props.fields, 'checkbox2', false) && (
+      {!getFieldValue(props.fields as unknown as { [name: string]: Field }, 'checkbox2', false) && (
         <li>
           <code>checkbox2</code> is false
         </li>

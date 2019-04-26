@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
@@ -6,7 +6,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Demonstrates usage of a Content Link content field within JSS.
  * Content links are a reference to a single other piece of content.
  */
-const StyleguideFieldUsageItemLink = (props) => {
+const StyleguideFieldUsageItemLink: React.FC<any> = (props) => {
   const { sharedItemLink, localItemLink } = props.fields;
 
   return (

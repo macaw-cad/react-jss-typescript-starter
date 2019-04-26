@@ -1,6 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import { withPlaceholder, withSitecoreContext, Text } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
+
+type StyleguideLayoutTabsProps = {
+  tabsPlaceholder: any;
+  sitecoreContext: any;
+};
+
+type StyleguideLayoutTabsState = {
+  activeTabIndex: number;
+};
 
 /**
  * Demonstrates advanced component techniques in JSS.
@@ -10,7 +19,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * When this component is edited in Sitecore Experience Editor, the tabbing behavior is turned off and each tab stacks on top of each other
  * for easy inline editing.
  */
-class StyleguideLayoutTabs extends React.Component {
+class StyleguideLayoutTabs extends React.Component<StyleguideLayoutTabsProps, StyleguideLayoutTabsState> {
   constructor(props) {
     super(props);
 
@@ -21,11 +30,7 @@ class StyleguideLayoutTabs extends React.Component {
     this.setActiveTab = this.setActiveTab.bind(this);
   }
 
-  setActiveTab(index) {
-    this.setState({ activeTabIndex: index });
-  }
-
-  render() {
+  public render(): JSX.Element {
     const { tabsPlaceholder, sitecoreContext } = this.props;
 
     let validTabIndex = 0;
@@ -58,7 +63,9 @@ class StyleguideLayoutTabs extends React.Component {
             const isValid = tab.props && tab.props.fields;
 
             // allow experience editor markup components to render
-            if (!isValid && isEditing) return tab;
+            if (!isValid && isEditing) {
+              return tab;
+            }
 
             validTabIndex += 1;
 
@@ -74,6 +81,10 @@ class StyleguideLayoutTabs extends React.Component {
       </StyleguideSpecimen>
     );
   }
+  
+  private setActiveTab(index): void {
+    this.setState({ activeTabIndex: index });
+  }  
 }
 
 // This is a _higher order component_ that will wrap our component and inject placeholder

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Placeholder, getChildPlaceholder, getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 
 /**
@@ -6,18 +6,18 @@ import { Placeholder, getChildPlaceholder, getFieldValue } from '@sitecore-jss/s
  * Navigation is automatically generated based on the components added to the layout,
  * and does not need to be manually maintained.
  */
-const StyleguideLayout = (props) => {
+const StyleguideLayout:React.FC<any> = (props) => {
   // this code reads the components in the child placeholders of this component,
   // and projects them into the left navigation column for the styleguide
   const sections = getChildPlaceholder(props.rendering, 'jss-styleguide-layout')
-    .filter((section) => getFieldValue(section, 'heading'))
-    .map((section) => ({
-      heading: getFieldValue(section, 'heading'),
+    .filter((section) => getFieldValue(section as any, 'heading'))
+    .map((section: any) => ({
+      heading: getFieldValue(section as any, 'heading'),
       id: `i${section.uid.replace(/[{}]/g, '')}`,
-      children: getChildPlaceholder(section, 'jss-styleguide-section')
-        .filter((component) => getFieldValue(component, 'heading'))
-        .map((component) => ({
-          heading: getFieldValue(component, 'heading'),
+      children: getChildPlaceholder(section as any, 'jss-styleguide-section')
+        .filter((component) => getFieldValue(component as any, 'heading'))
+        .map((component: any) => ({
+          heading: getFieldValue(component as any, 'heading'),
           id: `i${component.uid.replace(/[{}]/g, '')}`,
         })),
     }))

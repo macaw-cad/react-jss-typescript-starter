@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, RichText, withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
 
 /**
@@ -6,7 +6,7 @@ import { Text, RichText, withSitecoreContext } from '@sitecore-jss/sitecore-jss-
  * This component demonstrates conditionally altering rendering when in the Sitecore Experience Editor to improve
  * author experience.
  */
-const StyleguideLayoutTabsTab = (props) => (
+const StyleguideLayoutTabsTab: React.FC<any> = (props) => (
   <div data-e2e-class="styleguide-layout-tabs-tab">
     {/*
       When we're editing the tabs we stack each tab vertically,

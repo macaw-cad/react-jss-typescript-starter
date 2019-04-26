@@ -6,7 +6,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Demonstrates usage of a File content field within JSS.
  * File types are stored within Sitecore's Media Library data, and can be edited.
  */
-const StyleguideFieldUsageFile = (props) => (
+const StyleguideFieldUsageFile: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-fieldusage-file">
     {/* Renders a file link */}
     <File field={props.fields.file} />

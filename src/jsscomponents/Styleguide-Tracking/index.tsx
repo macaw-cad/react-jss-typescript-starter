@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { withSitecoreContext } from '@sitecore-jss/sitecore-jss-react';
 import { trackingApi } from '@sitecore-jss/sitecore-jss-tracking';
 import { dataFetcher } from '../../dataFetcher';
@@ -6,21 +6,33 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
 import { getSitecoreApiHost, getSitecoreApiKey } from '../../AppGlobals';
 
 /* eslint-disable no-alert,no-undef */
+type StyleguideTrackingProps = {
+  sitecoreContext: any;
+};
 
 /**
  * Demonstrates analytics tracking patterns (xDB)
  */
-class StyleguideTracking extends React.Component {
-  constructor(props) {
+class StyleguideTracking extends React.Component<StyleguideTrackingProps> {
+  private event = React.createRef<HTMLInputElement>();
+  private goal = React.createRef<HTMLInputElement>();
+  private outcomeName = React.createRef<HTMLInputElement>();
+  private outcomeValue = React.createRef<HTMLInputElement>();
+  private campaign = React.createRef<HTMLInputElement>();
+  private pageId = React.createRef<HTMLInputElement>();
+  private pageUrl = React.createRef<HTMLInputElement>();
+  private trackingApiOptions: any;
+
+  constructor(props: StyleguideTrackingProps) {
     super(props);
 
-    this.event = React.createRef();
-    this.goal = React.createRef();
-    this.outcomeName = React.createRef();
-    this.outcomeValue = React.createRef();
-    this.campaign = React.createRef();
-    this.pageId = React.createRef();
-    this.pageUrl = React.createRef();
+    this.submitEvent = this.submitEvent.bind(this);
+    this.submitGoal = this.submitGoal.bind(this);
+    this.submitOutcome = this.submitOutcome.bind(this);
+    this.triggerCampaign = this.triggerCampaign.bind(this);
+    this.submitPageView = this.submitPageView.bind(this);
+    this.submitBatching = this.submitBatching.bind(this);
+    this.abandonSession = this.abandonSession.bind(this);
 
     this.trackingApiOptions = {
       host: getSitecoreApiHost(),
@@ -31,83 +43,7 @@ class StyleguideTracking extends React.Component {
     };
   }
 
-  submitEvent() {
-    trackingApi
-      .trackEvent([{ eventId: this.event.current.value }], this.trackingApiOptions)
-      .then(() => alert('Page event pushed'))
-      .catch((error) => alert(error));
-  }
-
-  submitGoal() {
-    trackingApi
-      .trackEvent([{ goalId: this.goal.current.value }], this.trackingApiOptions)
-      .then(() => alert('Goal pushed'))
-      .catch((error) => alert(error));
-  }
-
-  submitOutcome() {
-    trackingApi
-      .trackEvent(
-        [
-          {
-            outcomeId: this.outcomeName.current.value,
-            currencyCode: 'USD',
-            monetaryValue: this.outcomeValue.current.value,
-          },
-        ],
-        this.trackingApiOptions
-      )
-      .then(() => alert('Outcome pushed'))
-      .catch((error) => alert(error));
-  }
-
-  triggerCampaign() {
-    trackingApi
-      .trackEvent([{ campaignId: this.campaign.current.value }], this.trackingApiOptions)
-      .then(() => alert('Campaign set'))
-      .catch((error) => alert(error));
-  }
-
-  submitPageView() {
-    trackingApi
-      .trackEvent(
-        [{ pageId: this.pageId.current.value, url: this.pageUrl.current.value }],
-        this.trackingApiOptions
-      )
-      .then(() => alert('Page view pushed'))
-      .catch((error) => alert(error));
-  }
-
-  abandonSession() {
-    const abandonOptions = {
-      action: 'flush',
-      ...this.trackingApiOptions,
-    };
-
-    trackingApi
-      .trackEvent([], abandonOptions)
-      .then(() => alert('Interaction has been terminated and its data pushed to xConnect.'))
-      .catch((error) => alert(error));
-  }
-
-  submitBatching() {
-    trackingApi
-      .trackEvent(
-        [
-          { eventId: 'Download' },
-          { goalId: 'Instant Demo' },
-          { outcomeId: 'Opportunity' },
-          { pageId: '{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}', url: '/arbitrary/url/you/own' },
-          // this goal will be added to the new page/route ID set above, not the current route
-          { goalId: 'Register' },
-        ],
-        this.trackingApiOptions
-      )
-      .then(() => alert('Batch of events pushed'))
-      .catch((error) => alert(error));
-  }
-
-  render() {
+  public render(): JSX.Element {
     const disconnectedMode = this.props.sitecoreContext.itemId === 'available-in-connected-mode';
 
     return (
@@ -131,7 +67,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
-                  onClick={this.submitEvent.bind(this)}
+                  onClick={this.submitEvent}
                 >
                   Submit
                 </button>
@@ -153,7 +89,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
-                  onClick={this.submitGoal.bind(this)}
+                  onClick={this.submitGoal}
                 >
                   Submit
                 </button>
@@ -186,7 +122,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
-                  onClick={this.submitOutcome.bind(this)}
+                  onClick={this.submitOutcome}
                 >
                   Submit
                 </button>
@@ -203,7 +139,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
-                  onClick={this.triggerCampaign.bind(this)}
+                  onClick={this.triggerCampaign}
                 >
                   Submit
                 </button>
@@ -237,7 +173,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
-                  onClick={this.submitPageView.bind(this)}
+                  onClick={this.submitPageView}
                 >
                   Submit
                 </button>
@@ -252,7 +188,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={this.submitBatching.bind(this)}
+                  onClick={this.submitBatching}
                 >
                   Submit Batch of Events
                 </button>
@@ -277,7 +213,7 @@ class StyleguideTracking extends React.Component {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={this.abandonSession.bind(this)}
+                  onClick={this.abandonSession}
                 >
                   End Interaction
                 </button>
@@ -287,6 +223,84 @@ class StyleguideTracking extends React.Component {
         )}
       </StyleguideSpecimen>
     );
+  }
+
+  private submitEvent(): void {
+    trackingApi
+      .trackEvent([{ eventId: this.event.current!.value }], this.trackingApiOptions)
+      .then(() => alert('Page event pushed'))
+      .catch((error) => alert(error));
+  }
+
+  private submitGoal(): void {
+    trackingApi
+      .trackEvent([{ goalId: this.goal.current!.value }], this.trackingApiOptions)
+      .then(() => alert('Goal pushed'))
+      .catch((error) => alert(error));
+  }
+
+  private submitOutcome(): void {
+    trackingApi
+      .trackEvent(
+        [
+          {
+            url: this.pageUrl.current!.value,
+            pageId: this.pageId.current!.value,
+            outcomeId: this.outcomeName.current!.value,
+            currencyCode: 'USD',
+            monetaryValue: this.outcomeValue.current!.value,
+          },
+        ],
+        this.trackingApiOptions
+      )
+      .then(() => alert('Outcome pushed'))
+      .catch((error) => alert(error));
+  }
+
+  private triggerCampaign(): void {
+    trackingApi
+      .trackEvent([{ campaignId: this.campaign.current!.value }], this.trackingApiOptions)
+      .then(() => alert('Campaign set'))
+      .catch((error) => alert(error));
+  }
+
+  private submitPageView(): void {
+    trackingApi
+      .trackEvent(
+        [{ pageId: this.pageId.current!.value, url: this.pageUrl.current!.value }],
+        this.trackingApiOptions
+      )
+      .then(() => alert('Page view pushed'))
+      .catch((error) => alert(error));
+  }
+
+  private abandonSession(): void {
+    const abandonOptions = {
+      action: 'flush',
+      ...this.trackingApiOptions,
+    };
+
+    trackingApi
+      .trackEvent([], abandonOptions)
+      .then(() => alert('Interaction has been terminated and its data pushed to xConnect.'))
+      .catch((error) => alert(error));
+  }
+
+  private submitBatching(): void {
+    trackingApi
+      .trackEvent(
+        [
+          { eventId: 'Download' },
+          { goalId: 'Instant Demo' },
+          { outcomeId: 'Opportunity' },
+          { pageId: '{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}', url: '/arbitrary/url/you/own' },
+          // this goal will be added to the new page/route ID set above, not the current route
+          { goalId: 'Register' },
+        ],
+        this.trackingApiOptions
+      )
+      .then(() => alert('Batch of events pushed'))
+      .catch((error) => alert(error));
   }
 }
 

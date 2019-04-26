@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text } from '@sitecore-jss/sitecore-jss-react';
+import * as React from 'react';
+import { Text, Field } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
 /**
@@ -7,7 +7,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Content Lists are references to 0..n other content items.
  * In Sitecore terms, this maps by default to a Treelist field.
  */
-const StyleguideFieldUsageContentList = (props) => {
+const StyleguideFieldUsageContentList: React.FC<any> = (props) => {
   const { sharedContentList, localContentList } = props.fields;
 
   return (
@@ -19,11 +19,11 @@ const StyleguideFieldUsageContentList = (props) => {
       on each element to make React's DOM updating happy:
      */}
       {sharedContentList &&
-        sharedContentList.map((listItem, index) => (
+        sharedContentList.map((listItem, index: number) => (
           <div key={`sharedListItem-${index}`}>
             {/* The referenced item's fields can be rendered and edited using normal helper components: */}
             <p>
-              Field: <Text field={listItem.fields.textField} />
+              Field: <Text field={listItem.fields.textField as any} />
             </p>
           </div>
         ))}

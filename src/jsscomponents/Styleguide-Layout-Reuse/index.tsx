@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Placeholder } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
@@ -8,7 +8,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * the Placeholder component's render props API to wrap all components in the placeholder
  * in a column tag (thus creating a horizontally laid out placeholder)
  */
-const StyleguideLayoutReuse = (props) => (
+const StyleguideLayoutReuse: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-layout-reuse">
     <div className="row">
       {/*

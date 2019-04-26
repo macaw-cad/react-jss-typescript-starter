@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Image } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 
@@ -6,7 +6,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * Demonstrates usage of an Image content field within JSS.
  * Image field data is uploaded into the Sitecore Media Library.
  */
-const StyleguideFieldUsageImage = (props) => (
+const StyleguideFieldUsageImage: React.FC<any> = (props) => (
   <StyleguideSpecimen {...props} e2eId="styleguide-fieldusage-image">
     <p>Plain image</p>
     <Image media={props.fields.sample1} />
