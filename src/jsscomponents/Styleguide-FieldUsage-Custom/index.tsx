@@ -4,7 +4,7 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
 
 /**
  * Demonstrates usage of a custom content field type within JSS.
- * See /sitecore/definitions/components/Styleguide-FieldUsage-Custom.sitecore.js
+ * See /sitecore/definitions/components/Styleguide-FieldUsage-Custom.sitecore.ts
  * for the definition of the structure of the custom field. This code is just for display.
  */
 const StyleguideFieldUsageCustom:React.FC<any> = (props) => (
