@@ -132,6 +132,24 @@
                 "run"
             ],
         },
-        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "graphql:update",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/scripts/update-graphql-fragment-data.js",
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeArgs": [
+                "-r", "dotenv/config"
+            ],
+            "args": [
+                "dotenv_config_path=.env.connected"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "timeout": 30000
+        },
     ]
 }

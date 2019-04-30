@@ -178,7 +178,7 @@
     "docker:run:connected": "node scripts/docker-do.js run",
     "docker:shell": "node scripts/docker-do.js shell",
     "scaffold": "node scripts/scaffold-component.js",
-    "graphql:update": "node -r babel-register -r dotenv/config ./scripts/update-graphql-fragment-data.js dotenv_config_path=.env.connected",
+    "graphql:update": "env-cmd .env.connected node ./scripts/update-graphql-fragment-data.js",
     "lint": "tslint -p ./",
     "test": "react-scripts test --env=jsdom",
     "eject-dont-do-this": "react-scripts eject",
