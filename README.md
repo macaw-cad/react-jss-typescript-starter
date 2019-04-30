@@ -32,11 +32,11 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
 **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
 
 ## Quickstart
-For those who know how to clone a repo and don't forget to do the `npm i`, these are the most important commands to get started with development. No Sitecore installed on your machine
+For those who know how to clone a repo and don't forget to do the `npm i`, these are the most important commands to get started with development. No Sitecore needs to be installed on your machine!
 
 | Command | Runs on | What is does |
 | --- | --- | --- |
-| `jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
+| `npm run jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
 | `npm run start:disconnected` | http://localhost:3000 | Client side only development, disconnected from sitecore |
 | `npm run start:connected` | http://localhost:3000 | Client side only development, connected to sitecore |
 | `npm run start:storybook` | http://localhost:9001 | Use storybook for out-of-context component development |
@@ -64,6 +64,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
     - [Check if app is working with server-side rendering](#check-if-app-is-working-with-server-side-rendering)
     - [Build the artifacts for deployment to Sitecore](#build-the-artifacts-for-deployment-to-sitecore)
     - [Build web server application](#build-web-server-application)
+  - [Scaffolding new components](#scaffolding-new-components)
   - [Umbrella](#umbrella)
     - [Umbrella.PanTau](#umbrellapantau)
       - [Example output:](#example-output)
@@ -109,7 +110,7 @@ At Macaw Interactive we made choices with respect to the front-end development t
 
 For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added tyo the toolset.
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is completely converted to TypeScript and a lot of additional features are added to the toolset.
 
 Provided features:
 
@@ -168,7 +169,7 @@ Now determine a name for your JSS app, for example: `jss-myapp`. Rename the file
   - replace all occurences of `react-jss-typescript-starter` with `jss-myapp`
   - modify the `description` and `url` paths to suit your needs
 
-The first command to execute next is `jss setup` to create the `scjssconfig.json` file locally. This file is user-specific and is ignored from source-control. The file will look something like:
+The first command to execute next is `jss setup` (or `npm run jss setup` if jss cli is not installed globally) to create the `scjssconfig.json` file. This file is user-specific and is ignored from source-control. The file will look something like:
 
 ```json
 {
@@ -231,7 +232,7 @@ The environment variables can be used in NodeJS server code using `process.env.<
 | `REACT_APP_SITECORE_CONNECTED` | `window.app.sitecoreConnected` | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'` |
 | `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | N.A. | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in the file `server/config.ts` |
 
-In development we use the following npm commands:
+In development we mostly use the following npm commands:
 
 - `npm run start:disconnected` (shorthand `npm start`)
 - `npm run start:connected`
@@ -240,7 +241,7 @@ In development we use the following npm commands:
 
 These commands autogenerate the required environment variable configuration files `.env.disconnected` and `.env.connected`. The values of the environment variables are based on the values as defined in the `scjssconfig.json` file. The `scjssconfig.json` configuration file is generated by the command `jss setup`. 
 
-In the production build the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. The resulting `##VARNAME##` values can be replaced during the production build in for example the Azure DevOps build pipeline. All `##VARNAME##` values remaining in `build/index.html` are replaced on runtime when serving the `build/index.html` file from the web server. The replacement values are based on the configured enviroment variables.  
+In the production build the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. The resulting `##VARNAME##` values could be replaced during the production build in for example the Azure DevOps build pipeline. All `##VARNAME##` values remaining in `build/index.html` are replaced on runtime when serving the `build/index.html` file from the NodeJS Express web server. The replacement values are based on the configured enviroment variables. This is mandatory in the case of a Docker image based deployment, because we want to have the Docker image as the single source of deployment to different environments and don't want to change the contents of the Docker image.
 
 ## Development scripts
 
@@ -280,6 +281,20 @@ Build the NodeJS Express web server application supporting server-side rendering
 - For production: `npm run build-server:production` (minified)
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode if the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
+
+## Scaffolding new components
+
+[Plop](https://plopjs.com/) is used for scaffolding new components, instead of the original `scripts/scaffold-component.js` script that was provided by Sitecore out of the box in the React starter. Currently the only scaffolding available is for a JSS component using the following command:
+
+```
+npm run plop
+```
+
+This command asks for a component name (i.e. MyComponent) and generated the following files:
+
+- `src\jsscomponents\MyComponent\index.tsx`
+- `sitecore\definitions\components\MyComponent.sitecore.ts`
+
 
 ## Umbrella
 

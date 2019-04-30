@@ -143,6 +143,7 @@
     "scjss-verify-setup": "scjss-verify-setup",
     "hotel": "hotel",
     "jss": "jss",
+    "plop": "plop",
     "start": "npm run start:disconnected",
     "start:disconnected": "npm run bootstrap:disconnected && env-cmd .env.disconnected npm-run-all --parallel start:react:disconnected start:proxy start:watch-components",
     "start:connected": "npm run scjss-verify-setup && npm run bootstrap:connected && env-cmd .env.connected npm-run-all --parallel start:react:connected start:watch-components",
@@ -177,13 +178,13 @@
     "docker:run:disconnected": "node scripts/docker-do.js run --disconnected",
     "docker:run:connected": "node scripts/docker-do.js run",
     "docker:shell": "node scripts/docker-do.js shell",
-    "scaffold": "node scripts/scaffold-component.js",
     "graphql:update": "env-cmd .env.connected node ./scripts/update-graphql-fragment-data.js",
     "lint": "tslint -p ./",
     "test": "react-scripts test --env=jsdom",
     "eject-dont-do-this": "react-scripts eject",
     "purge:readme": "npx req https://purge.jsdelivr.net/gh/macaw-interactive/react-jss-typescript-starter@develop/README.md",
-    "clean": "rimraf build build.server build.storybook sitecore/manifest sitecore/package .env.connected .env.disconnected"
+    "clean": "rimraf build build.server build.storybook sitecore/manifest sitecore/package .env.connected .env.disconnected",
+    "recreate:scaffolds": "npm run plop jssClassComponent ScaffoldOfJssClassComponent && npm run plop jssFunctionComponent ScaffoldOfJssFunctionComponent"
   },
   "browserslist": [
     ">0.2%",

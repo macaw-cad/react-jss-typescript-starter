@@ -42,6 +42,9 @@ let Navigation = ({ t, i18n }) => (
       <NavLink to="/umbrella" className="p-2 text-dark">
         {t('Umbrella')}
       </NavLink>
+      <NavLink to="/scaffold" className="p-2 text-dark">
+        {t('Scaffold')}
+      </NavLink>
       <NavLink to="/styleguide" className="p-2 text-dark">
         {t('Styleguide')}
       </NavLink>

@@ -11,6 +11,18 @@
             ]
         },
         {
+            "path": "scaffold",
+            "lang": [
+                "en"
+            ]
+        },
+        {
+            "path": "styleguide",
+            "lang": [
+                "en"
+            ]
+        },
+        {
             "path": "graphql",
             "lang": [
                 "en"
