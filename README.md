@@ -64,7 +64,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
     - [Check if app is working with server-side rendering](#check-if-app-is-working-with-server-side-rendering)
     - [Build the artifacts for deployment to Sitecore](#build-the-artifacts-for-deployment-to-sitecore)
     - [Build web server application](#build-web-server-application)
-  - [Scaffolding new components](#scaffolding-new-components)
+  - [Scaffolding new JSS components](#scaffolding-new-jss-components)
   - [Umbrella](#umbrella)
     - [Umbrella.PanTau](#umbrellapantau)
       - [Example output:](#example-output)
@@ -282,9 +282,9 @@ Build the NodeJS Express web server application supporting server-side rendering
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode if the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
 
-## Scaffolding new components
+## Scaffolding new JSS components
 
-[Plop](https://plopjs.com/) is used for scaffolding new components, instead of the original `scripts/scaffold-component.js` script that was provided by Sitecore out of the box in the React starter. Currently the only scaffolding available is for a JSS component using the following command:
+[Plop](https://plopjs.com/) is used for scaffolding new components, instead of the original `scripts/scaffold-component.js` script that was provided by Sitecore out of the box in the React starter. Currently the only scaffolding available is for JSS class component and JSS function component using the following command:
 
 ```
 npm run plop
@@ -293,8 +293,8 @@ npm run plop
 This command asks for a component name (i.e. MyComponent) and generated the following files:
 
 - `src\jsscomponents\MyComponent\index.tsx`
+- `src\jsscomponents\MyComponent\MyComponent.props.ts`
 - `sitecore\definitions\components\MyComponent.sitecore.ts`
-
 
 ## Umbrella
 
