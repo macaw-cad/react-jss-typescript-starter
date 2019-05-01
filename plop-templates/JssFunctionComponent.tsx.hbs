@@ -1,0 +1,19 @@
+import * as React from 'react';
+import { Text } from '@sitecore-jss/sitecore-jss-react';
+ 
+import { {{ properCase name }}BaseProps } from './{{ properCase name }}.props';
+
+type {{ properCase name }}Props = {{ properCase name }}BaseProps & {
+    // Additional properties not matching fields as defined in sitecore/definitions/components/{{properCase name}}.sitecore.ts
+};
+ 
+const {{ properCase name }}: React.FunctionComponent<{{ properCase name }}Props> = ({ fields }) => (
+    <div>
+        <h2>
+            Function Component: <strong>{{ properCase name }}</strong>
+        </h2>
+        <Text tag="h5" field={fields.heading as any} />
+    </div>
+);
+
+export default {{ properCase name }};

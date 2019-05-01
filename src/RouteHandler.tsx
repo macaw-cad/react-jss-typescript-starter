@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import { Environment } from './Environment';
 import { getSitecoreDefaultLanguage, getSitecoreApiKey } from './AppGlobals';
 import { Route } from 'react-router';
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 // Dynamic route handler for Sitecore items.
 // Because JSS app routes are defined in Sitecore, traditional static React routing isn't enough -
@@ -26,17 +27,22 @@ type RouteHandlerState = {
   defaultLanguage: string;
 };
 
-let ssrInitialState: LayoutServiceData & LayoutServiceContextData | null = null;
+export type SsrState = LayoutServiceData & LayoutServiceContextData & {
+  viewBag: any;
+  APOLLO_STATE: NormalizedCacheObject;
+} | null;
+
+let ssrInitialState: SsrState = null;
 
 export default class RouteHandler extends React.Component<RouteHandlerProps, RouteHandlerState> {
-  componentIsMounted: Readonly<boolean> = false;
-  languageIsChanging: Readonly<boolean> = false;
-  
-  state: RouteHandlerState = {
+  public state: RouteHandlerState = {
     notFound: true,
-    routeData: ssrInitialState, // null when client-side rendering
+    routeData: ssrInitialState as LayoutServiceData, // null when client-side rendering
     defaultLanguage: getSitecoreDefaultLanguage() || 'en',
   };
+  
+  private componentIsMounted: Readonly<boolean> = false;
+  private languageIsChanging: Readonly<boolean> = false;
 
   constructor(props: RouteHandlerProps) {
     super(props);
@@ -83,7 +89,7 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
     this.updateLanguage();
   }
 
-  componentDidMount() {
+  public componentDidMount(): void {
     // if no existing routeData is present (from SSR), get Layout Service fetching the route data
     if (!this.state.routeData) {
       this.updateRouteData();
@@ -92,62 +98,11 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
     this.componentIsMounted = true;
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.componentIsMounted = false;
   }
 
-  /**
-   * Loads route data from Sitecore Layout Service into state.routeData
-   */
-  updateRouteData() {
-    let sitecoreRoutePath = this.props.route.match.params.sitecoreRoute || '/';
-    if (!sitecoreRoutePath.startsWith('/')) {
-      sitecoreRoutePath = `/${sitecoreRoutePath}`;
-    }
-
-    const language = this.props.route.match.params.lang || this.state.defaultLanguage;
-
-    // get the route data for the new route
-    getRouteData(sitecoreRoutePath, language).then((routeData: LayoutServiceData) => {
-      if (routeData !== null && routeData.sitecore && routeData.sitecore.route) {
-        // set the sitecore context data and push the new route
-        SitecoreContextFactory.setSitecoreContext({
-          route: routeData.sitecore.route,
-          itemId: routeData.sitecore.route.itemId,
-          ...routeData.sitecore.context,
-        });
-        this.setState({ routeData, notFound: false });
-      } else {
-        this.setState({ routeData, notFound: true });
-      }
-    });
-  }
-
-  /**
-   * Updates the current app language to match the route data.
-   */
-  updateLanguage(): void {
-    const newLanguage = this.props.route.match.params.lang || this.state.defaultLanguage;
-
-    if (i18n.language !== newLanguage) {
-      this.languageIsChanging = true;
-
-      i18n.changeLanguage(newLanguage, () => {
-        this.languageIsChanging = false;
-
-        // if the component is not mounted, we don't care
-        // (next time it mounts, it will render with the right language context)
-        if (this.componentIsMounted) {
-          // after we change the i18n language, we need to force-update React,
-          // since otherwise React won't know that the dictionary has changed
-          // because it is stored in i18next state not React state
-          this.forceUpdate();
-        }
-      });
-    }
-  }
-
-  componentDidUpdate(previousProps: RouteHandlerProps): void {
+  public componentDidUpdate(previousProps: RouteHandlerProps): void {
     const existingRoute = previousProps.route.match.url;
     const newRoute = this.props.route.match.url;
 
@@ -167,7 +122,7 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
     this.updateRouteData();
   }
 
-  render() {
+  public render(): JSX.Element | null {
     const { notFound, routeData } = this.state;
 
     // no route data for the current route in Sitecore - show not found component.
@@ -196,6 +151,57 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
     // Render the app's root structural layout
     return <Layout route={routeData.sitecore.route} />;
   }
+
+  /**
+   * Loads route data from Sitecore Layout Service into state.routeData
+   */
+  private updateRouteData(): void {
+    let sitecoreRoutePath = this.props.route.match.params.sitecoreRoute || '/';
+    if (!sitecoreRoutePath.startsWith('/')) {
+      sitecoreRoutePath = `/${sitecoreRoutePath}`;
+    }
+
+    const language = this.props.route.match.params.lang || this.state.defaultLanguage;
+
+    // get the route data for the new route
+    getRouteData(sitecoreRoutePath, language).then((routeData: LayoutServiceData) => {
+      if (routeData !== null && routeData.sitecore && routeData.sitecore.route) {
+        // set the sitecore context data and push the new route
+        SitecoreContextFactory.setSitecoreContext({
+          route: routeData.sitecore.route,
+          itemId: routeData.sitecore.route.itemId,
+          ...routeData.sitecore.context,
+        });
+        this.setState({ routeData, notFound: false });
+      } else {
+        this.setState({ routeData, notFound: true });
+      }
+    });
+  }
+
+  /**
+   * Updates the current app language to match the route data.
+   */
+  private updateLanguage(): void {
+    const newLanguage = this.props.route.match.params.lang || this.state.defaultLanguage;
+
+    if (i18n.language !== newLanguage) {
+      this.languageIsChanging = true;
+
+      i18n.changeLanguage(newLanguage, () => {
+        this.languageIsChanging = false;
+
+        // if the component is not mounted, we don't care
+        // (next time it mounts, it will render with the right language context)
+        if (this.componentIsMounted) {
+          // after we change the i18n language, we need to force-update React,
+          // since otherwise React won't know that the dictionary has changed
+          // because it is stored in i18next state not React state
+          this.forceUpdate();
+        }
+      });
+    }
+  }
 }
 
 /**
@@ -203,7 +209,7 @@ export default class RouteHandler extends React.Component<RouteHandlerProps, Rou
  * Setting this state will bypass initial route data fetch calls.
  * @param {object} ssrState
  */
-export function setServerSideRenderingState(ssrState) {
+export function setServerSideRenderingState(ssrState: SsrState): void {
   ssrInitialState = ssrState;
 }
 
@@ -212,9 +218,9 @@ export function setServerSideRenderingState(ssrState) {
  * @param {string} route Route path to get data for (e.g. /about)
  * @param {string} language Language to get route data in (content language, e.g. 'en')
  */
-function getRouteData(route: string, language: string) {
+function getRouteData(route: string, language: string): any {
   // On server use specified Sitecore api host, from client go through proxy on same host
-  const host = Environment.isServer? 
+  const host = Environment.isServer ? 
     Environment.reactAppProcessEnv.REACT_APP_SITECORE_API_HOST : Environment.serverUrl;
     // Environment.serverUrl === 'http://localhost:3000' ?
     //   'http://localhost:3042' : // when running using development server

@@ -5,7 +5,7 @@ import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore
  * Adds the Hero component to the disconnected manifest.
  * This function is invoked by convention (*.sitecore.ts) when `jss manifest` is run.
  */
-export default function(manifest: Manifest) {
+export default function(manifest: Manifest): void {
   manifest.addComponent({
     name: 'Hero',
     // totally optional, but fun

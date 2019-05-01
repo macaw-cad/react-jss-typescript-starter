@@ -12,6 +12,7 @@ node_modules
 # production
 /build
 /build.server
+/build.storybook
 
 # misc
 .DS_Store

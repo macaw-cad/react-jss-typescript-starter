@@ -5,7 +5,7 @@ import { getFieldValue } from '@sitecore-jss/sitecore-jss-react';
 type MarkdownViewerFields = {
     body: { value: string };
     url: { value: string };
-}
+};
 type MarkdownViewerProps = {
     fields: MarkdownViewerFields;
 };
@@ -27,7 +27,7 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
         }
     }
 
-    componentDidMount() {
+    public componentDidMount(): void {
         const url = getFieldValue(this.props.fields, 'url');
         if (url) {
             fetch(url, { cache: 'reload' }) // don't cache
@@ -36,15 +36,15 @@ class MarkdownViewer extends React.Component<MarkdownViewerProps, MarkdownViewer
         }
     }
 
-    render() {
+    public render(): JSX.Element {
         const { text } = this.state;
         const url = getFieldValue(this.props.fields, 'url');
 
-        const imgBaseUrl = url ? url.substring(0, url.lastIndexOf("/")) : './';
+        const imgBaseUrl = url ? url.substring(0, url.lastIndexOf('/')) : './';
         return (
             <Markdown body={text} imgBaseUrl={imgBaseUrl}/>         
-        )
+        );
     }
-};
+}
 
 export default MarkdownViewer;

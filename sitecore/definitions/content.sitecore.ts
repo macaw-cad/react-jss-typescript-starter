@@ -6,7 +6,7 @@ import { existsSync as fileExistsSync } from 'fs';
 /**
  * Adds non-route content items to the disconnected manifest.
  * Content items are conventionally defined in /data/content, similar to route items.
- * This function is invoked by convention (*.sitecore.js) when `jss manifest` is run.
+ * This function is invoked by convention (*.sitecore.ts) when `jss manifest` is run.
  */
 export default function addContentToManifest(manifest: Manifest): Promise<any> {
   const rootItemName = 'Content';

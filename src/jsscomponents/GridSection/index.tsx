@@ -23,9 +23,9 @@ const sectionComponentWithPlaceholderInjected = withPlaceholder({
   // We need to know if experience editor is active, to disable the dynamic tab behavior for editing.
   // Using the same technique as injecting the placeholder, we wrap the component again to inject the
   // `sitecoreContext` prop.
-  const GridSection = withSitecoreContext()(
+const GridSection = withSitecoreContext()(
     sectionComponentWithPlaceholderInjected
   );
   
-  export default GridSection;
+export default GridSection;
    

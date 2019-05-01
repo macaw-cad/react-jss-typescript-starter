@@ -6,7 +6,7 @@ import packageJson from '../../../package.json';
  * Adds the Styleguide-FieldUsage-ItemLink component to the disconnected manifest.
  * This function is invoked by convention (*.sitecore.ts) when 'jss manifest' is run.
  */
-export default function(manifest: Manifest) {
+export default function(manifest: Manifest): void {
   manifest.addComponent({
     name: 'Styleguide-FieldUsage-ItemLink',
     icon: SitecoreIcon.Link,
@@ -19,7 +19,7 @@ export default function(manifest: Manifest) {
         // Using 'source' is recommended to help content editors find the correct items to refer to,
         // unless they can refer to any item in the whole site.
         source: `dataSource=/sitecore/content/${
-          packageJson.config.appName
+          (packageJson && packageJson.config ? packageJson.config.appName : 'appName')
         }/Content/Styleguide/ItemLinkField`,
       },
       { name: 'localItemLink', type: CommonFieldTypes.ItemLink },

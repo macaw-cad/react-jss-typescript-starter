@@ -4,7 +4,7 @@ import { mergeFs, MergeFsResult } from '@sitecore-jss/sitecore-jss-dev-tools';
 
 /**
  * Collects the disconnected routes defined in data/routes into the manifest.
- * Invoked by convention (*.sitecore.js) when `jss manifest` is run.
+ * Invoked by convention (*.sitecore.ts) when `jss manifest` is run.
  * Alter this method if you wish to store disconnected route data in some way other than the default,
  * or to preprocess the route data before it is sent to Sitecore to be ingested - for example to add fields to the route type.
  */

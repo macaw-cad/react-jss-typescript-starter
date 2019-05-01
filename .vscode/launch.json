@@ -58,7 +58,7 @@
                 "-r", "source-map-support/register"
             ],
             "args": [
-                "--disconnected"
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
             ],
             "env": {
                 "NODE_ENV": "development",
@@ -71,7 +71,8 @@
               "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
-            }
+            },
+            "timeout": 30000
         },
         {
             "type": "node",
@@ -83,7 +84,7 @@
                 "-r", "source-map-support/register"
             ],
             "args": [
-                "--connected"
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
             ],
             "env": {
                 "NODE_ENV": "development",
@@ -96,7 +97,8 @@
               "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
               "webpack:///./*": "${workspaceRoot}/*",
               "webpack:///*": "*"
-            }
+            },
+            "timeout": 30000
         },
         {
             "type": "node",
@@ -130,6 +132,24 @@
                 "run"
             ],
         },
-        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "graphql:update",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/scripts/update-graphql-fragment-data.js",
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeArgs": [
+                "-r", "dotenv/config"
+            ],
+            "args": [
+                "dotenv_config_path=.env.connected"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "timeout": 30000
+        },
     ]
 }

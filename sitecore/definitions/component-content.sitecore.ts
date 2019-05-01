@@ -10,7 +10,7 @@ interface TemporaryItemDefinition extends ItemDefinition {
 /**
  * Adds shared datasource items (content data shared between components on different routes) the disconnected manifest.
  * Component content items are conventionally defined in /data/component-content, similar to route items.
- * This function is invoked by convention (*.sitecore.js) when `jss manifest` is run.
+ * This function is invoked by convention (*.sitecore.ts) when `jss manifest` is run.
  */
 export default function addComponentContentToManifest(manifest: Manifest): Promise<any> {
   const rootItemName = 'Components';
@@ -89,7 +89,7 @@ function convertToItems(data: MergeFsResult, basePath: string, rootItemName: str
  * Converts a physical filesystem path into a relative Sitecore item path.
  * i.e. if physicalPath = /var/log and basePath = /var, this returns /log.
  */
-function convertPhsyicalPathToItemRelativePath(physicalPath: string, basePath: string) {
+function convertPhsyicalPathToItemRelativePath(physicalPath: string, basePath: string): string {
   const targetPathSeparator = '/';
 
   // normalize path separators to /

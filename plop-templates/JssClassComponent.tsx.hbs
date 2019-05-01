@@ -1,0 +1,35 @@
+import * as React from 'react';
+import { Text } from '@sitecore-jss/sitecore-jss-react';
+ 
+import { {{ properCase name }}BaseProps } from './{{ properCase name }}.props';
+
+type {{ properCase name }}Props = {{ properCase name }}BaseProps & {
+    // Additional properties not matching fields as defined in sitecore/definitions/components/{{properCase name}}.sitecore.ts
+};
+ 
+type {{ properCase name }}State = { strong: boolean };
+
+class {{ properCase name }} extends React.Component<{{ properCase name }}Props, {{ properCase name }}State> {
+    constructor(props: {{ properCase name }}Props) {
+        super(props);
+        this.state = { strong: false };
+    }
+
+    public render(): JSX.Element {
+        const fields = this.props.fields;
+
+        return (
+            <div>
+                <h2>
+                    Class Component: <strong>{{ properCase name }}</strong>
+                </h2>
+                <Text tag="h5" field={fields.heading as any} />
+            </div>
+        )
+    }
+
+    private toggleStrong(): void {
+    }
+};
+
+export default {{ properCase name }};

@@ -95,11 +95,12 @@ prog
         logger.info(`Ngrok url: ${url} exposing the internal url ${layoutServiceHost} for consumption by locally running Docker container`);
       }
 
-      // docker ps -a -q  --filter ancestor=<image-name>
-      let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `ancestor=${imageName}`]);
+      // docker ps -a -q  --filter name=<simplifiedImageName>
+      const simplifiedImageName = imageName.replace(':', '-');
+      let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `name=${simplifiedImageName}`]);
       if (dockerId != '') {
         dockerId = ('' + dockerId).trim(); // can contain newline
-        logger.info(`Kill currently running Docker container ${imageName} with id '${dockerId}'`);
+        logger.info(`Kill currently running Docker container ${simplifiedImageName} with id '${dockerId}'`);
         try {
           execFileSync('docker', ['stop', dockerId]);
         } catch (error) {
@@ -114,6 +115,12 @@ prog
           '--rm',
           '-i',
           '-e', `NODE_ENV=production`,
+          '-e', `REACT_APP_NAME=${appName}`,
+          '-e', `REACT_APP_APPINSIGHTS_KEY=${packageJsonConfig.azureAppInsightsKey}`,
+          '-e', `REACT_APP_BUILDVERSION=LocalDockerBuild`,
+          '-e', `REACT_APP_ENVIRONMENT=LocalMachine`,
+          '-e', `REACT_APP_ENVIRONMENTCONNECTIONS=${(options.disconnected? 'ScConnected' : 'ScDisconnected')}`,
+          '-e', `REACT_APP_ADDITIONALSETTINGS=,ignore:0`,
           '-e', `REACT_APP_SITECORE_JSS_APP_NAME=${appName}`,
           `-e`, `REACT_APP_SITECORE_API_KEY=${apiKey}`,
           '-e', `REACT_APP_SITECORE_API_HOST=${url}`,
@@ -122,6 +129,7 @@ prog
           `-e`, `REACT_APP_SITECORE_ENABLE_DEBUG=${(options.debug? 'true' : 'false')}`,
           `-e`, `REACT_APP_SITECORE_CONNECTED=${(options.disconnected? 'false' : 'true')}`,
           `-p`, `${options.port}:3001`,
+          `--name`, simplifiedImageName,
           imageName
         ],
         { cwd: path.resolve(__dirname, '../Docker') }
@@ -149,23 +157,20 @@ prog
     })();
   })
 
-  .command('shell', 'Open a shell on the locally running Docker image')
+  .command('shell', 'Get command to open a shell on the locally running Docker image')
   .action(function (args, options, logger) {
     const appName = packageJsonConfig.name;
     const imageName = `${appName}:latest`;
-    logger.info(`Open interactive shell on Docker image '${imageName}'`);
+    logger.info(`Determining command to open interactive shell on Docker image '${imageName}'`);
+    const simplifiedImageName = imageName.replace(':', '-');
 
-    // docker ps -a -q  --filter ancestor=<image-name>
-    let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `ancestor=${imageName}`]);
+    // docker ps -a -q  --filter "name=<simplifiedImageName>
+    let dockerId = execFileSync('docker', ['ps', '-a', '-q', '--filter', `name=${simplifiedImageName}`]);
     if (dockerId != '') {
       dockerId = ('' + dockerId).trim(); // can contain newline
-      logger.info(`Open interactive shell on running Docker container ${imageName} with id '${dockerId}'`);
-      try {
-        console.log(`Command: docker exec -it ${dockerId} /bin/sh`);
-        // execFileSync('docker', ['exec', '-it', dockerId, '/bin/sh']);
-      } catch (error) {
-        logger.error(`Error while opening interactive shell on Docker container with id ${dockerId}: ${error}`);
-      }
+      logger.info(`To open interactive shell on running Docker container ${imageName} with id '${dockerId}' execute the following command: docker exec -it ${dockerId} sh`);
+    } else {
+      logger.info(`Docker container ${imageName} is not running.`)
     }
   });
 

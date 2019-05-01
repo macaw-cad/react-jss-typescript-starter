@@ -32,19 +32,20 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
 **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
 
 ## Quickstart
-For those who know how to clone a repo and don't forget to do the `npm i`, these are the most important commands to get started with development. No Sitecore installed on your machine
+For those who know how to clone a repo and don't forget to do the `npm i`, these are the most important commands to get started with development. No Sitecore needs to be installed on your machine!
 
 | Command | Runs on | What is does |
 | --- | --- | --- |
-| `jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
+| `npm run jss config` | N.A. | configure your project - also some settings in the package.json that need to be changed |
 | `npm run start:disconnected` | http://localhost:3000 | Client side only development, disconnected from sitecore |
 | `npm run start:connected` | http://localhost:3000 | Client side only development, connected to sitecore |
 | `npm run start:storybook` | http://localhost:9001 | Use storybook for out-of-context component development |
 | `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
 | `npm run serve:connected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, connected to sitecore |
-| `node scripts/docker-do.js build` | N.A. | Build a local Docker image |
-| `node scripts/docker-do.js run --disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
-| `node scripts/docker-do.js run` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:build` | N.A. | Build a local Docker image |
+| `npm run docker:run:disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
+| `npm run docker:run:connected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:shell` | N.A. | show the command to execute a shell on the running Docker container |
 
 ## Table of Contents
 
@@ -63,6 +64,7 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
     - [Check if app is working with server-side rendering](#check-if-app-is-working-with-server-side-rendering)
     - [Build the artifacts for deployment to Sitecore](#build-the-artifacts-for-deployment-to-sitecore)
     - [Build web server application](#build-web-server-application)
+  - [Scaffolding new JSS components](#scaffolding-new-jss-components)
   - [Umbrella](#umbrella)
     - [Umbrella.PanTau](#umbrellapantau)
       - [Example output:](#example-output)
@@ -84,13 +86,13 @@ For those who know how to clone a repo and don't forget to do the `npm i`, these
     - [Debugging the webback server bundle build](#debugging-the-webback-server-bundle-build)
     - [Debugging docker build & run scripts](#debugging-docker-build--run-scripts)
   - [Docker](#docker)
-  - [Deployment of solution in a Docker container on Azure](#deployment-of-solution-in-a-docker-container-on-azure)
+  - [Deployment the solution as a Docker container on Azure](#deployment-the-solution-as-a-docker-container-on-azure)
   - [The Azure pipeline Yaml file](#the-azure-pipeline-yaml-file)
   - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
   - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
   - [Writing documentation](#writing-documentation)
   - [FAQ](#faq)
-      - [Page not found when starting `npm run serve:disconnected`](#page-not-found-when-starting-npm-run-servedisconnected)
+      - [Page not found when starting development in disconnected mode](#page-not-found-when-starting-development-in-disconnected-mode)
       - [Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?](#why-do-npm-run-servedisconnected-and-npm-run-serveconnected-start-the-client-side-rendering)
       - [What is the role of the `src/HMR.ts` file?](#what-is-the-role-of-the-srchmrts-file)
       - [Why is there no automatic reload for SSR?](#why-is-there-no-automatic-reload-for-ssr)
@@ -108,7 +110,7 @@ At Macaw Interactive we made choices with respect to the front-end development t
 
 For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is (mostly) converted to TypeScript and a lot of additional features are added tyo the toolset.
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is completely converted to TypeScript and a lot of additional features are added to the toolset.
 
 Provided features:
 
@@ -128,7 +130,16 @@ This is our way of giving back to the community, and a great way to show our cus
 
 ## Get started with the current code base
 
-Fork or clone this repo and work from there, or download the zip file with all the code. If you want to start from scratch remove the .git folder, create a new Git repository (the example code below uses Github) and execute the following commands:
+Clone this repo and work from there, or download the zip file with all the code. If you want to start from scratch remove the .git folder. In the example below we clone the `develop` branch because it is now the most up-to-date branch. The `--depth=1` option ensures that we clone the minimal amount of commits because we remove the `.git` folder anyway.
+
+```
+git clone --depth=0 --branch=develop https://github.com/macaw-interactive/react-jss-typescript-starter.git jss
+cd jss
+```
+
+Next step is to delete the `.git` folder with `del /S /Q /F .git` (Windows) or `rm -rf .git` (other systems). 
+
+Now create a new Git repository (the example code below uses Github) and execute the following commands:
 
 ```
 git init
@@ -145,9 +156,34 @@ git remote set-url origin https://github.com/<yourname>/<yourrepo>.git
 git push -u origin master
 ```
 
-Start working from here. 
+Install all required libraries and tools:
 
-The first command to execute next is `jss setup` to create the `scjssconfig.json` file locally. This file is user-specific and is ignored from source-control. Based on the `scjssconfig.json` the development npm scripts create the files `.env.connected` and `.env.disconnected` when needed. These files contain the environment variables with all configuration information. Note that these files are excluded from source control as well (see the `.gitignore` file). 
+```
+npm install
+```
+
+Now determine a name for your JSS app, for example: `jss-myapp`. Rename the file `sitecore/config/react-jss-typescript-starter.config` to `jss-myapp.config` and make the required changes as described [here](https://jss.sitecore.com/docs/getting-started/app-deployment#step-1-configure-your-apps-site-and-host-name):
+
+- In the file `sitecore/config/jss-myapp.config`Replace all occurences of `react-jss-typescript-starter` with `jss-myapp`
+- In the file `package.json`:
+  - replace all occurences of `react-jss-typescript-starter` with `jss-myapp`
+  - modify the `description` and `url` paths to suit your needs
+
+The first command to execute next is `jss setup` (or `npm run jss setup` if jss cli is not installed globally) to create the `scjssconfig.json` file. This file is user-specific and is ignored from source-control. The file will look something like:
+
+```json
+{
+  "sitecore": {
+    "instancePath": "c:\\inetpub\\wwwroot\\sc910.sc",
+    "apiKey": "{57231674-4CC9-48AA-AFF0-190DB9D68FE1}",
+    "deploySecret": "yourdeploymentsecretmagicnumber",
+    "deployUrl": "http://react-jss-typescript-starter.dev.local/sitecore/api/jss/import",
+    "layoutServiceHost": "http://react-jss-typescript-starter.dev.local"
+  }
+}
+```
+
+Based on the `scjssconfig.json` the development npm scripts create the files `.env.connected` and `.env.disconnected` when needed. These files contain the environment variables with all configuration information. Note that these files are excluded from source control as well (see the `.gitignore` file). 
 
 ## Development with server-side rendering
 
@@ -196,7 +232,7 @@ The environment variables can be used in NodeJS server code using `process.env.<
 | `REACT_APP_SITECORE_CONNECTED` | `window.app.sitecoreConnected` | Optional. If `true` run disconnected from Sitecore in a production environment. Only used if `NODE_ENV === 'production'` |
 | `REACT_APP_SITECORE_PATH_REWRITE_EXCLUDE_ROUTES` | N.A. | Optional. Pipe-separated list of absolute paths that should not be rendered through SSR. Defaults can be seen in the file `server/config.ts` |
 
-In development we use the following npm commands:
+In development we mostly use the following npm commands:
 
 - `npm run start:disconnected` (shorthand `npm start`)
 - `npm run start:connected`
@@ -205,7 +241,7 @@ In development we use the following npm commands:
 
 These commands autogenerate the required environment variable configuration files `.env.disconnected` and `.env.connected`. The values of the environment variables are based on the values as defined in the `scjssconfig.json` file. The `scjssconfig.json` configuration file is generated by the command `jss setup`. 
 
-In the production build the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. The resulting `##VARNAME##` values can be replaced during the production build in for example the Azure DevOps build pipeline. All `##VARNAME##` values remaining in `build/index.html` are replaced on runtime when serving the `build/index.html` file from the web server. The replacement values are based on the configured enviroment variables.  
+In the production build the file `.env.production` is used that defines all environment variables as `VARNAME=##VARNAME##`. The resulting `##VARNAME##` values could be replaced during the production build in for example the Azure DevOps build pipeline. All `##VARNAME##` values remaining in `build/index.html` are replaced on runtime when serving the `build/index.html` file from the NodeJS Express web server. The replacement values are based on the configured enviroment variables. This is mandatory in the case of a Docker image based deployment, because we want to have the Docker image as the single source of deployment to different environments and don't want to change the contents of the Docker image.
 
 ## Development scripts
 
@@ -245,6 +281,20 @@ Build the NodeJS Express web server application supporting server-side rendering
 - For production: `npm run build-server:production` (minified)
 
 Execute the NodeJS Express based web server application from the root folder using `node build.server/index.js`. The `build.server/index.js` script contains all required code. The server bundle with all components is embedded. The web server runs in connected mode if the environment variable `REACT_APP_SITECORE_CONNECTED` is set to `true`, otherwise it runs in disconnected mode.
+
+## Scaffolding new JSS components
+
+[Plop](https://plopjs.com/) is used for scaffolding new components, instead of the original `scripts/scaffold-component.js` script that was provided by Sitecore out of the box in the React starter. Currently the only scaffolding available is for JSS class component and JSS function component using the following command:
+
+```
+npm run plop
+```
+
+This command asks for a component name (i.e. MyComponent) and generated the following files:
+
+- `src\jsscomponents\MyComponent\index.tsx`
+- `src\jsscomponents\MyComponent\MyComponent.props.ts`
+- `sitecore\definitions\components\MyComponent.sitecore.ts`
 
 ## Umbrella
 
@@ -464,40 +514,38 @@ The resulting Docker image has the following features:
 
 The script `Docker/init.sh` is executed when the Docker container starts running.
 
-The configuration files in the `Docker` folder are used on a Linux system. These files could be in DOS
-format and must be converted to unix format. This can be done using the command:
+The configuration files in the `Docker` folder are used on a Linux system and must contains LF. These files could be in DOS format containing CRLF and must be converted to unix format. This is automatically done when the Docker image is built.
 
-`node scripts/docker-do.js prepare`
+| Command | Runs on | What is does |
+| --- | --- | --- |
+| `npm run docker:build` | N.A. | Build a local Docker image |
+| `npm run docker:run:disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
+| `npm run docker:run:connected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
+| `npm run docker:shell` | N.A. | show the command to execute a shell on the running Docker container |
 
-This command only has to be executed if there are issues due to CRLF instead of LF as line endings (see bottom right when opening file in Visual Studio Code).
- 
-To build the Docker image execute the command:
-
-`node scripts/docker-do.js build`
-
-To run the Docker image locally execute the command:
+For more configuration like port number and debug mode call the script directly:
 
 `node scripts/docker-do.js run [--port <portnumber>] [--disconnected] [--debug]`
 
-The default port is 8888, so the website will be available on `http://localhost:8888`.
-
-The `run` command does the following things:
+The `docker:run` command does the following things:
 
 - kill a running previous container if needed
 - expose the Sitecore layout service host as defined in `scjssconfig.json` through [Ngrok](https://ngrok.com/) because an IIS hosted website with hostname binding on port 80 is not visible from a locally running Docker container
-- start the NodeJS Express based web server with server-side rendering on `http://localhost:8888`
+- start the NodeJS Express based web server with server-side rendering on http://localhost:8888
 - run disconnected from Sitecore when `--disconnected` is specified. In this case the `data` folder is used
 
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`.
 
-The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (development, test, acceptation, production).
+The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (local, development, test, acceptation, production).
 
-## Deployment of solution in a Docker container on Azure
+## Deployment the solution as a Docker container on Azure
 
-Any change on the `develop` and `master` branches of the `https://github.com/macaw-interactive/react-jss-typescript-starter` repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
+Any change on the `develop` and `master` branches of the https://github.com/macaw-interactive/react-jss-typescript-starter repository are automatically built and deployed as a Linux Docker container running on an Azure Web App for Containers:
 
-- `develop` branch deployed to `https://react-jss-typescript-starter-develop.azurewebsites.net`
-- `master` branch deployed to `https://react-jss-typescript-starter.azurewebsites.net`
+| Branch | Deployed to |
+| --- | --- |
+| develop | https://react-jss-typescript-starter-develop.azurewebsites.net |
+| master | https://react-jss-typescript-starter.azurewebsites.net |
 
 The resulting web site is configured in disconnected mode, so no Sitecore server or license is required to run the web site.
 
@@ -531,8 +579,8 @@ This Azure pipeline configuration file uses the following environment variables:
 | Variable | Purpose | Example |
 | --- | --- | --- |
 | imageName | The name to tag the Docker image with | For example `react-jss-typescript-starter` |
-| dockerId | The name of the Azure container registry | |
-| dockerPassword | The password to log in the Azure container registry | |
+| dockerId | The name of the Azure container registry | For example `jssumbrella` (without `azurecr.io`) |
+| dockerPassword | The password to log in the Azure container registry | See your Azure container registry under *Access keys* |
 
 ## Configure the Azure build pipeline
 
@@ -565,8 +613,8 @@ Within the website published from this repository we load the `README.md` file a
 
 ## FAQ
 
-#### Page not found when starting `npm run serve:disconnected`
-Most of the time when you start the server-side rendering using `npm run serve:disconnected` you will get the following error:
+#### Page not found when starting development in disconnected mode
+Most of the time when you start the client-side rendering using `npm run start:disconnected` (or the shorthand `npm start`) or server-side rendering using `npm run serve:disconnected` (or the short hand `npm run serve`) you will get the following error on the automatically started browser on the url http://localhost:3000:
 
 ```
 Page not found
@@ -575,10 +623,11 @@ This page does not exist.
 Site: 
 Language:
 ```
-The reason is a timing issue. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on http://localhost:3001.
+
+The reason is a timing issue. The front-end tries to render before the disconnected mode proxy is up and running on http://localhost:3042. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on http://localhost:3001.
 
 #### Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?
-With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url `http://localhost:3000?prestine` provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  
+With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url http://localhost:3000?prestine provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  
 
 #### What is the role of the `src/HMR.ts` file?
 In order to reload the client-side rendered app (on http://localhost:3000) in disconnected mode when a change is made to the contents of the `data` folder we need to trigger the Hot Module Reloading (HMR) functionality as provided by Create React App. By writing similar content to the following content to the `src/HMR.ts` file HMR is triggered:
@@ -599,8 +648,9 @@ When developing with server-side rendering (SSR) enabled (`npm run serve:connect
 
 See the following blog posts:
 
-- [Render Sitecore 9.1 JSS site using separate node server](https://www.sergevandenoever.nl/sitecore_jss_typescript_node/)
-- [Developing React components in TypeScript with Sitecore JSS 9.1](https://www.sergevandenoever.nl/sitecore_jss_typescript/)
+- [Umbrella for Sitecore JSS](http://www.sergevandenoever.nl/sitecore_jss_umbrella/)
+- [Render Sitecore 9.1 JSS site using separate node server](http://www.sergevandenoever.nl/sitecore_jss_typescript_node/)
+- [Developing React components in TypeScript with Sitecore JSS 9.1](http://www.sergevandenoever.nl/sitecore_jss_typescript/)
 
 # Authors
 

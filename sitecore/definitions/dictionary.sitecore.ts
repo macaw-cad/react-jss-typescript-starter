@@ -5,7 +5,7 @@ import { existsSync as fileExistsSync } from 'fs';
 /**
  * Reads dictionary definition file in /data/dictionary,
  * then emits the dictionary into the disconnected manifest.
- * Invoked by convention (*.sitecore.js) when `jss manifest` is run.
+ * Invoked by convention (*.sitecore.ts) when `jss manifest` is run.
  */
 export default function addDictionaryToManifest(manifest: Manifest): Promise<void> {
   const startPath = './data/dictionary'; // relative to process invocation (i.e. where package.json lives)

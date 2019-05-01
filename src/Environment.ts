@@ -1,4 +1,4 @@
-import { ReactAppProcessEnv } from "./types/react-app-env";
+import { ReactAppProcessEnv } from './types/react-app-env';
 
 export class Environment {
     public static get isProduction(): boolean {
