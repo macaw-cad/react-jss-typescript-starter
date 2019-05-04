@@ -9,6 +9,7 @@ const path = require('path');
 const chalk = require('chalk');
 const packageConfig = require('../package.json');
 const prog = require('caporal');
+const crypto = require('crypto');
 
 const CommonFieldTypes = {
     SingleLineText: "Single-Line Text",
@@ -26,6 +27,7 @@ const CommonFieldTypes = {
 }
 
 var progressBar, progress = 0;
+var dryrun = true;
 
 /*
   FUNCTIONS
@@ -50,6 +52,20 @@ const getMetaData = () => {
     })
 
 }
+const getHashFromText = (value) => {
+    var hash = crypto.createHash('sha1');
+    hash.setEncoding('hex');
+    hash.write(value);
+    hash.end();
+    return hash.read();
+};
+const getHashFromFile = (path) => {
+    var fileContent;
+    return new Promise((resolve, reject) => {
+        fileContent = fs.readFileSync(path, {encoding: 'base64'});
+        resolve(fileContent);
+    });
+};
 const getRouteNames = (route) => {
     let arr = [];
     for (lang of route.lang) {
@@ -66,7 +82,7 @@ const getRouteNames = (route) => {
     return arr;
 }
 const saveFile = (e) => {
-    let base64Image = e.base64.split(';base64,').pop();
+    let base64File = e.base64.split(';base64,').pop();
     let dataPath = './data';
     let mediaPath = `${e.mediaPath.split('/data/').pop()}.${e.extension}`;
     const outputFilePath = path.join(
@@ -78,11 +94,32 @@ const saveFile = (e) => {
     if (!fs.existsSync(mediaDir)) {
         shell.mkdir('-p', mediaDir);
     }
-    fs.writeFile(`${outputFilePath}`, base64Image, {
-        encoding: 'base64'
-    }, function (err) {
-        console.log(`${e.fileName} saved`);
-    });
+    if (!dryrun) {
+        getHashFromFile(outputFilePath).then((hash) => {
+            let streamHash = getHashFromText(base64File);
+            let fileHash = getHashFromText(hash);
+            if (streamHash === fileHash) {
+                console.log(`skipped ${e.fileName}: same version.`);
+            } else {
+                fs.writeFile(`${outputFilePath}`, base64File, {
+                    encoding: 'base64'
+                }, function (err) {
+                    console.log(`${e.fileName} saved`);
+                });
+            }
+        });        
+    }
+    else {
+        getHashFromFile(outputFilePath).then((hash) => {
+            let streamHash = getHashFromText(base64File);
+            let fileHash = getHashFromText(hash);
+            if (streamHash === fileHash) {
+                console.log(chalk.gray(`skipped => ${e.fileName}: same version.`));
+            } else {
+                console.log(`${e.fileName} dryrun:saved`);
+            }
+        });
+    }
 };
 const processFields = (e) => {
     let f = {};
@@ -278,7 +315,23 @@ ${inherits}\t\t\t\t\t\t],
         //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
     }
 
-    fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+    if(!dryrun) {
+        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+    } else {
+        getHashFromFile(outputFilePath).then((hash) => {
+            let streamHash = getHashFromText(base64File);
+            let fileHash = getHashFromText(hash);
+            if (streamHash === fileHash) {
+                console.log(`skipped ${e.fileName}: same version.`);
+            } else {
+                fs.writeFile(`${outputFilePath}`, base64File, {
+                    encoding: 'base64'
+                }, function (err) {
+                    console.log(`${e.fileName} saved`);
+                });
+            }
+        });   
+    }
 
     return outputFilePath;
 }
@@ -323,7 +376,9 @@ ${result}
         //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
     }
 
-    fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+    if(!dryrun) {
+        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
+    }
 
     return outputFilePath;
 }
@@ -380,7 +435,9 @@ ${placeholders}           ]
         //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
     }
 
-    fs.writeFileSync(outputFilePath, manifestComponent, 'utf8');
+    if(!dryrun) {
+        fs.writeFileSync(outputFilePath, manifestComponent, 'utf8');
+    }
 
     return outputFilePath;
 }
@@ -438,19 +495,20 @@ function sync() {
                 task = thingsToDo.shift();
                 progressBar.startItem(task);
 
-                if (body.sitecore.route) {
+                if (body.sitecore && body.sitecore.route) {
                     var data = {
                         id: body.sitecore.route.itemId
                     };
                     data.fields = processFields(body.sitecore.route.fields);
                     data.placeholders = processPlaceHolders(body.sitecore.route.placeholders);
-                    yaml.sync(`./data/routes${currentRoute}/${body.sitecore.route.itemLanguage}.yml`, data);
+                    if(!dryrun) {
+                        yaml.sync(`./data/routes${currentRoute}/${body.sitecore.route.itemLanguage}.yml`, data);
+                    }
                 } else {
                     console.log(chalk.red(`No route found for ${currentRoute}.`));
                 }
                 // Finish the task in...
                 setTimeout(done.bind(null, task), 500 + Math.random() * 1200);
-
             });
         }
 
