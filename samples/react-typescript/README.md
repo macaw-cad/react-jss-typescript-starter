@@ -32,11 +32,11 @@ With the introduction of [Sitecore JavaScript Services](https://jss.sitecore.com
 **Umbrella for Sitecore JSS** is our vision on how a website should be developed and hosted while using the JSS SDK and Sitecore as a headless CMS.
 
 ## Quick Start
-If you have [Node](https://nodejs.org) installed you can get started in four command, even without having Sitecore running on your machine:
+If you have [Node](https://nodejs.org) installed you can get started in four commands, even without having Sitecore running on your machine:
 
 ```
 npm install -g @sitecore-jss/sitecore-jss-cli
-jss create --repository macaw-interactive/react-jss-typescript-starter --branch develop my-first-jss-app template
+jss create --repository macaw-interactive/react-jss-typescript-starter --branch develop my-first-jss-app react-typescript
 cd my-first-jss-app
 jss start
 ```

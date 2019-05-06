@@ -8,11 +8,11 @@
 
 Welcome to the **react-jss-typescript-starter** template, the ultimate template to start your Sitecore JSS project with React + TypeScript and deploy it in a Docker container.
 
-If you have [Node](https://nodejs.org) installed you can get started in four command, even without having Sitecore running on your machine:
+If you have [Node](https://nodejs.org) installed you can get started in four commands, even without having Sitecore running on your machine:
 
 ```
 npm install -g @sitecore-jss/sitecore-jss-cli
-jss create --repository macaw-interactive/react-jss-typescript-starter --branch develop my-first-jss-app template
+jss create --repository macaw-interactive/react-jss-typescript-starter --branch develop my-first-jss-app react-typescript
 cd my-first-jss-app
 jss start
 ```
@@ -20,4 +20,4 @@ jss start
 # And start reading...
 
 - [The official JSS Quick Start](https://jss.sitecore.com/docs/getting-started/quick-start)
-- [The react-jss-typescript-starter documentation - part of Umbrella for Sitecore JSS](template/README.md)
+- [The react-jss-typescript-starter documentation - part of Umbrella for Sitecore JSS](samples/react-typescript/README.md)
