@@ -10,7 +10,7 @@ RUN npm run build-server:production
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.15
 
-# Install node
+# Install node & required packages
 RUN apt-get update -yq && apt-get upgrade -yq
 RUN apt-get install -yq \
 		curl \
@@ -18,7 +18,8 @@ RUN apt-get install -yq \
 		nano \
 		gnupg \
 		gnupg2 \
-		gnupg1
+		gnupg1 \
+		dos2unix
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
 
 # Enable with ssh configures for Azure App Service
@@ -28,20 +29,24 @@ RUN apt-get update \
         && apt-get update \
 	&& apt-get install -y --no-install-recommends openssh-server \
 	&& echo "$SSH_PASSWD" | chpasswd 
-COPY Docker/sshd_config /etc/ssh/
+COPY Docker/sshd_config /etc/ssh/sshd_config
+RUN dos2unix /etc/ssh/sshd_config
 
 # Install PM2
 RUN npm install -g pm2
 
 # PM2 process script
-COPY Docker/process.yml /app/
+COPY Docker/process.yml /app/process.yml
+RUN dos2unix /app/process.yml
 
 # Entry point script
 COPY Docker/init.sh /usr/local/bin/init.sh
 RUN chmod u+x /usr/local/bin/init.sh
+RUN dos2unix /usr/local/bin/init.sh
 
 # Copy the default nginx.config provided by tiangolo/node-frontend
-COPY Docker/nginx.config /etc/nginx/sites-available/default
+COPY Docker/nginx.config /etc/nginx/sites-available/default/nginx.config
+RUN dos2unix /etc/nginx/sites-available/default/nginx.config
 
 # Copy the static creat-react-app assets
 COPY --from=build-stage /app/build/ /app/build
