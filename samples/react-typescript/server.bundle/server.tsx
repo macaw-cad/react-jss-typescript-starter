@@ -15,18 +15,23 @@ import { getSitecoreGraphqlEndpoint } from '../src/AppGlobals';
 import * as fs from 'fs';
 import * as path from 'path';
 import { LayoutServiceData, LayoutServiceContextData } from '@sitecore-jss/sitecore-jss';
+import { deepStrictEqual } from 'assert';
 
 // Load the index.html template file contents:
 // In development request from http://localhost:3000?prestine (Create React App development server must be running) 
-// In production this file can be read from the filesystem (./build/index.html)
+// In production this file can be read from the filesystem (./build/index.html or ./index.html)
 let indexTemplate;
 if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
-  const indexHtmlFilePath = path.join(process.cwd(), 'build/index.html');
-  console.log(`indexHtmlFilePath: ${indexHtmlFilePath}`);
+  let indexHtmlFilePath = path.join(process.cwd(), 'build/index.html');
+  if (!fs.existsSync(indexHtmlFilePath)) {
+    // For example in deployment to Sitecore we are NOT in the build folder
+    indexHtmlFilePath = path.join(process.cwd(), 'index.html');
+  }
 
   if (!fs.existsSync(indexHtmlFilePath)) {
     throw new Error(`In production the 'index.html' file is expected at '${indexHtmlFilePath}' but is missing.`);
   }
+
   indexTemplate = fs.readFileSync(indexHtmlFilePath, 'utf8');
   [
     'REACT_APP_NAME',
@@ -49,16 +54,16 @@ if (Environment.reactAppProcessEnv.NODE_ENV === 'production') {
   });
 }
 /** Asserts that a string replace actually replaced something */
-function assertReplace(string: string, value: string, replacement: string): string {
+function assertReplace(s: string, value: string, replacement: string): string {
   let success = false;
-  const result = string.replace(value, () => {
+  const result = s.replace(value, () => {
     success = true;
     return replacement;
   });
 
   if (!success) {
     throw new Error(
-      `Unable to match replace token '${value}' in public/index.html template. If the HTML shell for the app is modified, also fix the replaces in server.js. Server-side rendering has failed!`
+      `Unable to match replace token '${value}' in index.html template. If the HTML shell for the app is modified, also fix the replaces in server.js. Server-side rendering has failed!`
     );
   }
 
@@ -76,11 +81,11 @@ export const appName: string = Environment.reactAppProcessEnv.REACT_APP_SITECORE
  * either in Integrated Mode, or with a Node proxy host like the node-headless-ssr-proxy sample.
  * This function will be invoked by the server to return the rendered HTML.
  * @param {Function} callback Function to call when rendering is complete. Signature callback(error, successData).
- * @param {string} path Current route path being rendered
+ * @param {string} routePath Current route path being rendered
  * @param {string} data JSON Layout service data for the rendering from Sitecore
  * @param {string} viewBag JSON view bag data from Sitecore (extensible context stuff)
  */
-export function renderView(callback: (error: Error | null, successData: {html: string } | null) => void, path: string, data: any, viewBag: any): void {
+export function renderView(callback: (error: Error | null, successData: {html: string } | null) => void, routePath: string, data: any, viewBag: any): void {
   try {
     // const state = parseServerData(data, viewBag);
     let state: SsrState = { 
@@ -129,7 +134,7 @@ export function renderView(callback: (error: Error | null, successData: {html: s
         // is included in the SSR'ed markup instead of whatever the 'loading' state is.
         // Not using GraphQL? Use ReactDOMServer.renderToString() instead.
         renderToStringWithData(
-          <AppRoot path={path} Router={StaticRouter} graphQLClient={graphQLClient} />
+          <AppRoot path={routePath} Router={StaticRouter} graphQLClient={graphQLClient} />
         )
       )
       .then((renderedAppHtml) => {
