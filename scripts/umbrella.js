@@ -1,15 +1,16 @@
+const path = require('path');
 const request = require('request');
 const config = require('../scjssconfig.json');
 const routes = require('../routeconfig.json');
 const yaml = require('write-yaml');
 const term = require('terminal-kit').terminal;
 const fs = require('fs');
-var shell = require('shelljs');
-const path = require('path');
+const shell = require('shelljs');
 const chalk = require('chalk');
 const packageConfig = require('../package.json');
 const prog = require('caporal');
 const crypto = require('crypto');
+const nodePlop = require('node-plop');
 
 const CommonFieldTypes = {
     SingleLineText: "Single-Line Text",
@@ -27,11 +28,21 @@ const CommonFieldTypes = {
 }
 
 var progressBar, progress = 0;
-var dryrun = true;
+var dryrun = false;
+var extension = 'js';
 
 /*
   FUNCTIONS
 */
+const getUmbrella = (ext, generator) => {
+    // load an instance of plop from a plopfile
+    var umbrellaScriptDir = path.resolve(__dirname, `umbrella`);
+    // get the template directory, either the JS or TypeScript template folder
+    var templateDir = path.resolve(__dirname, `umbrella/${extension}`);
+    const plop = nodePlop(`${umbrellaScriptDir}/plopfile.js`);
+    // get a generator by name
+    return plop.getGenerator(generator);
+}
 const getMetaData = () => {
     return new Promise(function (resolve, reject) {
         var uri = `${config.sitecore.layoutServiceHost}/sitecore/api/layout/render/umbrella?item=/&sc_lang=en&sc_apikey=${config.sitecore.apiKey}`;
@@ -39,20 +50,31 @@ const getMetaData = () => {
             json: true
         }, (err, res, body) => {
             if (err) {
-                return console.log(`-error-${err}`);
+                return console.log(chalk `{red -error-${err}}`);
                 reject(err);
             }
-            if (body.sitecore.context) {
+            if (body && body.sitecore && body.sitecore.context) {
                 resolve(body.sitecore.context);
             } else {
-                console.log(chalk.red(`No route found for ${currentRoute}.`));
+                console.log(chalk `{red No route found for ${config.sitecore.layoutServiceHost} (${uri}).}`);
                 reject(null);
             }
         });
     })
 
 }
+const toBase64 = (text) => {
+    if (!text) return null;
+    let buff = new Buffer(text);
+    return buff.toString('base64');
+}
+const fromBase64 = (text) => {
+    if (!text) return null;
+    let buff = new Buffer(text, 'base64');
+    return buff.toString('ascii');
+}
 const getHashFromText = (value) => {
+    if (!value) return '';
     var hash = crypto.createHash('sha1');
     hash.setEncoding('hex');
     hash.write(value);
@@ -62,7 +84,13 @@ const getHashFromText = (value) => {
 const getHashFromFile = (path) => {
     var fileContent;
     return new Promise((resolve, reject) => {
-        fileContent = fs.readFileSync(path, {encoding: 'base64'});
+        try {
+            fileContent = fs.readFileSync(path, {
+                encoding: 'base64'
+            });
+        } catch (e) {
+            reject('FNF');
+        }
         resolve(fileContent);
     });
 };
@@ -99,24 +127,23 @@ const saveFile = (e) => {
             let streamHash = getHashFromText(base64File);
             let fileHash = getHashFromText(hash);
             if (streamHash === fileHash) {
-                console.log(`skipped ${e.fileName}: same version.`);
+                console.log(chalk `{gray skipped ${e.fileName}: same version.}`);
             } else {
                 fs.writeFile(`${outputFilePath}`, base64File, {
                     encoding: 'base64'
-                }, function (err) {
-                    console.log(`${e.fileName} saved`);
+                }, function (res) {
+                    console.log(chalk `{gray ${e.fileName} saved}`);
                 });
             }
-        });        
-    }
-    else {
+        });
+    } else {
         getHashFromFile(outputFilePath).then((hash) => {
             let streamHash = getHashFromText(base64File);
             let fileHash = getHashFromText(hash);
             if (streamHash === fileHash) {
-                console.log(chalk.gray(`skipped => ${e.fileName}: same version.`));
+                 // do nothing
             } else {
-                console.log(`${e.fileName} dryrun:saved`);
+                console.log(chalk `{magentaBright Dry run. Skipping file ${e.fileName}}`);
             }
         });
     }
@@ -125,48 +152,51 @@ const processFields = (e) => {
     let f = {};
     Object.keys(e).forEach(p => {
 
-        if (Array.isArray(e[p])) {
-            let arr = [];
-            for (ref of e[p]) {
-                arr.push({
-                    id: ref.id
-                });
-            }
-            //f[p] = arr;
-        } else {
-            if (e[p].hasOwnProperty('fields')) {
-                //f[p] = { id: e[p].id };
-                let val = e[p].value;
-                if (typeof val !== 'undefined') {
-                    f[p] = e[p].value;
+        if (e[p]) {
+            if (Array.isArray(e[p])) {
+                let arr = [];
+                for (ref of e[p]) {
+                    arr.push({
+                        id: ref.id
+                    });
                 }
-                // else {
-                //     f[p] = e[p].value;
-                // }
-
-
-            } else if (e[p].value.hasOwnProperty('fileName')) {
-                let image = e[p].value;
-                let mediaPath = `/data/${image.mediaPath.split('/data/').pop()}.${image.extension}`;
-                //saveImage(image);
-                let mediaItm = {};
-                mediaItm['src'] = mediaPath;
-                mediaItm['alt'] = image.alt;
-                if(image.width) {
-                    mediaItm['width'] = image.width;
-                }
-                if(image.height) {
-                    mediaItm['height'] = image.height;
-                }                
-                f[p] = mediaItm;
-                saveFile(e[p].value);
-                let item = e[p].value;
-                delete item.base64;                
-            } else if (e[p].value.hasOwnProperty('linktype')) {
-                delete e[p].value.id;
-                f[p] = e[p].value;
             } else {
-                f[p] = e[p].value;
+                // item must have a value
+                if (e[p].value) {
+
+                    if (e[p].hasOwnProperty('fields')) {
+                        let val = e[p].value;
+                        if (typeof val !== 'undefined') {
+                            f[p] = e[p].value;
+                        }
+                    } else if (e[p].value.hasOwnProperty('fileName')) {
+
+                        let image = e[p].value;
+                        let mediaPath = `/data/${image.mediaPath.split('/data/').pop()}.${image.extension}`;
+                        let mediaItm = {};
+
+                        mediaItm['src'] = mediaPath;
+                        mediaItm['alt'] = image.alt;
+
+                        if (image.width) {
+                            mediaItm['width'] = image.width;
+                        }
+                        if (image.height) {
+                            mediaItm['height'] = image.height;
+                        }
+
+                        f[p] = mediaItm;
+                        saveFile(e[p].value);
+
+                        let item = e[p].value;
+                        delete item.base64;
+                    } else if (e[p].value.hasOwnProperty('linktype')) {
+                        delete e[p].value.id;
+                        f[p] = e[p].value;
+                    } else {
+                        f[p] = e[p].value;
+                    }
+                }
             }
         }
     });
@@ -194,7 +224,6 @@ const processComponent = (e) => {
             // get datasource fields props
             for (prop in c.fields.data.datasource) {
                 if (prop !== 'id' && prop !== 'name') {
-                    //console.log(prop);
                     for (fieldprop in c.fields.data.datasource[prop]) {
                         if (typeof c.fields.data.datasource[prop][fieldprop] !== 'object') {
                             if (fieldprop === 'value') {
@@ -220,47 +249,56 @@ const processComponent = (e) => {
 }
 
 const processPlaceholderManifests = (e) => {
-    
+
     getMetaData().then(data => {
-        if(data) {
-            console.log(chalk.white(`Processing metadata for`), chalk.blue(`placeholders`));
+        if (data) {
+            console.log(chalk `{blue Processing metadata for} {yellowBright placeholders}`);
             scaffoldPlaceholdersManifest(data.placeholders);
+            if (dryrun) {
+                console.log(chalk `{magentaBright Dry run enabled. File(s) not saved. }`)
+            }
         } else {
-            console.log(chalk.red(`No route data found for placeholders.`));
-        } 
+            console.log(chalk `{red No route data found for components.}`);
+        }
     }).catch(e => {
-        console.log(chalk.red(`No route data found for placeholders.`));
-    })       
+        console.log(chalk `{red ERROR: ${e}}`);
+    })
 }
 const processTemplateManifests = (e) => {
-    
+
     getMetaData().then(data => {
-        if(data) {
-            console.log(chalk.white(`Processing metadata for`), chalk.blue(`templates`));
+        if (data) {
+            console.log(chalk `{blue Processing metadata for} {yellowBright templates}`);
             for (template of data.templates) {
                 scaffoldTemplateManifest(template);
             }
+            if (dryrun) {
+                console.log(chalk `{magentaBright Dry run enabled. File(s) not saved. }`)
+            }
         } else {
-            console.log(chalk.red(`No route data found for templates.`));
-        } 
+            console.log(chalk `{red No route data found for templates.}`);
+        }
     }).catch(e => {
-        console.log(chalk.red(`${e}`));
-    })       
+        console.log(chalk `{red ERROR: ${e}}`);
+    })
 }
 const processComponentManifests = (e) => {
-    
+
     getMetaData().then(data => {
-        if(data) {
-            console.log(chalk.white(`Processing metadata for`), chalk.blue(`components`));
+        if (data) {
+            console.log(chalk `{blue Processing metadata for} {yellowBright components}`);
             for (component of data.renderings) {
                 scaffoldComponentManifest(component);
             }
+            if (dryrun) {
+                console.log(chalk `{magentaBright Dry run enabled. File(s) not saved. }`)
+            }
         } else {
-            console.log(chalk.red(`No route data found for components.`));
-        } 
+            console.log(chalk `{red No route data found for components.}`);
+        }
     }).catch(e => {
-        console.log(chalk.red(`No route data found for components.`));
-    })       
+        console.log(chalk `{red ERROR: ${e}}`);
+    })
 }
 
 /*
@@ -277,110 +315,40 @@ function scaffoldTemplateManifest(template) {
         if (!field.fromModel) {
             if (CommonFieldTypes[field.type]) {
                 icon = "applicationsv2/32x32/document_plain_yellow.png";
-                fields += `\t\t\t\t\t\t\t{ id: '${field.id}', name: '${field.name}', type: CommonFieldTypes.${CommonFieldTypes[field.type]} },\n`;
+                fields += `\t\t\t{ id: "${field.id}", name: "${field.name}", type: CommonFieldTypes.${CommonFieldTypes[field.type]} },\n`;
             }
         } else {
             icon = "apps/32x32/Umbrella.png";
-            inherits += `\t\t\t\t\t\t\t'${field.templateId}', // ${field.templateName} \n`;
+            inherits += `\t\t\t"${field.templateId}", // ${field.templateName} \n`;
         }
     }
-    const manifestTemplate = `// eslint-disable-next-line no-unused-vars
-    import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
-    
-    export default function(manifest) {
-      manifest.addTemplate({
-        name: '${template.Name}',
-        id: '${template.ID}',
-        icon: "${icon}",
-        fields: [
-${fields}\t\t\t\t\t\t],
-        inherits: [
-${inherits}\t\t\t\t\t\t],
-      });
-    }
-  `;
-
-    const templateManifestDefinitionsPath = 'sitecore/definitions/templates';
-    const exportVarName = template.Name.replace(/[^\w]+/g, '');
-    const outputFilePath = path.join(
-        templateManifestDefinitionsPath,
-        `${exportVarName}.sitecore.js`
-    );
-
-    if (!fs.existsSync(templateManifestDefinitionsPath)) {
-        fs.mkdirSync(templateManifestDefinitionsPath);
-    }
-
-    if (fs.existsSync(outputFilePath)) {
-        //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
-    }
-
-    if(!dryrun) {
-        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
-    } else {
-        getHashFromFile(outputFilePath).then((hash) => {
-            let streamHash = getHashFromText(base64File);
-            let fileHash = getHashFromText(hash);
-            if (streamHash === fileHash) {
-                console.log(`skipped ${e.fileName}: same version.`);
-            } else {
-                fs.writeFile(`${outputFilePath}`, base64File, {
-                    encoding: 'base64'
-                }, function (err) {
-                    console.log(`${e.fileName} saved`);
-                });
-            }
-        });   
-    }
-
-    return outputFilePath;
+    // run all the generator actions using the data specified
+    getUmbrella(extension, 'template').runActions({
+        dryrun: dryrun,
+        extension: extension,
+        id: template.ID,
+        name: template.Name,
+        icon: icon,
+        fields: fields,
+        inherits: inherits
+    }).then(function (results) {        
+    });
 }
 
 function scaffoldPlaceholdersManifest(placeholders) {
+    // process values
     if (placeholders.length === 0) return;
-    let result = '';
+    let result = ``;
     for (placeholder of placeholders) {
-        result += `\t\t\t\t\t\t{ name: '${placeholder.name}', displayName: '${placeholder.displayName}', id: '${placeholder.id}' },\r`;
+        result += `\t{ name: "${placeholder.name}", displayName: "${placeholder.displayName}", id: "${placeholder.id}" },\r`;
     }
-    const manifestTemplate = `// eslint-disable-next-line no-unused-vars
-    import { Manifest } from '@sitecore-jss/sitecore-jss-manifest';
-    
-    /**
-     * Adding placeholders is optional but allows setting a user-friendly display name. Placeholder Settings
-     * items will be created for any placeholders explicitly added, or discovered in your routes and component definitions.
-     * Invoked by convention (*.sitecore.js) when \`jss manifest\` is run.
-     * @param {Manifest} manifest
-     */
-    export default function addPlaceholdersToManifest(manifest) {
-      manifest.addPlaceholder(
-${result}
-        // you can optionally pass a GUID or unique (app-wide) string as an ID
-        // this will inform the ID that is set when imported into Sitecore.
-        // If the ID is not set, an ID is created based on the placeholder name.
-      );
-    }        
-  `;
-
-    const placeholderManifestDefinitionsPath = 'sitecore/definitions';
-    const exportVarName = 'placeholders';
-    const outputFilePath = path.join(
-        placeholderManifestDefinitionsPath,
-        `${exportVarName}.sitecore.js`
-    );
-
-    if (!fs.existsSync(placeholderManifestDefinitionsPath)) {
-        fs.mkdirSync(placeholderManifestDefinitionsPath);
-    }
-
-    if (fs.existsSync(outputFilePath)) {
-        //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
-    }
-
-    if(!dryrun) {
-        fs.writeFileSync(outputFilePath, manifestTemplate, 'utf8');
-    }
-
-    return outputFilePath;
+    // run all the generator actions using the data specified
+    getUmbrella(extension, 'placeholders').runActions({
+        dryrun: dryrun,
+        extension: extension,
+        placeholders: result
+    }).then(function (results) {
+    });
 }
 
 function scaffoldComponentManifest(component) {
@@ -391,55 +359,24 @@ function scaffoldComponentManifest(component) {
         return '';
     }
     for (field of component.fields) {
-        fields += `\t\t\t\t\t\t\t{ id: '${field.id}', name: '${field.name}', type: ${field.type} },\n`;
+        fields += `\t\t\t{ id: "${field.id}", name: "${field.name}", type: ${field.type} },\n`;
     }
 
     for (placeholder of component.placeholders) {
-        placeholders += `\t\t\t\t\t\t\t'${placeholder.split('|')[0]}', // ${placeholder.split('|')[1]} \n`;
+        placeholders += `\t\t\t"${placeholder.split('|')[0]}", // ${placeholder.split('|')[1]} \n`;
     }
-
-    const manifestComponent = `// eslint-disable-next-line no-unused-vars
-    import { CommonFieldTypes, SitecoreIcon, Manifest } from '@sitecore-jss/sitecore-jss-manifest';
-    
-    /**
-     * Adds the ${component.name} component to the disconnected manifest.
-     * This function is invoked by convention (*.sitecore.js) when 'jss manifest' is run.
-     * @param {Manifest} manifest Manifest instance to add components to
-     */
-    export default function(manifest) {
-      manifest.addComponent({
-        id: '${component.id}',  
-        name: '${component.name}',
-        icon: '${component.icon}',
-        displayName: '${component.displayName}',
-        fields: [
-${fields}           ],
-        placeholders: [
-${placeholders}           ]
-      });
-    }
-  `;
-
-    const componentManifestDefinitionsPath = 'sitecore/definitions/components';
-    const exportVarName = component.name.replace(/[^\w]+/g, '');
-    const outputFilePath = path.join(
-        componentManifestDefinitionsPath,
-        `${exportVarName}.sitecore.js`
-    );
-
-    if (!fs.existsSync(componentManifestDefinitionsPath)) {
-        fs.mkdirSync(componentManifestDefinitionsPath);
-    }
-
-    if (fs.existsSync(outputFilePath)) {
-        //throw `Manifest definition path ${outputFilePath} already exists. Not creating manifest definition.`;
-    }
-
-    if(!dryrun) {
-        fs.writeFileSync(outputFilePath, manifestComponent, 'utf8');
-    }
-
-    return outputFilePath;
+    // run all the generator actions using the data specified
+    getUmbrella(extension, 'component').runActions({
+        dryrun: dryrun,
+        extension: extension,
+        id: component.id,
+        name: component.name,
+        icon: component.icon,
+        displayName: component.displayName,
+        fields: fields,
+        placeholders: placeholders
+    }).then(function (results) {
+    });
 }
 /*
   ACTION SCRIPT
@@ -451,6 +388,7 @@ function sync() {
     var task = undefined;
 
     function done(task) {
+
         progressBar.itemDone(task);
         countDown--;
 
@@ -458,7 +396,11 @@ function sync() {
         if (!countDown) {
             setTimeout(function () {
                 term('\n');
-                process.exit();
+                
+                dryrun ? 
+                console.log(chalk `{magentaBright Dry run. Skipped saving files. }`) : 
+                console.log(chalk `{blue Ready processing content. }`);
+                process.exit();                
             }, 200);
         }
     }
@@ -490,22 +432,22 @@ function sync() {
                 json: true
             }, (err, res, body) => {
                 if (err) {
-                    return console.log(`-error-${err}`);
+                    return console.log(chalk `{red -error-${err}`);
                 }
                 task = thingsToDo.shift();
                 progressBar.startItem(task);
 
-                if (body.sitecore && body.sitecore.route) {
+                if (body && body.sitecore && body.sitecore.route) {
                     var data = {
                         id: body.sitecore.route.itemId
                     };
                     data.fields = processFields(body.sitecore.route.fields);
                     data.placeholders = processPlaceHolders(body.sitecore.route.placeholders);
-                    if(!dryrun) {
+                    if (!dryrun) {
                         yaml.sync(`./data/routes${currentRoute}/${body.sitecore.route.itemLanguage}.yml`, data);
                     }
                 } else {
-                    console.log(chalk.red(`No route found for ${currentRoute}.`));
+                    console.log(chalk `{red No route found for ${currentRoute}.}`);
                 }
                 // Finish the task in...
                 setTimeout(done.bind(null, task), 500 + Math.random() * 1200);
@@ -513,7 +455,7 @@ function sync() {
         }
 
         // process underlying routes
-        if (route.routes) {
+        if (route && route.routes) {
             for (subroute of route.routes) {
                 processRoute(subroute, currentRoute);
             }
@@ -547,27 +489,39 @@ d88_._ d8888_.._9888 _\\
     WARNING: YOUR LOCAL DATA WILL BE OVERWRITTEN. MOMENTARILY THERE'S NO CHECK FOR EXISTING ITEMS. MAKE SURE YOU HAVE A BACKUP!
 
     `)
+    .version('1.1.0')
     .command('sync', 'Sync all data from Sitecore')
     .option('-t, --templates', 'Sync all the templates from Sitecore', prog.BOOL, false)
     .option('-p, --placeholders', 'Sync all the placeholders from Sitecore', prog.BOOL, false)
     .option('-m, --manifests', 'Sync all the component manifests from Sitecore', prog.BOOL, false)
     .option('-c, --content', 'Sync all the content from your Sitecore JSS website', prog.BOOL, false)
+    .option('-d, --dryrun', 'Sync but do not write to disk', prog.BOOL, false)
+    .option('-x, --typescript', 'Creates manifests in TypeScript', prog.BOOL, false)    
     .action(function (args, options, logger) {
         console.clear();
+
+        if (options.typescript) {
+            logger.info(chalk`{blue File format set to {yellow.bold TypeScript} }`);
+            extension = 'ts';
+        }
+        if (options.dryrun) {
+            logger.info(chalk`{yellow DRY RUN! }`);
+            dryrun = true;
+        }
         if (options.templates) {
-            logger.info('Sync Sitecore templates to your local machine');
+            logger.info(chalk`{bold.blue Sync Sitecore {yellow templates} to your local machine}`);
             processTemplateManifests();
         }
         if (options.placeholders) {
-            logger.info('Sync Sitecore placeholders to your local machine');
+            logger.info(chalk`{bold.blue Sync Sitecore {yellow placeholders} to your local machine}`);
             processPlaceholderManifests();
         }
         if (options.manifests) {
-            logger.info('Sync Sitecore renderings to your local machine');
+            logger.info(chalk`{bold.blue Sync Sitecore {yellow renderings} to your local machine}`);
             processComponentManifests();
         }
         if (options.content) {
-            logger.info('Sync Sitecore content to your local machine');
+            logger.info(chalk`{bold.blue Sync Sitecore {yellow content} to your local machine}`);
             sync();
         }
     });

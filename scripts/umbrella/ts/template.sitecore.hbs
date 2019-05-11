@@ -6,7 +6,13 @@ import { CommonFieldTypes, Manifest } from '@sitecore-jss/sitecore-jss-manifest'
  */
 export default function(manifest: Manifest) {
   manifest.addTemplate({
-    name: 'Styleguide-ContentList-Item-Template',
-    fields: [{ name: 'textField', type: CommonFieldTypes.SingleLineText }],
+    id: "{{id}}",
+    name: "{{name}}",
+    fields: [
+{{fields}}    ],
+    inherits: [
+{{inherits}}    ],
+    insertOptions: [
+{{insertOptions}}    ],
   });
 }
