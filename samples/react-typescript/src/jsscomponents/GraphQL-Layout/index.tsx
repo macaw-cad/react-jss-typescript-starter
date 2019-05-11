@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Placeholder, withSitecoreContext, SitecoreContext, ComponentRendering } from '@sitecore-jss/sitecore-jss-react';
 
 import { GraphQlLayoutBaseProps } from './GraphQlLayout.props';

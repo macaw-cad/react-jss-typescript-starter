@@ -11,7 +11,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const touch = require('touch');
 const Express = require('express');
 
 const { createDefaultDisconnectedServer } = require('@sitecore-jss/sitecore-jss-dev-tools');

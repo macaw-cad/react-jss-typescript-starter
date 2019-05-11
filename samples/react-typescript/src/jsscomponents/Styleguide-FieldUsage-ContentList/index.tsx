@@ -19,7 +19,7 @@ const StyleguideFieldUsageContentList: React.FC<any> = (props) => {
       on each element to make React's DOM updating happy:
      */}
       {sharedContentList &&
-        sharedContentList.map((listItem, index: number) => (
+        sharedContentList.map((listItem: any, index: number) => (
           <div key={`sharedListItem-${index}`}>
             {/* The referenced item's fields can be rendered and edited using normal helper components: */}
             <p>
@@ -30,7 +30,7 @@ const StyleguideFieldUsageContentList: React.FC<any> = (props) => {
 
       <h5>Local Content List</h5>
       {localContentList &&
-        localContentList.map((listItem, index) => (
+        localContentList.map((listItem: any, index: number) => (
           <div key={`localListItem-${index}`}>
             {/* The referenced item's fields can be rendered and edited using normal helper components: */}
             <p>

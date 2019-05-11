@@ -29,6 +29,10 @@ interface State {
 }
 
 class Markdown extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+    }
+    
     public render(): JSX.Element {
         let markdownConfig: MarkdownConfig = {} as MarkdownConfig;
         const { config, body } = this.props;

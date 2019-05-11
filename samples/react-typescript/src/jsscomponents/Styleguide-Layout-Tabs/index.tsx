@@ -20,7 +20,7 @@ type StyleguideLayoutTabsState = {
  * for easy inline editing.
  */
 class StyleguideLayoutTabs extends React.Component<StyleguideLayoutTabsProps, StyleguideLayoutTabsState> {
-  constructor(props) {
+  constructor(props: StyleguideLayoutTabsProps) {
     super(props);
 
     this.state = {
@@ -45,8 +45,8 @@ class StyleguideLayoutTabs extends React.Component<StyleguideLayoutTabsProps, St
           */}
           {!isEditing &&
             (tabsPlaceholder || [])
-              .filter((tab) => tab.props && tab.props.fields)
-              .map((tab, index) => (
+              .filter((tab: any) => tab.props && tab.props.fields)
+              .map((tab: any, index: number) => (
                 <li className="nav-item" key={`tab${index}`}>
                   <a
                     className={`nav-link ${index === this.state.activeTabIndex ? 'active' : null}`}
@@ -59,7 +59,7 @@ class StyleguideLayoutTabs extends React.Component<StyleguideLayoutTabsProps, St
               ))}
         </ul>
         <div className="p-3 border-left border-right border-bottom">
-          {(tabsPlaceholder || []).map((tab, index) => {
+          {(tabsPlaceholder || []).map((tab: any, index: number) => {
             const isValid = tab.props && tab.props.fields;
 
             // allow experience editor markup components to render
@@ -82,7 +82,7 @@ class StyleguideLayoutTabs extends React.Component<StyleguideLayoutTabsProps, St
     );
   }
   
-  private setActiveTab(index): void {
+  private setActiveTab(index: number): void {
     this.setState({ activeTabIndex: index });
   }  
 }

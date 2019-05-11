@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as ipaddr from 'ipaddr.js';
+import ipaddr from 'ipaddr.js';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';

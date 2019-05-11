@@ -33,7 +33,7 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
 
         return (
             <div className="m-grid">
-                {columns && columns.map((column, index) => {
+                {columns && columns.map((column: number, index: number) => {
                     const GridColumnClassName = joinClasses(
                         `m-grid__M${column}`,
                         (smallColumns !== undefined && smallColumns[index])
@@ -46,6 +46,7 @@ class GridColumnsComponent extends React.Component<GridColumnsProps> {
                     return (
                         <div key={index} className={GridColumnClassName}>
                             {
+                                // @ts-ignore
                                 this.props[`placeholder${index + 1}`]
                             }
                         </div>

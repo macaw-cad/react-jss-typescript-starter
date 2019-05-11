@@ -71,7 +71,7 @@ const GraphQLConnectedDemo = (props: GraphQlConnectedDemoProps): JSX.Element => 
           <br />
           children:
           <ul>
-            {contextItem.children.map((child) => (
+            {contextItem.children.map((child: any) => (
               <li key={child.id}>
                 <RouterLink to={child.url}>{child.pageTitle.value}</RouterLink>&nbsp; (editable
                 title too! <Text field={child.pageTitle.jss} />)
@@ -86,4 +86,5 @@ const GraphQLConnectedDemo = (props: GraphQlConnectedDemoProps): JSX.Element => 
 
 // compose() (from react-apollo) can be used when you need more than one GraphQL query
 // for a single query, e.g. `compose(GraphQLData(q1), GraphQLData(q2))(component)`
+// @ts-ignore
 export default GraphQLData(ConnectedDemoQuery, { name: 'connectedQuery' })(GraphQLConnectedDemo);

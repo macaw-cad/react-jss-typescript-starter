@@ -52,7 +52,7 @@ export default function i18nInit(language?: string, dictionary?: any): Promise<v
         requestOptions: {
           mode: 'no-cors'
         },
-        parse: (data) => {
+        parse: (data: any) => {
           const parsedData = JSON.parse(data);
           if (parsedData.phrases) {
             return parsedData.phrases;

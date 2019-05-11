@@ -1,12 +1,12 @@
 import * as fs from 'fs';
-import express from 'express';
+import * as express from 'express';
 import compression from 'compression';  // compresses requests
 import scProxy from '@sitecore-jss/sitecore-jss-proxy';
 import { renderView, urlRouteParser } from '../server.bundle/server';
 import { getSitecoreProxyConfiguration } from './sitecoreProxyConfiguration';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
 import { Environment } from '../src/Environment';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import { getArgumentValues } from 'graphql/execution/values';
 
 const environmentVariables = [

@@ -86,7 +86,7 @@ ${imports.join('\n')}
 const components = new Map();
 ${registrations.join('\n')}
 
-export default function componentFactory(componentName) {
+export default function componentFactory(componentName: string): any {
   return components.get(componentName);
 };
 `;

@@ -1,4 +1,4 @@
-import serializeJavascript from 'serialize-javascript';
+import * as serializeJavascript from 'serialize-javascript';
 import * as React from 'react';
 import { StaticRouter, matchPath } from 'react-router-dom';
 import { renderToStringWithData } from 'react-apollo';

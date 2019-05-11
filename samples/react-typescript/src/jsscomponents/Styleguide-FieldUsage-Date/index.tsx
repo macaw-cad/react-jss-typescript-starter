@@ -21,18 +21,18 @@ const StyleguideFieldUsageDate: React.FC<any> = (props) => {
             Date helper supports a render props API to give you direct access to the JS Date object for formatting.
             IMPORTANT: the render prop is ignored when in Experience Editor mode to support inline editing.
           */}
-          <DateField field={props.fields.date} render={((date) => date!.toUTCString()) as any} />
+          <DateField field={props.fields.date} render={((date: Date) => date!.toUTCString()) as any} />
         </li>
         <li>
           Localized Date string (local timezone):&nbsp;
-          <DateField field={props.fields.date} render={((date) => date!.toLocaleDateString()) as any} />
+          <DateField field={props.fields.date} render={((date: Date) => date!.toLocaleDateString()) as any} />
         </li>
         <li>
           Localized DateTime string (local timezone):&nbsp;
           {/* React components can also be returned from the render props for wrapping */}
           <DateField
             field={props.fields.dateTime}
-            render={((date) => <em>{date!.toLocaleString()}</em>) as any}
+            render={((date: Date) => <em>{date!.toLocaleString()}</em>) as any}
           />
         </li>
       </ul>

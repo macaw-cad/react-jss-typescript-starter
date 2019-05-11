@@ -36,7 +36,7 @@ const resolvers = {
       },
     },
     Mutation: {
-      upvotePost(_, { postId }): Post {
+      upvotePost(_: Array<Post>, { postId }: {postId: number}): Post {
         const post = find(posts, { id: postId });
         if (!post) {
           throw new Error(`Couldn't find post with id ${postId}`);
@@ -46,12 +46,14 @@ const resolvers = {
       },
     },
     Author: {
-      posts(author): Array<Post> {
+      posts(author: string): Array<Post> {
+        // @ts-ignore
         return filter(posts, { authorId: author.id });
       },
     },
     Post: {
-      author(post): string[] {
+      author(post:Post): string[] {
+        // @ts-ignore
         return find(authors, { id: post.authorId });
       },
     },

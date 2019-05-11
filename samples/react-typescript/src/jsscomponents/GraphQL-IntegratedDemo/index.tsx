@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, Link } from '@sitecore-jss/sitecore-jss-react';
 import { Link as RouterLink } from 'react-router-dom';
 import { GraphQlIntegratedDemoBaseProps, GraphQlIntegratedDemoFields } from './GraphQlIntegratedDemo.props';
@@ -65,7 +65,7 @@ const GraphQLIntegratedDemo = (props: GraphQlIntegratedDemoProps): JSX.Element =
           <br />
           children:
           <ul>
-            {contextItem.children.map((child) => (
+            {contextItem.children.map((child: any) => (
               <li key={child.id}>
                 <RouterLink to={child.url}>{child.pageTitle.value}</RouterLink>&nbsp; (editable
                 title too! <Text field={child.pageTitle.jss} />)

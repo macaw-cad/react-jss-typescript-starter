@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { getFieldValue, Field } from '@sitecore-jss/sitecore-jss-react';
 import StyleguideSpecimen from '../Styleguide-Specimen';
 import { StyleguideFieldUsageCheckboxBaseProps } from './StyleguideFieldUsageCheckbox.props';

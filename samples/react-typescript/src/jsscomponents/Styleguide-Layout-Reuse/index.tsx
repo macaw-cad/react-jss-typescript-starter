@@ -28,12 +28,12 @@ const StyleguideLayoutReuse: React.FC<any> = (props) => (
       <Placeholder
         rendering={props.rendering}
         name="jss-reuse-example"
-        renderEach={(component, index) => (
+        renderEach={(component: React.ReactNode, index: number) => (
           <div className="col-sm" key={index}>
             {component}
           </div>
         )}
-        renderEmpty={(components) => <div className="col-sm">{components}</div>}
+        renderEmpty={(components:React.ReactNode[]) => <div className="col-sm">{components}</div>}
       />
     </div>
   </StyleguideSpecimen>

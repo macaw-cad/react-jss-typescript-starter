@@ -20,7 +20,7 @@ import SitecoreLogo from './components/SitecoreLogo';
 
 // This is boilerplate navigation for sample purposes. Most apps should throw this away and use their own navigation implementation.
 // Most apps may also wish to use GraphQL for their navigation construction; this sample does not simply to support disconnected mode.
-let Navigation = ({ t, i18n }) => (
+let Navigation = ({ t, i18n }: { t: any, i18n: any }) => (
   <div className="header-area sticky d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom">
     <h5 className="my-0 mr-md-auto font-weight-normal">
       <NavLink to="/" className="text-dark">

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { graphql } from 'react-apollo';
 import {
   withSitecoreContext,
@@ -95,10 +95,10 @@ function GraphQLData(query: DocumentNode, configuration: any): (Component: React
         }
 
         // build the props processing function that will set the result object to the name
-        newConfiguration.props = (props) => {
+        newConfiguration.props = (props: any) => {
           const innerQuery = props[newConfiguration.name];
 
-          let resultProps = {};
+          let resultProps: any = {};
 
           resultProps[newConfiguration.name] = innerQuery;
 
