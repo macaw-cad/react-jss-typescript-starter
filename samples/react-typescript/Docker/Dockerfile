@@ -2,24 +2,24 @@
 FROM tiangolo/node-frontend:10 as build-stage
 WORKDIR /app
 COPY package*.json /app/
-RUN npm install
+RUN npm install --production
 COPY ./ /app/
 RUN npm run build
 RUN npm run build-server:production
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx:1.15
+FROM nginx:1.16
 
 # Install node & required packages
 RUN apt-get update -yq && apt-get upgrade -yq
-RUN apt-get install -yq \
+RUN apt-get install -yq --fix-missing \
+		dos2unix \
 		curl \
 		git \
 		nano \
 		gnupg \
 		gnupg2 \
-		gnupg1 \
-		dos2unix
+		gnupg1
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
 
 # Enable with ssh configures for Azure App Service

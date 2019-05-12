@@ -553,7 +553,7 @@ The build will result in a Docker image pushed to the specified Azure container 
 Deploy image from the Azure container registry to an zure Web App for Containers as described in the article https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image. 
 
 ## Writing documentation
-Within the website published from this repository we load the `README.md` file as available in the `develop` branch. This is in general the latest version of the documentation. The raw version of this file is requested through a service called jsDeliver. This service makes it possible to read a raw file from GitHub with the correct mime-type `text/markdown`. The raw version of the file is cached on a CDN. This cached version can be purged with the command `npm run purge:readme`. 
+Within the website published from this repository we load the `/samples/react-typescript/README.md` file as available in the `develop` branch. This is in general the latest version of the documentation. The raw version of this file is requested through a service called jsDeliver. This service makes it possible to read a raw file from GitHub with the correct mime-type `text/markdown`. The raw version of the file is cached on a CDN. This cached version can be purged with the command `npm run purge:readme`. 
 
 ## FAQ
 
