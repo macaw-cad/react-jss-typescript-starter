@@ -16,7 +16,7 @@ steps:
 - checkout: self
   
 - script: |
-    docker build -f Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) .
+    docker build -f samples/react-typescript/Docker/Dockerfile -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) ./template
     docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName):$(Build.SourceBranchName) 
   displayName: 'docker build'
