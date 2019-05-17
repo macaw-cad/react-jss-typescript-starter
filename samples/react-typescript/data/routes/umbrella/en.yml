@@ -1,0 +1,21 @@
+id: umbrella-page
+fields:
+  pageTitle: Umbrella for Sitecore JSS
+placeholders:
+  jss-main:
+  - componentName: GridSection
+    placeholders:
+      jss-grid-section:
+        - componentName: Hero
+          fields:
+            image:
+              src: /data/media/img/umbrella.jpg
+              alt: Umbrella for Sitecore JSS
+        - componentName: GridColumns
+          fields:
+            columns: 1,10,1
+          placeholders:
+            jss-grid-column-2:
+              - componentName: MarkdownViewer
+                fields:
+                  url: https://cdn.jsdelivr.net/gh/macaw-interactive/react-jss-typescript-starter@develop/samples/react-typescript/README.md

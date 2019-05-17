@@ -1,0 +1,32 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# Ignore user specific configuration file
+env.*.bat
+
+# dependencies
+node_modules
+
+# testing
+/coverage
+
+# production
+/build
+/build.server
+/build.storybook
+
+# misc
+.DS_Store
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+*.log
+
+scjssconfig.json
+*.deploysecret.config
+.env.connected
+.env.disconnected
+
+# Configuration files for hotel
+.hotel

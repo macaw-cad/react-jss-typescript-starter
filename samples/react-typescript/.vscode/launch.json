@@ -1,0 +1,155 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Sitecore Node",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "port": 14242
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM",
+            "runtimeExecutable": "npm.cmd",
+            "runtimeArgs": [
+                "run-script",
+                "start",
+                "--",
+                "--inspect-brk=9229"
+            ],
+            "port": 9229
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Client [3000]",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Storybook [9001]",
+            "url": "http://localhost:9001",
+            "webRoot":  "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server.bundle Webpack",
+            "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+            "args": [
+                "--mode", "development",
+                "--config", "${workspaceFolder}/server.bundle/server.bundle.webpack.config.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server:disconnected [3001]",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/build.server/index.js",
+            "runtimeArgs": [
+                "-r", "source-map-support/register"
+            ],
+            "args": [
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMapPathOverrides": {
+              "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
+              "webpack:///./*": "${workspaceRoot}/*",
+              "webpack:///*": "*"
+            },
+            "timeout": 30000
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server:connected [3001]",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/build.server/index.js",
+            "runtimeArgs": [
+                "-r", "source-map-support/register"
+            ],
+            "args": [
+                "--envCmd", "${workspaceFolder}/.env.disconnected"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMapPathOverrides": {
+              "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
+              "webpack:///./*": "${workspaceRoot}/*",
+              "webpack:///*": "*"
+            },
+            "timeout": 30000
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "SC disconnected [3042]",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/server.disconnectedproxy/disconnected-mode-proxy.js",
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "docker-do build",
+            "program": "${workspaceFolder}/scripts/docker-do.js",
+            "args": [
+                "build"
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "docker-do run",
+            "program": "${workspaceFolder}/scripts/docker-do.js",
+            "args": [
+                "run"
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "graphql:update",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/scripts/update-graphql-fragment-data.js",
+            "env": {
+                "NODE_ENV": "development",
+            },
+            "runtimeArgs": [
+                "-r", "dotenv/config"
+            ],
+            "args": [
+                "dotenv_config_path=.env.connected"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "timeout": 30000
+        },
+    ]
+}

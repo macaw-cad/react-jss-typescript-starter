@@ -1,0 +1,60 @@
+{
+    "path": "/",
+    "lang": [
+        "en"
+    ],
+    "routes": [
+        {
+            "path": "umbrella",
+            "lang": [
+                "en"
+            ]
+        },
+        {
+            "path": "scaffold",
+            "lang": [
+                "en"
+            ]
+        },
+        {
+            "path": "styleguide",
+            "lang": [
+                "en"
+            ]
+        },
+        {
+            "path": "graphql",
+            "lang": [
+                "en"
+            ],
+            "routes": [
+                {
+                    "path": "sample-1",
+                    "lang": [
+                        "en"
+                    ]
+                },
+                {
+                    "path": "sample-2",
+                    "lang": [
+                        "en"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "styleguide",
+            "lang": [
+                "en"
+            ],
+            "routes": [
+                {
+                    "path": "custom-route-type",
+                    "lang": [
+                        "en"
+                    ]
+                }
+            ]
+        }
+    ]
+}
