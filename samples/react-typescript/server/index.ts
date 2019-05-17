@@ -5,9 +5,7 @@ import scProxy from '@sitecore-jss/sitecore-jss-proxy';
 import { renderView, urlRouteParser } from '../server.bundle/server';
 import { getSitecoreProxyConfiguration } from './sitecoreProxyConfiguration';
 import { ProxyConfig } from '@sitecore-jss/sitecore-jss-proxy/types/ProxyConfig';
-import { Environment } from '../src/Environment';
 import dotenv from 'dotenv';
-import { getArgumentValues } from 'graphql/execution/values';
 
 const environmentVariables = [
   { name: 'REACT_APP_NAME', mandatory: true },
