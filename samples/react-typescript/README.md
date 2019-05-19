@@ -64,6 +64,7 @@ And now get wild using the following most important commands:
   - [Quick Start](#quick-start)
   - [Table of Contents](#table-of-contents)
   - [The react-jss-typescript-starter starter kit](#the-react-jss-typescript-starter-starter-kit)
+      - [Umbrella for Sitecore JSS - What happens on page requests](#umbrella-for-sitecore-jss---what-happens-on-page-requests)
   - [Why did you build this starter kit?](#why-did-you-build-this-starter-kit)
   - [Getting connected to Sitecore](#getting-connected-to-sitecore)
   - [Development with server-side rendering](#development-with-server-side-rendering)
@@ -87,7 +88,10 @@ At Macaw Interactive we made choices with respect to the front-end development t
 
 For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
 
-The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1 JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is completely converted to TypeScript and a lot of additional features are added to the toolset.
+The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1.x JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is completely converted to TypeScript and a lot of additional features are added to the toolset.
+
+#### Umbrella for Sitecore JSS - What happens on page requests
+![Umbrella for Sitecore JSS - Page requests](documentation/umbrella-page-requests.png)
 
 Provided features:
 
@@ -234,11 +238,15 @@ Execute the NodeJS Express based web server application from the root folder usi
 npm run plop
 ```
 
-This command asks for a component name (i.e. MyComponent) and generated the following files:
+This command asks for the type of JSS component to create, a component name (i.e. MyComponent) and generates the following files:
 
 - `src\jsscomponents\MyComponent\index.tsx`
 - `src\jsscomponents\MyComponent\MyComponent.props.ts`
 - `sitecore\definitions\components\MyComponent.sitecore.ts`
+
+Currently the following JSS component types are supported:
+- A JSS Class Component with props and state
+- A JSS Function Component
 
 ## Umbrella
 
@@ -481,6 +489,12 @@ The `docker:run` command does the following things:
 All output of the running container is provided in the terminal window. Note that if you do CTRL-C the output stops, but the container keeps running in the background. Execute `docker ps` to see the executing Docker container. To kill the running Docker container execute `docker kill <id>`.
 
 The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (local, development, test, acceptation, production).
+
+#### Docker image as unit of deployment
+In our vision the Docker image is the unit of deployment, configured per environment through environment variables.
+
+![Docker image as unit of deployment](documentation/docker-image-as-unit-of-deployment.png)
+
 
 ## Deployment the solution as a Docker container on Azure
 
