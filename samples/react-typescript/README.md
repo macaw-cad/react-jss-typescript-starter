@@ -259,6 +259,8 @@ When doing development the following ports are used:
 - http://localhost:3000: client-side rendered web-site using the create react app development server
 - http://localhost:3001: the server-side rendered web-site servered by the NodeJS Express based web server
 - http://localhost:3042: the disconnected mode Sitecore proxy
+- http://localhost:8888: The Docker container running the web-site (`npm run docker:run`)
+- http://localhost:9001: Storybook for out-of-context component development 
 
 ### Ports in use
 
@@ -281,7 +283,9 @@ To start client-side debugging start the `Client [3000]` debug configuration.
 
 ### Debugging the server-side rendering
 
-When debugging the server-side code it might be useful to run just the the front-end in connected or disconnected mode:
+One of the important features provided by this starter template is the ability to debug the server-side rendering code in both connected AND disconnected mode without the need to deploy to Sitecore first. The ability to debug the server-side rendering is really useful because code running perfectly fine on the client-side can completely break when executed server-side. The simplest example is accessing the `window` object, which exists during client-side rendering, but not during server-side rendering.
+
+To debug execute the following commands:
 
 - connected mode: `npx env-cmd .env.connected npm run start:react`
 - disconnected mode: `npx env-cmd .env.disconnected npm run start:react`
