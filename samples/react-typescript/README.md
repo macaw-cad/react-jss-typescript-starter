@@ -57,15 +57,14 @@ And now get wild using the following most important commands:
 | `npm run docker:shell` | N.A. | show the command to execute a shell on the running Docker container |
 
 ## Table of Contents
-
 - [Umbrella for Sitecore JSS](#umbrella-for-sitecore-jss)
   - [The default branch](#the-default-branch)
   - [Introduction](#introduction)
   - [Quick Start](#quick-start)
   - [Table of Contents](#table-of-contents)
   - [The react-jss-typescript-starter starter kit](#the-react-jss-typescript-starter-starter-kit)
-      - [Umbrella for Sitecore JSS - What happens on page requests](#umbrella-for-sitecore-jss---what-happens-on-page-requests)
-  - [Why did you build this starter kit?](#why-did-you-build-this-starter-kit)
+    - [Umbrella for Sitecore JSS - What happens on page requests](#umbrella-for-sitecore-jss---what-happens-on-page-requests)
+  - [Why did we build this starter kit?](#why-did-we-build-this-starter-kit)
   - [Getting connected to Sitecore](#getting-connected-to-sitecore)
   - [Development with server-side rendering](#development-with-server-side-rendering)
   - [Configuring the NodeJS Express web server](#configuring-the-nodejs-express-web-server)
@@ -73,7 +72,29 @@ And now get wild using the following most important commands:
     - [Daily development](#daily-development)
     - [Check if app is working with server-side rendering](#check-if-app-is-working-with-server-side-rendering)
     - [Build the artifacts for deployment to Sitecore](#build-the-artifacts-for-deployment-to-sitecore)
-      - [Why is there no automatic reload for SSR?](#why-is-there-no-automatic-reload-for-ssr)
+    - [Build web server application](#build-web-server-application)
+  - [Scaffolding new JSS components](#scaffolding-new-jss-components)
+  - [Umbrella Sync tool](#umbrella-sync-tool)
+  - [Ports](#ports)
+    - [Ports in use](#ports-in-use)
+  - [Debugging](#debugging)
+    - [Debugging the client-side code](#debugging-the-client-side-code)
+    - [Debugging the server-side rendering](#debugging-the-server-side-rendering)
+    - [Debugging the Sitecore disconnected mode proxy](#debugging-the-sitecore-disconnected-mode-proxy)
+    - [Debugging the webback server bundle build](#debugging-the-webback-server-bundle-build)
+    - [Debugging docker build & run scripts](#debugging-docker-build--run-scripts)
+  - [Docker](#docker)
+    - [Docker image as unit of deployment](#docker-image-as-unit-of-deployment)
+  - [Deployment the solution as a Docker container on Azure](#deployment-the-solution-as-a-docker-container-on-azure)
+  - [The Azure pipeline Yaml file](#the-azure-pipeline-yaml-file)
+  - [Configure the Azure build pipeline](#configure-the-azure-build-pipeline)
+  - [Deploy image to Azure Web Apps for Containers](#deploy-image-to-azure-web-apps-for-containers)
+  - [Writing documentation](#writing-documentation)
+  - [FAQ](#faq)
+    - [Page not found when starting development in disconnected mode](#page-not-found-when-starting-development-in-disconnected-mode)
+    - [Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?](#why-do-npm-run-servedisconnected-and-npm-run-serveconnected-start-the-client-side-rendering)
+    - [What is the role of the `src/HMR.ts` file?](#what-is-the-role-of-the-srchmrts-file)
+    - [Why is there no automatic reload for SSR?](#why-is-there-no-automatic-reload-for-ssr)
   - [References](#references)
 - [Authors](#authors)
 
@@ -90,8 +111,8 @@ For more information on the Macaw Interactive thoughts on technology complemente
 
 The [react-jss-typescript-starter](https://github.com/macaw-interactive/react-jss-typescript-starter) is our starter project implementing our **Umbrella for Sitecore JSS** vision and tooling: a headless Sitecore 9.1.x JSS web application supporting server-side rendering and running outside of the Sitecore Content Delivery server. It provides a NodeJS Express based web site with all the required configuration options to run in a Docker container. This starter is based on the Sitecore provided sample [node-headless-ssr-proxy](https://github.com/Sitecore/jss/tree/dev/samples/node-headless-ssr-proxy) combined with the starter project as scaffolded using the Sitecore JSS CLI with the command `jss create react-jss-typescript-starter react`. The code of the scaffolded site is completely converted to TypeScript and a lot of additional features are added to the toolset.
 
-#### Umbrella for Sitecore JSS - What happens on page requests
-![Umbrella for Sitecore JSS - Page requests](documentation/umbrella-page-requests.png)
+### Umbrella for Sitecore JSS - What happens on page requests
+![Umbrella for Sitecore JSS - Page requests](./documentation/umbrella-page-requests.png)
 
 Provided features:
 
@@ -106,8 +127,8 @@ Provided features:
 - Docker container completely configurable using environment variables
 - extensive documentation
 
-## Why did you build this starter kit?
-This is our way of giving back to the community, and a great way to show our customers and potential new employees our vision on Sitecore development. 
+## Why did we build this starter kit?
+This is our way of giving back to the community, and a great way to show our customers and potential new employees our vision on Sitecore development.
 
 ## Getting connected to Sitecore
 Rename the file `sitecore/config/react-jss-typescript-starter.config` to `my-first-jss-app.config` and make the required changes as described [here](https://jss.sitecore.com/docs/getting-started/app-deployment#step-1-configure-your-apps-site-and-host-name):
@@ -215,9 +236,7 @@ Connected: `npm run serve:connected`
 
 ### Build the artifacts for deployment to Sitecore
 
-Build web server and production mode server bundle for deployment to Sitecore:
-
-```npm run build```
+Build web server and production mode server bundle for deployment to Sitecore: `npm run build`
 
 The resulting code can be deployed to Sitecore using the command `jss deploy app` as described in the [documentation](https://jss.sitecore.com/docs/getting-started/app-deployment).
 
@@ -344,10 +363,10 @@ All output of the running container is provided in the terminal window. Note tha
 
 The Docker image is completely configurable through environment variables. This means that the same image can be used for every environment (local, development, test, acceptation, production).
 
-#### Docker image as unit of deployment
+### Docker image as unit of deployment
 In our vision the Docker image is the unit of deployment, configured per environment through environment variables.
 
-![Docker image as unit of deployment](documentation/docker-image-as-unit-of-deployment.png)
+![Docker image as unit of deployment](./documentation/docker-image-as-unit-of-deployment.png)
 
 
 ## Deployment the solution as a Docker container on Azure
@@ -425,7 +444,7 @@ Within the website published from this repository we load the `/samples/react-ty
 
 ## FAQ
 
-#### Page not found when starting development in disconnected mode
+### Page not found when starting development in disconnected mode
 Most of the time when you start the client-side rendering using `npm run start:disconnected` (or the shorthand `npm start`) or server-side rendering using `npm run serve:disconnected` (or the short hand `npm run serve`) you will get the following error on the automatically started browser on the url http://localhost:3000:
 
 ```
@@ -438,10 +457,10 @@ Language:
 
 The reason is a timing issue. The front-end tries to render before the disconnected mode proxy is up and running on http://localhost:3042. Refresh the page and you are good to go. Note that the actual server-side rendering is performed on http://localhost:3001.
 
-#### Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?
+### Why do `npm run serve:disconnected` and `npm run serve:connected` start the client-side rendering?
 With `npm run serve:disconnected` and `npm run serve:connected` also client-side rendering is started on http://localhost:3000. During development the NodeJS Express server `scripts/disconnected-mode-dev-proxy.js` which provides the server-side rendering needs to retrieve the contents of `index.html` to know the urls of the memory-cached JavaScript chunks. This file can't be retrieved from the `build` folder, because it is possible that a build is not executed yet. That is why the special url http://localhost:3000?prestine provides the contents of `index.html` for development. For production the file `build/index.html` as generated by the `npm run build` command is used. See the file `server.bundle/server.tsx` for more information.  
 
-#### What is the role of the `src/HMR.ts` file?
+### What is the role of the `src/HMR.ts` file?
 In order to reload the client-side rendered app (on http://localhost:3000) in disconnected mode when a change is made to the contents of the `data` folder we need to trigger the Hot Module Reloading (HMR) functionality as provided by Create React App. By writing similar content to the following content to the `src/HMR.ts` file HMR is triggered:
 
 ```typescript
@@ -451,7 +470,7 @@ export default { "timestamp": "2019-04-07T19:44:47.315Z"};
 
 A version of this file must be checked-in in into source control to make sure the codebase can build on the build server.
 
-#### Why is there no automatic reload for SSR?
+### Why is there no automatic reload for SSR?
 When developing with server-side rendering (SSR) enabled (`npm run serve:connected` or `npm run serve:disconnected`) the web page does not automatically reload on changes to the code in the `src` folder or the content in the `data` folder. The currently provided setup by Create React App does not provide support for HMR on SSR without ejecting. Something which we try not to do. Any ideas on how to do this in an elegant way without ejecting are much appreciated.
 
 ## References
