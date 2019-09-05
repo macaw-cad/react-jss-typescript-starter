@@ -1,0 +1,19 @@
+# Keep your schema as small as possible to prevent generation of not needed types, this is configurable in the config under the templates node.
+# To enable the typescript generation of the graphql types and queries, uncomment the line below and enter your schema url manually:
+
+#schema: http://REACT_APP_SITECORE_API_HOST/api/REACT_APP_NAME?sc_apikey=REACT_APP_SITECORE_API_KEY
+config:
+  skipTypename: true
+documents: 
+  - [sitecore/definitions/components/*.graphql, '!*sitecore\definitions\components\GraphQL-IntegratedDemo.sitecore.graphql']
+  - [src/**/*.graphql, '!*.src/jsscomponents/jsscomponents/GraphQL-ConnectedDemo/query.graphql']
+generates:
+  ./src/models/Types.ts:
+    plugins:
+      - add: '/* tslint:disable */'
+      - add:
+          content:
+            - ''
+            - '// This file is generated. Do not change this file manually.'
+      - typescript
+      - typescript-operations
