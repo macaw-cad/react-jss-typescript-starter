@@ -289,6 +289,15 @@ kill the process using the (Windows only) command:
 
 `scripts/kill-ip.bat 3042`
 
+# Enable GraphQL Typescript generation
+
+To generate the graphql typescript types and queries from your schema, configure the codegen.yml and run:
+```
+npm run typescript:generate
+```
+You will have an generated file at this location: src\models\Types.ts
+More info [here](https://graphql-code-generator.com)
+
 ## Debugging
 
 One of the most important things in development is the ability to debug your code in a good way. This starter provides all the required configurations for Visual Studio Code to do debugging to the max!

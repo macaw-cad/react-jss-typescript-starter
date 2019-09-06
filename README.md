@@ -21,11 +21,3 @@ jss start
 
 - [The official JSS Quick Start](https://jss.sitecore.com/docs/getting-started/quick-start)
 - [The react-jss-typescript-starter documentation - part of Umbrella for Sitecore JSS](samples/react-typescript/README.md)
-
-# Enable GraphQL Typescript generation.
-To generate the graphql typescript types and queries from your schema, configure the codegen.yml and run:
-```
-npm run typescript:generate
-```
-You will have an generated file at this location: src\models\Types.ts
-More info [here](https://graphql-code-generator.com)
