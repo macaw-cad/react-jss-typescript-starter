@@ -49,8 +49,8 @@ And now get wild using the following most important commands:
 | `npm run start:disconnected` | http://localhost:3000 | Client side only development, disconnected from sitecore |
 | `npm run start:connected` | http://localhost:3000 | Client side only development, connected to sitecore |
 | `npm run start:storybook` | http://localhost:9001 | Use storybook for out-of-context component development |
-| `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
-| `npm run serve:connected ` | http://localhost:3000 (client-side rendering) and http://localhost:3000 (server-side rendering) | Both client side and server side rendering, connected to sitecore |
+| `npm run serve:disconnected ` | http://localhost:3000 (client-side rendering) and http://localhost:3001 (server-side rendering) | Both client side and server side rendering, disconnected from sitecore |
+| `npm run serve:connected ` | http://localhost:3000 (client-side rendering) and http://localhost:3001 (server-side rendering) | Both client side and server side rendering, connected to sitecore |
 | `npm run docker:build` | N.A. | Build a local Docker image |
 | `npm run docker:run:disconnected` | http://localhost:8888 | run the local Docker image disconnected from Sitecore |
 | `npm run docker:run:connected` | http://localhost:8888 | run the local Docker image connected to Sitecore |
