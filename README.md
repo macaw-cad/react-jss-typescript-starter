@@ -4,7 +4,7 @@
 | develop | [![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=develop)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=develop) | https://react-jss-typescript-starter-develop.azurewebsites.net (latest)|
 | master | [![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=master)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=master) | https://react-jss-typescript-starter.azurewebsites.net (behind on develop)|
 
-# Depricated Notice
+# Deprecated Notice
 This React JSS starter for Sitecore is a few years old. A lot has happened in the mean time:
 - The license for JSS is now included in the Sitecore 10.x license (this is great! No reason NOT to build a headless site on Sitecore!)
 - The Next.js framework has become very popular, and Sitecore provides a JSS JavaScript Rendering SDK for Next.js (see [here](https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/sitecore-javascript-rendering-sdk--jss--for-next-js.html)). This means:
