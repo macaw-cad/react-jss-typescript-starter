@@ -1,9 +1,3 @@
-# Status
-| Branch | Build status | Disconnected example url |
-| --- | --- | --- |
-| develop | [![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=develop)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=develop) | https://react-jss-typescript-starter-develop.azurewebsites.net (latest)|
-| master | [![Build Status](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_apis/build/status/react-jss-typescript-starter?branchName=master)](https://dev.azure.com/MacawInteractive/react-jss-typescript-starter/_build/latest?definitionId=1&branchName=master) | https://react-jss-typescript-starter.azurewebsites.net (behind on develop)|
-
 # Deprecated Notice
 This React JSS starter for Sitecore is a few years old. A lot has happened in the mean time:
 - The license for JSS is now included in the Sitecore 10.x license (this is great! No reason NOT to build a headless site on Sitecore!)
